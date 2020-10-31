@@ -1,0 +1,51 @@
+﻿@model BahokBdDelivery.Models.DeliveryAreaPrice
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+
+
+<form asp-action="Edit" method="post">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow mb-4">
+                <div class="card-header bg-info">
+                    <span class=" text-white font-weight-normal"><b>Edit  </b></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 offset-md-4">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group ">
+                                    <input type="hidden" asp-for="Id" />
+                                    <label asp-for="Area"></label>
+                                    <input asp-for="Area" class="form-control" />
+                                    <span asp-validation-for="Area"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div row>
+                            <div class="col-md-5">
+                                <div class="form-group ">
+
+                                    <label asp-for="Price"></label>
+                                    <input asp-for="Price" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 offset-md-4 ">
+                        <div class="form-group ">
+                            <button class="btn btn-success btn btn-sm" type="submit">UpDate</button>
+                            <a asp-action="Index" class="btn btn-info btn btn-sm" type="submit">Back To List</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

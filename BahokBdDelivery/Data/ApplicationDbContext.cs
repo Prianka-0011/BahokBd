@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using BahokBdDelivery.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,5 +13,6 @@ namespace BahokBdDelivery.Data
             : base(options)
         {
         }
+        public DbSet<DeliveryAreaPrice> DeliveryAreaPrices { get; set; }
     }
 }
