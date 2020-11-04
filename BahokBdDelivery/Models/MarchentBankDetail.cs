@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace BahokBdDelivery.Models
 {
-    public class DeliveryAreaPrice
+    public class MarchentBankDetail
     {
         public Guid Id { get; set; }
-        public string Area { get; set; }
-        public double Price { get; set; }
+        public Guid PaymentTypeId { get; set; }
+        public PaymentBankingType PaymentType { get; set; }
     }
 }

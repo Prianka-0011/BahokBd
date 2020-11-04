@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BahokBdDelivery.Migrations
 {
-    public partial class script : Migration
+    public partial class script2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,11 +52,52 @@ namespace BahokBdDelivery.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Area = table.Column<string>(nullable: true),
-                    Price = table.Column<double>(nullable: false)
+                    BaseChargeAmount = table.Column<decimal>(nullable: false),
+                    IncreaseChargePerKg = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DeliveryAreaPrices", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MarchentProfiles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Image = table.Column<string>(nullable: true),
+                    Logo = table.Column<string>(nullable: true),
+                    Phone = table.Column<string>(nullable: true),
+                    BusinessName = table.Column<string>(nullable: true),
+                    BusinessLink = table.Column<string>(nullable: true),
+                    BusinessAddress = table.Column<string>(nullable: true),
+                    AccountName = table.Column<string>(nullable: true),
+                    AccountNumber = table.Column<string>(nullable: true),
+                    RoutingName = table.Column<string>(nullable: true),
+                    BranchName = table.Column<string>(nullable: true),
+                    ProfileStatus = table.Column<int>(nullable: false),
+                    LastIpAddress = table.Column<string>(nullable: true),
+                    DateTime = table.Column<DateTime>(nullable: false),
+                    PaymentBankingTypeName = table.Column<string>(nullable: true),
+                    PaymentBankingOrganizationName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MarchentProfiles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentBankingType",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    BankingMethodName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentBankingType", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -105,8 +146,8 @@ namespace BahokBdDelivery.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(nullable: false),
+                    ProviderKey = table.Column<string>(nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: false)
                 },
@@ -150,8 +191,8 @@ namespace BahokBdDelivery.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
-                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
-                    Name = table.Column<string>(maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -161,6 +202,54 @@ namespace BahokBdDelivery.Migrations
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PickupLocations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    StoreName = table.Column<string>(nullable: true),
+                    DetailAddress = table.Column<string>(nullable: true),
+                    ManagerName = table.Column<string>(nullable: true),
+                    ManagerPhone = table.Column<string>(nullable: true),
+                    MarchentId = table.Column<Guid>(nullable: false),
+                    AreaPriceId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PickupLocations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PickupLocations_DeliveryAreaPrices_AreaPriceId",
+                        column: x => x.AreaPriceId,
+                        principalTable: "DeliveryAreaPrices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PickupLocations_MarchentProfiles_MarchentId",
+                        column: x => x.MarchentId,
+                        principalTable: "MarchentProfiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentBankingOrganization",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    OrganizationName = table.Column<string>(nullable: true),
+                    PaymentBankingTypeId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentBankingOrganization", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PaymentBankingOrganization_PaymentBankingType_PaymentBankingTypeId",
+                        column: x => x.PaymentBankingTypeId,
+                        principalTable: "PaymentBankingType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -203,6 +292,21 @@ namespace BahokBdDelivery.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaymentBankingOrganization_PaymentBankingTypeId",
+                table: "PaymentBankingOrganization",
+                column: "PaymentBankingTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PickupLocations_AreaPriceId",
+                table: "PickupLocations",
+                column: "AreaPriceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PickupLocations_MarchentId",
+                table: "PickupLocations",
+                column: "MarchentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -223,13 +327,25 @@ namespace BahokBdDelivery.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "DeliveryAreaPrices");
+                name: "PaymentBankingOrganization");
+
+            migrationBuilder.DropTable(
+                name: "PickupLocations");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "PaymentBankingType");
+
+            migrationBuilder.DropTable(
+                name: "DeliveryAreaPrices");
+
+            migrationBuilder.DropTable(
+                name: "MarchentProfiles");
         }
     }
 }

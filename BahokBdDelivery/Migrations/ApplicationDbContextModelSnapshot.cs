@@ -28,12 +28,143 @@ namespace BahokBdDelivery.Migrations
                     b.Property<string>("Area")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<decimal>("BaseChargeAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("IncreaseChargePerKg")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
                     b.ToTable("DeliveryAreaPrices");
+                });
+
+            modelBuilder.Entity("BahokBdDelivery.Models.MarchentProfile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AccountName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AccountNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BranchName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastIpAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Logo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentBankingOrganizationName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentBankingTypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProfileStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RoutingName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MarchentProfiles");
+                });
+
+            modelBuilder.Entity("BahokBdDelivery.Models.PaymentBankingOrganization", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("OrganizationName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PaymentBankingTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentBankingTypeId");
+
+                    b.ToTable("PaymentBankingOrganization");
+                });
+
+            modelBuilder.Entity("BahokBdDelivery.Models.PaymentBankingType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BankingMethodName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentBankingType");
+                });
+
+            modelBuilder.Entity("BahokBdDelivery.Models.PickupLocation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AreaPriceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DetailAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ManagerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ManagerPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("MarchentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("StoreName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaPriceId");
+
+                    b.HasIndex("MarchentId");
+
+                    b.ToTable("PickupLocations");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -179,12 +310,10 @@ namespace BahokBdDelivery.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -221,12 +350,10 @@ namespace BahokBdDelivery.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -234,6 +361,30 @@ namespace BahokBdDelivery.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("BahokBdDelivery.Models.PaymentBankingOrganization", b =>
+                {
+                    b.HasOne("BahokBdDelivery.Models.PaymentBankingType", "PaymentBankingType")
+                        .WithMany()
+                        .HasForeignKey("PaymentBankingTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BahokBdDelivery.Models.PickupLocation", b =>
+                {
+                    b.HasOne("BahokBdDelivery.Models.DeliveryAreaPrice", "AreaPrice")
+                        .WithMany()
+                        .HasForeignKey("AreaPriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BahokBdDelivery.Models.MarchentProfile", "Marchent")
+                        .WithMany()
+                        .HasForeignKey("MarchentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
