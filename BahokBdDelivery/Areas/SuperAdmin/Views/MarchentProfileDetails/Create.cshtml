@@ -1,4 +1,4 @@
-﻿@model BahokBdDelivery.Models.MarchentProfileDetails
+﻿@model BahokBdDelivery.ViewModels.MarchentProfileDetailsVm
 
 @{
     ViewData["Title"] = "Create";
@@ -23,14 +23,18 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
+                <label>Marchent Image</label>
+                <div class="custom-file">
+                    <input class="custom-file-input form-control ml-2" type="file" asp-for="Image" />
+                    <label class="custom-file-label">Choos file</label>
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="Logo" class="control-label"></label>
-                <input asp-for="Logo" class="form-control" />
-                <span asp-validation-for="Logo" class="text-danger"></span>
+                <label>Logo</label>
+                <div class="custom-file">
+                    <input class="custom-file-input form-control ml-2" type="file" asp-for="Logo" />
+                    <label class="custom-file-label">Choos file</label>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="Phone" class="control-label"></label>
@@ -111,49 +115,62 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts{
-    <script type="text/javascript">
-    $(document).ready(function () {
-        $.ajax({
-            url: '/MarchentProfiles/GetBankingType',
-            type: 'GET',
-            dataType: 'JSON',
-            success: function (data) {
-                console.log(data);
-                $("#Type").empty();
-                $.each(data, function (i, obj) {
-                    var s = '<option value="' + obj.id + '">' + obj.bankingMethodName + '</option>';
-                    console.log(s);
-                    $("#Type").append(s);
-                });
-            },
-            error: function (res) {
-                console.log(res);
-            }
-        });
 
-        $("#Type").click(function () {
-            var d = $("#Type option:selected").val();
-            console.log(d);
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('.custom-file-input').on("change", function () {
+                var fileLabel = $(this).next('.custom-file-label');
+                var files = $(this)[0].files;
+             
+                 if (files.length == 1) {
+                    fileLabel.html(files[0].name)
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
             $.ajax({
-                url: '/marchentProfiles/getOrganizationName/?id=' + d,
+                url: '/MarchentProfiles/GetBankingType',
                 type: 'GET',
                 dataType: 'JSON',
                 success: function (data) {
                     console.log(data);
-                    $("#Organize").empty();
+                    $("#Type").empty();
                     $.each(data, function (i, obj) {
-                        var s = '<option value="' + obj.id + '">' + obj.organizationName + '</option>';
-                        //console.log(s);
-                        $("#Organize").append(s);
+                        var s = '<option value="' + obj.id + '">' + obj.bankingMethodName + '</option>';
+                        console.log(s);
+                        $("#Type").append(s);
                     });
                 },
                 error: function (res) {
                     console.log(res);
                 }
             });
-        });
 
-    });
+            $("#Type").click(function () {
+                var d = $("#Type option:selected").val();
+                console.log(d);
+                $.ajax({
+                    url: '/marchentProfiles/getOrganizationName/?id=' + d,
+                    type: 'GET',
+                    dataType: 'JSON',
+                    success: function (data) {
+                        console.log(data);
+                        $("#Organize").empty();
+                        $.each(data, function (i, obj) {
+                            var s = '<option value="' + obj.id + '">' + obj.organizationName + '</option>';
+                            //console.log(s);
+                            $("#Organize").append(s);
+                        });
+                    },
+                    error: function (res) {
+                        console.log(res);
+                    }
+                });
+            });
+
+        });
     </script>
 }

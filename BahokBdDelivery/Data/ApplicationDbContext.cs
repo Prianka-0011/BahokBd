@@ -16,9 +16,9 @@ namespace BahokBdDelivery.Data
        // public DbSet<DeliveryAreaPrices> DeliveryAreaPrices { get; set; }
         public DbSet<PaymentBankingType> PaymentBankingType { get; set; }
         public DbSet<PaymentBankingOrganization> PaymentBankingOrganization { get; set; }
-        public DbSet<MarchentProfile> MarchentProfiles { get; set; }
+       
         public DbSet<PickupLocations> PickupLocations { get; set; }
-        public DbSet<BahokBdDelivery.Models.DeliveryAreaPrices> DeliveryAreaPrices { get; set; }
-        public DbSet<BahokBdDelivery.Models.MarchentProfileDetails> MarchentProfileDetails { get; set; }
+        public DbSet<DeliveryAreaPrices> DeliveryAreaPrices { get; set; }
+        public DbSet<MarchentProfileDetails> MarchentProfileDetails { get; set; }
     }
 }

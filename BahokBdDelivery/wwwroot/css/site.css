@@ -1,1 +1,92 @@
 ﻿
+html {
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+.sidenav {
+    height: 100%;
+    width: 160px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+
+    .sidenav a {
+        padding: 6px 8px 6px 16px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+    }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+/*start Registe + Login Page Css*/
+
+/*end Registe + Login Page Css*/
+/*navigation bar start*/
+.navbar-nav .nav-span {
+    padding: 10px 30px;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    color: #fff;
+    outline: none;
+    font-size: 15px;
+    position: relative;
+}
+
+.bg-mattBlackLight {
+    background-color: rgb(10, 0, 26);
+    box-shadow: #290066;
+}
+
+
+.navbar-brand h3 {
+    color: floralwhite;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.navbar-brand span {
+    color: sandybrown;
+}
+
+.white-btn i {
+    color: aliceblue;
+}
+
+.white-btn span {
+    color: aliceblue;
+}
+
+.navbar-custom {
+    background-color: slateblue !important;
+    box-shadow: 10px 10px 20px rgb(10, 0, 26) !important;
+}
+
+    .navbar-custom .nav-link .icon {
+        color: rgb(10, 0, 26);
+    }
+/*navigation bar end*/
+/*content  start*/
+.content {
+    width: 100%;
+    margin-left: 0rem;
+    margin-top: 1rem;
+    -webkit-transition: all ease 0.25s;
+    transition: all ease 0.25s;
+}

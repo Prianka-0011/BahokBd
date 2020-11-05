@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BahokBdDelivery.Migrations
 {
-    public partial class script2 : Migration
+    public partial class script : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -61,7 +61,7 @@ namespace BahokBdDelivery.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MarchentProfiles",
+                name: "MarchentProfileDetails",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -77,15 +77,15 @@ namespace BahokBdDelivery.Migrations
                     AccountNumber = table.Column<string>(nullable: true),
                     RoutingName = table.Column<string>(nullable: true),
                     BranchName = table.Column<string>(nullable: true),
-                    ProfileStatus = table.Column<int>(nullable: false),
+                    ProfileStatus = table.Column<int>(nullable: true),
                     LastIpAddress = table.Column<string>(nullable: true),
-                    DateTime = table.Column<DateTime>(nullable: false),
-                    PaymentBankingTypeName = table.Column<string>(nullable: true),
-                    PaymentBankingOrganizationName = table.Column<string>(nullable: true)
+                    DateTime = table.Column<DateTime>(nullable: true),
+                    PaymentTypeId = table.Column<Guid>(nullable: true),
+                    PaymentBankingId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MarchentProfiles", x => x.Id);
+                    table.PrimaryKey("PK_MarchentProfileDetails", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -216,21 +216,22 @@ namespace BahokBdDelivery.Migrations
                     ManagerName = table.Column<string>(nullable: true),
                     ManagerPhone = table.Column<string>(nullable: true),
                     MarchentId = table.Column<Guid>(nullable: false),
-                    AreaPriceId = table.Column<Guid>(nullable: false)
+                    AreaPriceId = table.Column<Guid>(nullable: false),
+                    DeliveryAreaPricesId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PickupLocations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PickupLocations_DeliveryAreaPrices_AreaPriceId",
-                        column: x => x.AreaPriceId,
+                        name: "FK_PickupLocations_DeliveryAreaPrices_DeliveryAreaPricesId",
+                        column: x => x.DeliveryAreaPricesId,
                         principalTable: "DeliveryAreaPrices",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PickupLocations_MarchentProfiles_MarchentId",
+                        name: "FK_PickupLocations_MarchentProfileDetails_MarchentId",
                         column: x => x.MarchentId,
-                        principalTable: "MarchentProfiles",
+                        principalTable: "MarchentProfileDetails",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -299,9 +300,9 @@ namespace BahokBdDelivery.Migrations
                 column: "PaymentBankingTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PickupLocations_AreaPriceId",
+                name: "IX_PickupLocations_DeliveryAreaPricesId",
                 table: "PickupLocations",
-                column: "AreaPriceId");
+                column: "DeliveryAreaPricesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PickupLocations_MarchentId",
@@ -345,7 +346,7 @@ namespace BahokBdDelivery.Migrations
                 name: "DeliveryAreaPrices");
 
             migrationBuilder.DropTable(
-                name: "MarchentProfiles");
+                name: "MarchentProfileDetails");
         }
     }
 }

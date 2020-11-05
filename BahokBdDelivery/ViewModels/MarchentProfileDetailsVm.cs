@@ -1,20 +1,18 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace BahokBdDelivery.Domains
+namespace BahokBdDelivery.ViewModels
 {
-    public partial class MarchentProfileDetails
+    public class MarchentProfileDetailsVm
     {
-        public MarchentProfileDetails()
-        {
-            PickupLocations = new HashSet<PickupLocations>();
-        }
-
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        public string Image { get; set; }
-        public string Logo { get; set; }
+        public IFormFile Image { get; set; }
+        public IFormFile Logo { get; set; }
         public string Phone { get; set; }
         public string BusinessName { get; set; }
         public string BusinessLink { get; set; }
@@ -28,7 +26,5 @@ namespace BahokBdDelivery.Domains
         public DateTime? DateTime { get; set; }
         public Guid? PaymentTypeId { get; set; }
         public Guid? PaymentBankingId { get; set; }
-
-        public virtual ICollection<PickupLocations> PickupLocations { get; set; }
     }
 }

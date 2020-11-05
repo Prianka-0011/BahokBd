@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BahokBdDelivery.Data;
 using BahokBdDelivery.Models;
+using BahokBdDelivery.ViewModels;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
 {
@@ -14,10 +17,12 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
     public class MarchentProfileDetailsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private IHostingEnvironment _hosting;
 
-        public MarchentProfileDetailsController(ApplicationDbContext context)
+        public MarchentProfileDetailsController(ApplicationDbContext context, IHostingEnvironment hosting)
         {
             _context = context;
+            _hosting = hosting;
         }
 
         // GET: SuperAdmin/MarchentProfileDetails
@@ -55,16 +60,51 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Email,Image,Logo,Phone,BusinessName,BusinessLink,BusinessAddress,AccountName,AccountNumber,RoutingName,BranchName,ProfileStatus,LastIpAddress,DateTime,PaymentTypeId,PaymentBankingId")] MarchentProfileDetails marchentProfileDetails)
+        public async Task<IActionResult> Create(MarchentProfileDetailsVm vm)
         {
             if (ModelState.IsValid)
             {
-                marchentProfileDetails.Id = Guid.NewGuid();
-                _context.Add(marchentProfileDetails);
+                MarchentProfileDetails entity = new MarchentProfileDetails();
+                entity.Name = vm.Name;
+                entity.Email = vm.Email;
+                entity.Phone = vm.Phone;
+                entity.BranchName = vm.BranchName;
+                entity.BusinessName = vm.BusinessName;
+                entity.BusinessLink = vm.BusinessLink;
+                entity.BusinessAddress = vm.BusinessAddress;
+                entity.AccountName = vm.AccountName;
+                entity.AccountNumber = vm.AccountNumber;
+                entity.RoutingName = vm.RoutingName;
+                entity.ProfileStatus = vm.ProfileStatus;
+                entity.LastIpAddress = vm.LastIpAddress;
+                entity.DateTime = vm.DateTime;
+                entity.PaymentTypeId = vm.PaymentTypeId;
+                entity.PaymentBankingId = vm.PaymentBankingId;
+                string uniqueFileNameForImage = null;
+                if (vm.Image != null)
+                {
+
+                    string uploadsFolder = Path.Combine(_hosting.WebRootPath, "images");
+                    uniqueFileNameForImage = Guid.NewGuid().ToString() + "_" + vm.Image.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileNameForImage);
+                    await vm.Image.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                    entity.Image = "images/" + uniqueFileNameForImage;
+                }
+                if (vm.Logo != null)
+                {
+
+                    string uploadsFolder = Path.Combine(_hosting.WebRootPath, "logos");
+                    uniqueFileNameForImage = Guid.NewGuid().ToString() + "_" + vm.Logo.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileNameForImage);
+                    await vm.Logo.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                    entity.Logo = "logos/" + uniqueFileNameForImage;
+                }
+                entity.Id = Guid.NewGuid();
+                _context.Add(entity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(marchentProfileDetails);
+            return View(vm);
         }
 
         // GET: SuperAdmin/MarchentProfileDetails/Edit/5
