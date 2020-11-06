@@ -13,6 +13,8 @@ namespace BahokBdDelivery.ViewModels
         public string Email { get; set; }
         public IFormFile Image { get; set; }
         public IFormFile Logo { get; set; }
+        public string DisplayImage { get; set; }
+        public string DisplayLogo { get; set; }
         public string Phone { get; set; }
         public string BusinessName { get; set; }
         public string BusinessLink { get; set; }

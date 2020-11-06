@@ -1,13 +1,15 @@
-﻿$(document).ready(function () {
-    $('.sidemenuToggler').on('click', function () {
-        $('.wrapper').toggleClass('active');
-    });
+﻿//$(document).ready(function () {
+//    //$('.sidemenuToggler').on('click', function () {
+//    //    $('.wrapper').toggleClass('active');
+//    //});
 
-    $('.prod-btn').click(function () {
-        $('.prod-show').toggleClass("show");
-        $('.first').toggleClass("rotate");
-    });
-    $('.cat-btn').click(function () {
-        $('.cat-show').toggleClass("show1");
-        $('.second').toggleClass("rotate1");
-    });
+//    $('a.dropdown-btn').click(function () {
+//        $('.dropdown-container').toggleClass("show")
+        
+//    });
+//    //$('.cat-btn').click(function () {
+//    //    $('.cat-show').toggleClass("show1");
+//    //    $('.second').toggleClass("rotate1");
+//    });
+
+//    //drop down

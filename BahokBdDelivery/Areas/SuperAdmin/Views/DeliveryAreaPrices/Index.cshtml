@@ -4,44 +4,52 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Area)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BaseChargeAmount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IncreaseChargePerKg)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Area)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BaseChargeAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IncreaseChargePerKg)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-12 col-lg-8 offset-lg-2 col-md-8 offset-md-2">
+        <div class="card mb-4">
+            <div class="card-header bg-info">
+                <h2 class="">Manage Area & Price</h2>
+                <a asp-action="Create" class=" text-white ">Create New</a>
+            </div>
+            <div class="card-body">
+                <table class="table table-responsive table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Area)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.BaseChargeAmount)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IncreaseChargePerKg)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Area)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BaseChargeAmount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IncreaseChargePerKg)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

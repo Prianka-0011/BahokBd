@@ -4,128 +4,132 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Logo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Phone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BusinessName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BusinessLink)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BusinessAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AccountName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AccountNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RoutingName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BranchName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProfileStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastIpAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentTypeId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentBankingId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-            <img src="~/@item.Image" style="height:50px;width:50px; border-radius:25px" />
-            </td>
-            <td>
-                <img src="~/@item.Logo" style="height:50px;width:50px; border-radius:25px" />
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Phone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BusinessName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BusinessLink)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BusinessAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccountName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccountNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoutingName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BranchName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProfileStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastIpAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentTypeId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentBankingId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-11 offset-1  col-lg-12  col-md-11 offset-md-1">
+        <div class="card mb-4">
+            <div class="card-header bg-info">
+                <h2 class="">Manage Merchant</h2>
+                <a asp-action="Create" class=" text-white ">Create New</a>
+            </div>
+            <div class="card-body">
+                <table class="table table-responsive table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Email)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Image)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Logo)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Phone)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.BusinessName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.BusinessLink)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.BusinessAddress)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.AccountName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.AccountNumber)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RoutingName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.BranchName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ProfileStatus)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.LastIpAddress)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DateTime)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PaymentTypeId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PaymentBankingId)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                <img src="~/@item.Image" style="height:50PX;width:50PX; border-radius:25px" />
+                            </td>
+                            <td>
+                                <img src="~/@item.Logo" style="height:50px;width:50px; border-radius:25px" />
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Phone)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BusinessName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BusinessLink)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BusinessAddress)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AccountName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AccountNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RoutingName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BranchName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProfileStatus)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastIpAddress)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PaymentTypeId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PaymentBankingId)
+                            </td>
+                            <partial name="_ButtonPartial" model="@item.Id" />
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

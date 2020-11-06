@@ -17,12 +17,12 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
     public class MarchentProfileDetailsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private IHostingEnvironment _hosting;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public MarchentProfileDetailsController(ApplicationDbContext context, IHostingEnvironment hosting)
+        public MarchentProfileDetailsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
-            _hosting = hosting;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: SuperAdmin/MarchentProfileDetails
@@ -84,7 +84,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                 if (vm.Image != null)
                 {
 
-                    string uploadsFolder = Path.Combine(_hosting.WebRootPath, "images");
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
                     uniqueFileNameForImage = Guid.NewGuid().ToString() + "_" + vm.Image.FileName;
                     string filePath = Path.Combine(uploadsFolder, uniqueFileNameForImage);
                     await vm.Image.CopyToAsync(new FileStream(filePath, FileMode.Create));
@@ -93,7 +93,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                 if (vm.Logo != null)
                 {
 
-                    string uploadsFolder = Path.Combine(_hosting.WebRootPath, "logos");
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "logos");
                     uniqueFileNameForImage = Guid.NewGuid().ToString() + "_" + vm.Logo.FileName;
                     string filePath = Path.Combine(uploadsFolder, uniqueFileNameForImage);
                     await vm.Logo.CopyToAsync(new FileStream(filePath, FileMode.Create));
@@ -114,13 +114,34 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
             {
                 return NotFound();
             }
-
-            var marchentProfileDetails = await _context.MarchentProfileDetails.FindAsync(id);
-            if (marchentProfileDetails == null)
+            MarchentProfileDetailsVm vm = new MarchentProfileDetailsVm();
+            var entity = await _context.MarchentProfileDetails.FindAsync(id);
+            if (vm == null)
             {
                 return NotFound();
             }
-            return View(marchentProfileDetails);
+            vm.Name = entity.Name;
+            vm.Email = entity.Email;
+            vm.Phone = entity.Phone;
+            vm.BranchName = entity.BranchName;
+            vm.BusinessName = entity.BusinessName;
+            vm.BusinessLink = entity.BusinessLink;
+            vm.BusinessAddress = entity.BusinessAddress;
+            vm.AccountName = entity.AccountName;
+            vm.AccountNumber = entity.AccountNumber;
+            vm.RoutingName = entity.RoutingName;
+            vm.ProfileStatus = entity.ProfileStatus;
+            vm.LastIpAddress = entity.LastIpAddress;
+            vm.DateTime = entity.DateTime;
+            vm.DisplayImage = entity.Image;
+            vm.DisplayLogo = entity.Logo;
+            vm.PaymentTypeId = entity.PaymentTypeId;
+            vm.PaymentBankingId = entity.PaymentBankingId;
+            var TypeNameObj = _context.PaymentBankingType.Find(entity.PaymentTypeId);
+            ViewBag.TypeName = TypeNameObj.BankingMethodName;
+            var Organize = _context.PaymentBankingOrganization.Find(entity.PaymentBankingId);
+            ViewBag.Organize = Organize.OrganizationName;
+            return View(vm);
         }
 
         // POST: SuperAdmin/MarchentProfileDetails/Edit/5
@@ -186,13 +207,20 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        [HttpGet("/MarchentProfiles/GetBankingType")]
+        
+        //[HttpGet("/MarchentProfileDetails/GetBankingTypeById")]
+        //public IActionResult GetBankingTypeById(Guid id)
+        //{
+        //    var dvs = _context.PaymentBankingType.Where(x => x.Id == id);
+        //    return Json(dvs.ToList());
+        //}
+        [HttpGet("/MarchentProfileDetails/GetBankingType")]
         public IActionResult GetBankingType()
         {
             var dvs = _context.PaymentBankingType;
             return Json(dvs.ToList());
         }
-        [HttpGet("/MarchentProfiles/GetOrganizationName")]
+        [HttpGet("/MarchentProfileDetails/GetOrganizationName")]
         public IActionResult GetOrganizationName(Guid id)
         {
             var dis = _context.PaymentBankingOrganization.Where(x => x.PaymentBankingTypeId == id);
