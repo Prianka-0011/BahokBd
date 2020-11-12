@@ -13,12 +13,14 @@ namespace BahokBdDelivery.Data
             : base(options)
         {
         }
-       // public DbSet<DeliveryAreaPrices> DeliveryAreaPrices { get; set; }
-        public DbSet<PaymentBankingType> PaymentBankingType { get; set; }
-        public DbSet<PaymentBankingOrganization> PaymentBankingOrganization { get; set; }
-       
-        public DbSet<PickupLocations> PickupLocations { get; set; }
-        public DbSet<DeliveryAreaPrices> DeliveryAreaPrices { get; set; }
-        public DbSet<MarchentProfileDetails> MarchentProfileDetails { get; set; }
+        public virtual DbSet<BankBranch> BankBranch { get; set; }
+        public virtual DbSet<DeliveryAreaPrices> DeliveryAreaPrices { get; set; }
+        public virtual DbSet<MarchentCharge> MarchentCharge { get; set; }
+        public virtual DbSet<MarchentPaymentDetails> MarchentPaymentDetails { get; set; }
+        public virtual DbSet<MarchentProfileDetail> MarchentProfileDetail { get; set; }
+        public virtual DbSet<MarchentStore> MarchentStore { get; set; }
+        public virtual DbSet<PaymentBankingOrganization> PaymentBankingOrganization { get; set; }
+        public virtual DbSet<PaymentBankingType> PaymentBankingType { get; set; }
+
     }
 }

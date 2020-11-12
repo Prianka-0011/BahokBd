@@ -5,19 +5,23 @@ using System.Threading.Tasks;
 
 namespace BahokBdDelivery.Models
 {
-    public partial class MarchentProfileDetails
+    public partial class MarchentProfileDetail
     {
-        public MarchentProfileDetails()
+        public MarchentProfileDetail()
         {
-            PickupLocations = new HashSet<PickupLocations>();
+            MarchentCharge = new HashSet<MarchentCharge>();
+            MarchentPaymentDetails = new HashSet<MarchentPaymentDetails>();
+            MarchentStore = new HashSet<MarchentStore>();
         }
 
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
+        public string Password { get; set; }
         public string Image { get; set; }
         public string Logo { get; set; }
         public string Phone { get; set; }
+        public bool Status { get; set; }
         public string BusinessName { get; set; }
         public string BusinessLink { get; set; }
         public string BusinessAddress { get; set; }
@@ -25,12 +29,12 @@ namespace BahokBdDelivery.Models
         public string AccountNumber { get; set; }
         public string RoutingName { get; set; }
         public string BranchName { get; set; }
-        public int? ProfileStatus { get; set; }
         public string LastIpAddress { get; set; }
-        public DateTime? DateTime { get; set; }
+        public DateTime CreateDateTime { get; set; }
         public Guid? PaymentTypeId { get; set; }
         public Guid? PaymentBankingId { get; set; }
-
-        public virtual ICollection<PickupLocations> PickupLocations { get; set; }
+        public virtual ICollection<MarchentCharge> MarchentCharge { get; set; }
+        public virtual ICollection<MarchentPaymentDetails> MarchentPaymentDetails { get; set; }
+        public virtual ICollection<MarchentStore> MarchentStore { get; set; }
     }
 }

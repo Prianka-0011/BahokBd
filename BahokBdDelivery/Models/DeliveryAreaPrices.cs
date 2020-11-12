@@ -9,14 +9,15 @@ namespace BahokBdDelivery.Models
     {
         public DeliveryAreaPrices()
         {
-            PickupLocations = new HashSet<PickupLocations>();
+            MarchentCharge = new HashSet<MarchentCharge>();
         }
 
         public Guid Id { get; set; }
         public string Area { get; set; }
         public decimal BaseChargeAmount { get; set; }
         public decimal IncreaseChargePerKg { get; set; }
+        public bool? Status { get; set; }
 
-        public virtual ICollection<PickupLocations> PickupLocations { get; set; }
+        public virtual ICollection<MarchentCharge> MarchentCharge { get; set; }
     }
 }

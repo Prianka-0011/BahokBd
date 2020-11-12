@@ -5,10 +5,17 @@ using System.Threading.Tasks;
 
 namespace BahokBdDelivery.Models
 {
-    public class PaymentBankingType
+    public partial class PaymentBankingType
     {
+        public PaymentBankingType()
+        {
+            PaymentBankingOrganization = new HashSet<PaymentBankingOrganization>();
+        }
+
         public Guid Id { get; set; }
         public string BankingMethodName { get; set; }
-        List<PaymentBankingOrganization>PaymentBankingOrganizations { get; set; }
+        public bool Status { get; set; }
+
+        public virtual ICollection<PaymentBankingOrganization> PaymentBankingOrganization { get; set; }
     }
 }

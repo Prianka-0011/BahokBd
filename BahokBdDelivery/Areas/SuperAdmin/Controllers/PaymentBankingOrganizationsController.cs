@@ -58,7 +58,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,OrganizationName,PaymentBankingTypeId")] PaymentBankingOrganization paymentBankingOrganization)
+        public async Task<IActionResult> Create( PaymentBankingOrganization paymentBankingOrganization)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +93,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,OrganizationName,PaymentBankingTypeId")] PaymentBankingOrganization paymentBankingOrganization)
+        public async Task<IActionResult> Edit(Guid id, PaymentBankingOrganization paymentBankingOrganization)
         {
             if (id != paymentBankingOrganization.Id)
             {

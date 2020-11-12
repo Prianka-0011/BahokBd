@@ -19,6 +19,11 @@
                 <span asp-validation-for="BankingMethodName" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Status"></label>
+                <input asp-for="Status" type="checkbox" />
+                <span asp-validation-for="Status"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

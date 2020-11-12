@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BahokBdDelivery.Models.DeliveryAreaPrices>
+﻿@model IEnumerable<BahokBdDelivery.Models.BankBranch>
 
 @{
     ViewData["Title"] = "Index";
@@ -18,15 +18,14 @@
                         <tr>
                             <th>Serial No</th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Area)
+                                @Html.DisplayNameFor(model => model.BranchName)
                             </th>
+                            @*<th>
+                                @Html.DisplayNameFor(model => model.RoutingName)
+                            </th>*@
                             <th>
-                                @Html.DisplayNameFor(model => model.BaseChargeAmount)
+                                @Html.DisplayNameFor(model => model.Bank)
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.IncreaseChargePerKg)
-                            </th>
-                            @*<th> @Html.DisplayNameFor(model => model.Status)</th>*@
                             <th></th>
                         </tr>
                     </thead>
@@ -36,23 +35,17 @@
                         <tr>
                             <td>@i</td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Area)
+                                @Html.DisplayFor(modelItem => item.BranchName)
+                            </td>
+                            @*<td>
+                                @Html.DisplayFor(modelItem => item.RoutingName)
+                            </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Bank.OrganizationName)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.BaseChargeAmount)
+                                <partial name="_ButtonPartial" model="@item.Id" />
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IncreaseChargePerKg)
-                            </td>
-                            @*@if (item.Status==true)
-                            {
-                                <td class="text-success">Enable</td>
-                            }
-                            else
-                            {
-                                <td class="text-warning">Disable</td>
-                            }*@
-                            <partial name="_ButtonPartial" model="@item.Id" />
                         </tr>
                             i++;
                         }

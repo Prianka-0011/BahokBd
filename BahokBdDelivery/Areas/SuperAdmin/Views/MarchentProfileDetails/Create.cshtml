@@ -1,8 +1,10 @@
-﻿@model BahokBdDelivery.ViewModels.MarchentProfileDetailsVm
+﻿@model BahokBdDelivery.ViewModels.MarchentProfileDetailVm
 
 @{
     ViewData["Title"] = "Create";
 }
+
+
 
 <div class="row">
     <div class="col-12 col-lg-10 offset-lg-2">
@@ -14,149 +16,164 @@
                 <form asp-action="Create" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="Name" class="control-label"></label>
-                                <input asp-for="Name" class="form-control" />
-                                <span asp-validation-for="Name" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-12 col-lg-6">
-                            <div class="form-group">
-                                <label asp-for="Email" class="control-label"></label>
-                                <input asp-for="Email" class="form-control" />
-                                <span asp-validation-for="Email" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-12 col-lg-6 ">
-                            <div class="form-group">
-                                <label>Marchent Image</label>
-                                <div class="custom-file">
-                                    <input class="custom-file-input form-control ml-2" type="file" asp-for="Image" />
-                                    <label class="custom-file-label">Choos file</label>
+                        <div class="col-12 col-md-8 col-lg-8">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Name" class="control-label"></label>
+                                        <input asp-for="Name" class="form-control" />
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12 col-lg-6">
+                                    <div class="form-group">
+                                        <label asp-for="Email" class="control-label"></label>
+                                        <input type="email" asp-for="Email" class="form-control" />
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6 col-12 col-lg-6 ">
-                            <div class="form-group">
-                                <label>Logo</label>
-                                <div class="custom-file">
-                                    <input class="custom-file-input form-control ml-2" type="file" asp-for="Logo" />
-                                    <label class="custom-file-label">Choos file</label>
+                            <div class="row">
+                                <div class="col-md-6 col-12 col-lg-6 ">
+                                    <div class="form-group">
+                                        <label>Marchent Image</label>
+                                        <div class="custom-file">
+                                            <input class="custom-file-input form-control ml-2" type="file" id="imgInp" asp-for="Image" />
+                                            <label class="custom-file-label">Choos file</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12 col-lg-6 ">
+                                    <div class="form-group">
+                                        <label>Logo</label>
+                                        <div class="custom-file">
+                                            <input class="custom-file-input form-control ml-2" id="logoInp" type="file" asp-for="Logo" />
+                                            <label class="custom-file-label">Choos file</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-12 col-lg-6 ">
+                            <div class="row">
+                                <div class="col-md-6 col-12 col-lg-6 ">
+                                    <div class="form-group">
+                                        <label asp-for="Phone" class="control-label"></label>
+                                        <input asp-for="Phone" class="form-control" />
+                                        <span asp-validation-for="Phone" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12 col-lg-6 ">
+                                    <div class="form-group">
+                                        <label asp-for="BusinessName" class="control-label"></label>
+                                        <input asp-for="BusinessName" class="form-control" />
+                                        <span asp-validation-for="BusinessName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-12 col-lg-6 ">
+                                    <div class="form-group">
+                                        <label asp-for="BusinessLink" class="control-label"></label>
+                                        <input asp-for="BusinessLink" class="form-control" />
+                                        <span asp-validation-for="BusinessLink" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12 col-lg-6 ">
+                                    <div class="form-group">
+                                        <label asp-for="BusinessAddress" class="control-label"></label>
+                                        <input asp-for="BusinessAddress" class="form-control" />
+                                        <span asp-validation-for="BusinessAddress" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-12 col-lg-6 ">
+                                    <div class="form-group">
+                                        <label asp-for="AccountName" class="control-label"></label>
+                                        <input asp-for="AccountName" class="form-control" />
+                                        <span asp-validation-for="AccountName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12 col-lg-6 ">
+                                    <div class="form-group">
+                                        <label asp-for="AccountNumber" class="control-label"></label>
+                                        <input asp-for="AccountNumber" class="form-control" />
+                                        <span asp-validation-for="AccountNumber" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                                <div class="row">
+                                    <div class="col-md-6 col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label asp-for="PaymentTypeId" class="control-label"></label>
+                                            <select asp-for="PaymentTypeId" class="form-control" id="Type"></select>
+                                            <span asp-validation-for="PaymentTypeId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12 col-lg-6 ">
+                                        <div class="form-group">
+                                            <label asp-for="PaymentBankingId" class="control-label"></label>
+                                            <select asp-for="PaymentBankingId" class="form-control" id="Organize"></select>
+                                            <span asp-validation-for="PaymentBankingId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-12 col-lg-6 ">
+                                        <div class="form-group">
+                                            <label asp-for="BranchId" class="control-label"></label>
+                                            <select asp-for="BranchId" class="form-control" id="Branch"></select>
+                                            <span asp-validation-for="BranchId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-12 col-lg-6 ">
+                                        <div class="form-group">
+                                            <label asp-for="RoutingName" class="control-label"></label>
+                                            <input asp-for="RoutingName"  class="form-control" />
+                                            <span asp-validation-for="RoutingName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12 col-lg-6 ">
+                                        <div class="form-group">
+                                            <label asp-for="LastIpAddress" class="control-label"></label>
+                                            <input asp-for="LastIpAddress" class="form-control" />
+                                            <span asp-validation-for="LastIpAddress" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="row">
+                                <div class="col-md-6 col-12 col-lg-6">
+                                    <div class="form-group">
+                                        <label asp-for="DateTime" class="control-label"></label>
+                                        <input asp-for="DateTime" class="form-control" />
+                                        <span asp-validation-for="DateTime" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12 col-lg-6">
+                                    <div class="form-group">
+                                        <label asp-for="Status"></label>
+                                        <input asp-for="Status" type="checkbox" />
+                                        <span asp-validation-for="Status"></span>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group">
-                                <label asp-for="Phone" class="control-label"></label>
-                                <input asp-for="Phone" class="form-control" />
-                                <span asp-validation-for="Phone" class="text-danger"></span>
+                                <input type="submit" value="Create" class="btn btn-primary" />
                             </div>
                         </div>
-                        <div class="col-md-6 col-12 col-lg-6 ">
-                            <div class="form-group">
-                                <label asp-for="BusinessName" class="control-label"></label>
-                                <input asp-for="BusinessName" class="form-control" />
-                                <span asp-validation-for="BusinessName" class="text-danger"></span>
+                        <div class="col-12 col-lg-4 col-md-4">
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+                                    <img id="img" src="#" style="height:100PX;width:100PX; " />
+                                </div>
+                                <div class="col-md-6 cpl-12">
+                                    <img id="logo" src="#" style="height: 100PX; width: 100PX;" />
+                                </div>
                             </div>
+                            
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-12 col-lg-6 ">
-                            <div class="form-group">
-                                <label asp-for="BusinessLink" class="control-label"></label>
-                                <input asp-for="BusinessLink" class="form-control" />
-                                <span asp-validation-for="BusinessLink" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-12 col-lg-6 ">
-                            <div class="form-group">
-                                <label asp-for="BusinessAddress" class="control-label"></label>
-                                <input asp-for="BusinessAddress" class="form-control" />
-                                <span asp-validation-for="BusinessAddress" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-12 col-lg-6 ">
-                            <div class="form-group">
-                                <label asp-for="AccountName" class="control-label"></label>
-                                <input asp-for="AccountName" class="form-control" />
-                                <span asp-validation-for="AccountName" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-12 col-lg-6 ">
-                            <div class="form-group">
-                                <label asp-for="AccountNumber" class="control-label"></label>
-                                <input asp-for="AccountNumber" class="form-control" />
-                                <span asp-validation-for="AccountNumber" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-12 col-lg-6 ">
-                            <div class="form-group">
-                                <label asp-for="RoutingName" class="control-label"></label>
-                                <input asp-for="RoutingName" class="form-control" />
-                                <span asp-validation-for="RoutingName" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-12 col-lg-6 ">
-                            <div class="form-group">
-                                <label asp-for="BranchName" class="control-label"></label>
-                                <input asp-for="BranchName" class="form-control" />
-                                <span asp-validation-for="BranchName" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-12 col-lg-6 ">
-                            <div class="form-group">
-                                <label asp-for="ProfileStatus" class="control-label"></label>
-                                <input asp-for="ProfileStatus" class="form-control" />
-                                <span asp-validation-for="ProfileStatus" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-12 col-lg-6 ">
-                            <div class="form-group">
-                                <label asp-for="LastIpAddress" class="control-label"></label>
-                                <input asp-for="LastIpAddress" class="form-control" />
-                                <span asp-validation-for="LastIpAddress" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-12 col-lg-6">
-                            <div class="form-group">
-                                <label asp-for="PaymentTypeId" class="control-label"></label>
-                                <select asp-for="PaymentTypeId" class="form-control" id="Type"></select>
-                                <span asp-validation-for="PaymentTypeId" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-12 col-lg-6 ">
-                            <div class="form-group">
-                                <label asp-for="PaymentBankingId" class="control-label"></label>
-                                <select asp-for="PaymentBankingId" class="form-control" id="Organize"></select>
-                                <span asp-validation-for="PaymentBankingId" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 col-12 col-lg-6">
-                            <div class="form-group">
-                                <label asp-for="DateTime" class="control-label"></label>
-                                <input asp-for="DateTime" class="form-control" />
-                                <span asp-validation-for="DateTime" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-primary" />
                     </div>
                 </form>
             </div>
@@ -166,7 +183,41 @@
 
 
 @section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
     <script>
+        $(document).ready(function () {
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#img').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]); // convert to base64 string
+                }
+            }
+            $("#imgInp").change(function () {
+                readURL(this);
+            });
+        });
+        $(document).ready(function () {
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#logo').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]); // convert to base64 string
+                }
+            }
+            $("#logoInp").change(function () {
+                readURL(this);
+            });
+        });
         $(document).ready(function () {
             $('.custom-file-input').on("change", function () {
                 var fileLabel = $(this).next('.custom-file-label');
@@ -176,12 +227,13 @@
                     fileLabel.html(files[0].name)
                 }
             });
+
         });
     </script>
     <script type="text/javascript">
         $(document).ready(function () {
             $.ajax({
-                url: '/MarchentProfileDetails/GetBankingType',
+                url: '/MarchentProfileDetail/GetBankingType',
                 type: 'GET',
                 dataType: 'JSON',
                 success: function (data) {
@@ -200,14 +252,16 @@
 
             $("#Type").click(function () {
                 var d = $("#Type option:selected").val();
+
                 console.log(d);
                 $.ajax({
-                    url: '/MarchentProfileDetails/GetOrganizationName/?id=' + d,
+                    url: '/MarchentProfileDetail/GetOrganizationName/?id=' + d,
                     type: 'GET',
                     dataType: 'JSON',
                     success: function (data) {
                         console.log(data);
                         $("#Organize").empty();
+                        $("#Branch").empty();
                         $.each(data, function (i, obj) {
                             var s = '<option value="' + obj.id + '">' + obj.organizationName + '</option>';
                             //console.log(s);
@@ -219,7 +273,53 @@
                     }
                 });
             });
+            $("#Organize").click(function () {
+                var d = $("#Organize option:selected").val();
+                console.log(d);
+                $.ajax({
+                    url: '/MarchentProfileDetail/GetBranch/?id=' + d,
+                    type: 'GET',
+                    dataType: 'JSON',
+                    success: function (data) {
+                        console.log(data, "prianka");
+                        $("#Branch").empty();
+                        //$("#rout").empty();
+                        $.each(data, function (i, obj) {
+                            console.log(obj, "mondal");
+                            var s = '<option value="' + obj.id + '">' + obj.branchName + '</option>';
+                            console.log(s,"hdfjhs");
+                            $("#Branch").append(s);
+                        });
+                    },
+                    error: function (res) {
+                        console.log(res);
+                    }
+                });
+            });
+            $("#Branch").click(function () {
+                var d = $("#Branch option:selected").val();
+                console.log(d);
+                $.ajax({
+                    url: '/MarchentProfileDetail/GetRout/?id=' + d,
+                    type: 'GET',
+                    dataType: 'JSON',
+                    success: function (data) {
+                        console.log(data);
 
+                        s = data.RoutingName;
+                        $("#rout").empty();
+                        $("#rout").append(s);
+                        //$.each(data, function (i, obj) {
+                        //    var s = '<option value="' + obj.id + '">' + obj.BranchName + '</option>';
+                        //    //console.log(s);
+                        //    $("#Branch").append(s);
+                        //});
+                    },
+                    error: function (res) {
+                        console.log(res);
+                    }
+                });
+            });
         });
     </script>
 }

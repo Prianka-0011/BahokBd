@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BahokBdDelivery.Data;
 using BahokBdDelivery.Models;
+using Microsoft.AspNetCore.Hosting;
 using BahokBdDelivery.ViewModels;
 using System.IO;
-using Microsoft.AspNetCore.Hosting;
 
 namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
 {
@@ -25,13 +25,13 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        // GET: SuperAdmin/MarchentProfileDetails
+        // GET: SuperAdmin/MarchentProfileDetail
         public async Task<IActionResult> Index()
         {
-            return View(await _context.MarchentProfileDetails.ToListAsync());
+            return View(await _context.MarchentProfileDetail.ToListAsync());
         }
 
-        // GET: SuperAdmin/MarchentProfileDetails/Details/5
+        // GET: SuperAdmin/MarchentProfileDetail/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -39,48 +39,46 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                 return NotFound();
             }
 
-            var marchentProfileDetails = await _context.MarchentProfileDetails
+            var MarchentProfileDetail = await _context.MarchentProfileDetail
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (marchentProfileDetails == null)
+            if (MarchentProfileDetail == null)
             {
                 return NotFound();
             }
 
-            return View(marchentProfileDetails);
+            return View(MarchentProfileDetail);
         }
 
-        // GET: SuperAdmin/MarchentProfileDetails/Create
+        // GET: SuperAdmin/MarchentProfileDetail/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: SuperAdmin/MarchentProfileDetails/Create
+        // POST: SuperAdmin/MarchentProfileDetail/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(MarchentProfileDetailsVm vm)
+        public async Task<IActionResult> Create(MarchentProfileDetailVm vm)
         {
             if (ModelState.IsValid)
             {
-                MarchentProfileDetails entity = new MarchentProfileDetails();
+                MarchentProfileDetail entity = new MarchentProfileDetail();
                 entity.Name = vm.Name;
                 entity.Email = vm.Email;
                 entity.Phone = vm.Phone;
-                entity.BranchName = vm.BranchName;
                 entity.BusinessName = vm.BusinessName;
                 entity.BusinessLink = vm.BusinessLink;
                 entity.BusinessAddress = vm.BusinessAddress;
                 entity.AccountName = vm.AccountName;
                 entity.AccountNumber = vm.AccountNumber;
-                entity.RoutingName = vm.RoutingName;
-                entity.ProfileStatus = vm.ProfileStatus;
+       
                 entity.LastIpAddress = vm.LastIpAddress;
-                entity.DateTime = vm.DateTime;
-                entity.PaymentTypeId = vm.PaymentTypeId;
-                entity.PaymentBankingId = vm.PaymentBankingId;
+                entity.CreateDateTime = vm.DateTime;
+                
                 string uniqueFileNameForImage = null;
+                string uniqueFileNameForLogo = null;
                 if (vm.Image != null)
                 {
 
@@ -94,28 +92,37 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                 {
 
                     string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "logos");
-                    uniqueFileNameForImage = Guid.NewGuid().ToString() + "_" + vm.Logo.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileNameForImage);
+                    uniqueFileNameForLogo = Guid.NewGuid().ToString() + "_" + vm.Logo.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileNameForLogo);
                     await vm.Logo.CopyToAsync(new FileStream(filePath, FileMode.Create));
-                    entity.Logo = "logos/" + uniqueFileNameForImage;
+                    entity.Logo = "logos/" + uniqueFileNameForLogo;
                 }
                 entity.Id = Guid.NewGuid();
-                _context.Add(entity);
+                _context.MarchentProfileDetail.Add(entity);
                 await _context.SaveChangesAsync();
+                var paymentDetail = new MarchentPaymentDetails();
+                paymentDetail.MarchentId = entity.Id;
+                paymentDetail.PaymentNameId = vm.PaymentBankingId;
+                paymentDetail.PaymentTypeId = vm.PaymentTypeId;
+                paymentDetail.BranchId = vm.BranchId;
+                paymentDetail.RoutingName = vm.RoutingName;
+                _context.MarchentPaymentDetails.Add(paymentDetail);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(vm);
         }
 
-        // GET: SuperAdmin/MarchentProfileDetails/Edit/5
+        // GET: SuperAdmin/MarchentProfileDetail/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            MarchentProfileDetailsVm vm = new MarchentProfileDetailsVm();
-            var entity = await _context.MarchentProfileDetails.FindAsync(id);
+            MarchentProfileDetailVm vm = new MarchentProfileDetailVm();
+            var entity = await _context.MarchentProfileDetail.FindAsync(id);
             if (vm == null)
             {
                 return NotFound();
@@ -123,63 +130,107 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
             vm.Name = entity.Name;
             vm.Email = entity.Email;
             vm.Phone = entity.Phone;
-            vm.BranchName = entity.BranchName;
             vm.BusinessName = entity.BusinessName;
             vm.BusinessLink = entity.BusinessLink;
             vm.BusinessAddress = entity.BusinessAddress;
             vm.AccountName = entity.AccountName;
             vm.AccountNumber = entity.AccountNumber;
-            vm.RoutingName = entity.RoutingName;
-            vm.ProfileStatus = entity.ProfileStatus;
             vm.LastIpAddress = entity.LastIpAddress;
-            vm.DateTime = entity.DateTime;
+            vm.DateTime = entity.CreateDateTime;
             vm.DisplayImage = entity.Image;
             vm.DisplayLogo = entity.Logo;
-            vm.PaymentTypeId = entity.PaymentTypeId;
-            vm.PaymentBankingId = entity.PaymentBankingId;
-            var TypeNameObj = _context.PaymentBankingType.Find(entity.PaymentTypeId);
-            ViewBag.TypeName = TypeNameObj.BankingMethodName;
-            var Organize = _context.PaymentBankingOrganization.Find(entity.PaymentBankingId);
-            ViewBag.Organize = Organize.OrganizationName;
+            vm.Status = entity.Status;
+            var marchant = _context.MarchentPaymentDetails.FirstOrDefault(c => c.MarchentId == entity.Id);
+            var odlPaymentType = _context.PaymentBankingType.FirstOrDefault(c => c.Id == marchant.PaymentTypeId);
+            vm.OdlPaymentTypeName = odlPaymentType.BankingMethodName;
+            var odlBank = _context.PaymentBankingOrganization.FirstOrDefault(c => c.Id == marchant.PaymentNameId);
+            vm.OdlBankName = odlBank.OrganizationName;
+            var odlBranch = _context.BankBranch.FirstOrDefault(c => c.Id == marchant.BranchId);
+            vm.OdlBranchName = odlBranch.BranchName;
+            vm.OdlRouting = marchant.RoutingName;
             return View(vm);
         }
 
-        // POST: SuperAdmin/MarchentProfileDetails/Edit/5
+        // POST: SuperAdmin/MarchentProfileDetail/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Email,Image,Logo,Phone,BusinessName,BusinessLink,BusinessAddress,AccountName,AccountNumber,RoutingName,BranchName,ProfileStatus,LastIpAddress,DateTime,PaymentTypeId,PaymentBankingId")] MarchentProfileDetails marchentProfileDetails)
+        public async Task<IActionResult> Edit(Guid id, MarchentProfileDetailVm vm)
         {
-            if (id != marchentProfileDetails.Id)
+            if (id != vm.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
+                var entity = _context.MarchentProfileDetail.Find(id);
+                entity.Name = vm.Name;
+                entity.Email = vm.Email;
+                entity.Phone = vm.Phone;
+                entity.BusinessName = vm.BusinessName;
+                entity.BusinessLink = vm.BusinessLink;
+                entity.BusinessAddress = vm.BusinessAddress;
+                entity.AccountName = vm.AccountName;
+                entity.AccountNumber = vm.AccountNumber;
+                entity.LastIpAddress = vm.LastIpAddress;
+                entity.CreateDateTime = vm.DateTime;
+                string uniqueFileNameForImage = null;
+                string uniqueFileNameForLogo = null;
+                if (vm.Image != null)
                 {
-                    _context.Update(marchentProfileDetails);
-                    await _context.SaveChangesAsync();
+
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                    uniqueFileNameForImage = Guid.NewGuid().ToString() + "_" + vm.Image.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileNameForImage);
+                    await vm.Image.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                    entity.Image = "images/" + uniqueFileNameForImage;
                 }
-                catch (DbUpdateConcurrencyException)
+                if (vm.Logo != null)
                 {
-                    if (!MarchentProfileDetailsExists(marchentProfileDetails.Id))
+
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "logos");
+                    uniqueFileNameForLogo = Guid.NewGuid().ToString() + "_" + vm.Logo.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileNameForLogo);
+                    await vm.Logo.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                    entity.Logo = "logos/" + uniqueFileNameForLogo;
+                }
+            
+                _context.MarchentProfileDetail.Update(entity);
+                await _context.SaveChangesAsync();
+                if (vm.PaymentTypeId!=Guid.Empty && vm.PaymentBankingId!=null && vm.BranchId!=null)
+                {
+                    var paymentDetail = _context.MarchentPaymentDetails.FirstOrDefault(c => c.MarchentId == entity.Id);
+                    if (paymentDetail!=null)
                     {
-                        return NotFound();
+            
+                        paymentDetail.MarchentId = entity.Id;
+                        paymentDetail.PaymentNameId = vm.PaymentBankingId;
+                        paymentDetail.PaymentTypeId = vm.PaymentTypeId;
+                        paymentDetail.BranchId = vm.BranchId;
+                        paymentDetail.RoutingName = vm.RoutingName;
+                        _context.MarchentPaymentDetails.Update(paymentDetail);
                     }
                     else
                     {
-                        throw;
+                        var paymentDetail1 = new MarchentPaymentDetails();
+                        paymentDetail1.MarchentId = entity.Id;
+                        paymentDetail1.PaymentNameId = vm.PaymentBankingId;
+                        paymentDetail1.PaymentTypeId = vm.PaymentTypeId;
+                        paymentDetail1.BranchId = vm.BranchId;
+                        paymentDetail1.RoutingName = vm.RoutingName;
+                        _context.MarchentPaymentDetails.Add(paymentDetail1);
                     }
                 }
+               
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(marchentProfileDetails);
+            return View(vm);
         }
 
-        // GET: SuperAdmin/MarchentProfileDetails/Delete/5
+        // GET: SuperAdmin/MarchentProfileDetail/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -187,48 +238,61 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                 return NotFound();
             }
 
-            var marchentProfileDetails = await _context.MarchentProfileDetails
+            var MarchentProfileDetail = await _context.MarchentProfileDetail
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (marchentProfileDetails == null)
+            if (MarchentProfileDetail == null)
             {
                 return NotFound();
             }
 
-            return View(marchentProfileDetails);
+            return View(MarchentProfileDetail);
         }
 
-        // POST: SuperAdmin/MarchentProfileDetails/Delete/5
+        // POST: SuperAdmin/MarchentProfileDetail/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var marchentProfileDetails = await _context.MarchentProfileDetails.FindAsync(id);
-            _context.MarchentProfileDetails.Remove(marchentProfileDetails);
+            var MarchentProfileDetail = await _context.MarchentProfileDetail.FindAsync(id);
+            _context.MarchentProfileDetail.Remove(MarchentProfileDetail);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        
-        //[HttpGet("/MarchentProfileDetails/GetBankingTypeById")]
-        //public IActionResult GetBankingTypeById(Guid id)
-        //{
-        //    var dvs = _context.PaymentBankingType.Where(x => x.Id == id);
-        //    return Json(dvs.ToList());
-        //}
-        [HttpGet("/MarchentProfileDetails/GetBankingType")]
+
+        [HttpGet("/MarchentProfileDetail/GetExistBankingType")]
+        public IActionResult GetExistBankingType(Guid id)
+        {
+            var dvs = _context.PaymentBankingType.FirstOrDefault(x => x.Id == id);
+            return Json(dvs);
+        }
+
+        [HttpGet("/MarchentProfileDetail/GetExistBankingName")]
+        public IActionResult GetExistBankingName(Guid id)
+        {
+            var org = _context.PaymentBankingOrganization.FirstOrDefault(x => x.Id == id);
+            return Json(org);
+        }
+        [HttpGet("/MarchentProfileDetail/GetBankingType")]
         public IActionResult GetBankingType()
         {
-            var dvs = _context.PaymentBankingType;
-            return Json(dvs.ToList());
+            var tpe = _context.PaymentBankingType;
+            return Json(tpe.ToList());
         }
-        [HttpGet("/MarchentProfileDetails/GetOrganizationName")]
+        [HttpGet("/MarchentProfileDetail/GetOrganizationName")]
         public IActionResult GetOrganizationName(Guid id)
         {
-            var dis = _context.PaymentBankingOrganization.Where(x => x.PaymentBankingTypeId == id);
+            var org = _context.PaymentBankingOrganization.Where(o=>o.PaymentBankingTypeId==id);
+            return Json(org.ToList());
+        }
+        [HttpGet("/MarchentProfileDetail/GetBranch")]
+        public IActionResult GetBranch(Guid id)
+        {
+            var dis = _context.BankBranch.Where(x => x.BankId == id);
             return Json(dis.ToList());
         }
-        private bool MarchentProfileDetailsExists(Guid id)
+        private bool MarchentProfileDetailExists(Guid id)
         {
-            return _context.MarchentProfileDetails.Any(e => e.Id == id);
+            return _context.MarchentProfileDetail.Any(e => e.Id == id);
         }
     }
 }

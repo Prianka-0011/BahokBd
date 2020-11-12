@@ -55,7 +55,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Area,BaseChargeAmount,IncreaseChargePerKg")] DeliveryAreaPrices deliveryAreaPrices)
+        public async Task<IActionResult> Create( DeliveryAreaPrices deliveryAreaPrices)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Area,BaseChargeAmount,IncreaseChargePerKg")] DeliveryAreaPrices deliveryAreaPrices)
+        public async Task<IActionResult> Edit(Guid id, DeliveryAreaPrices deliveryAreaPrices)
         {
             if (id != deliveryAreaPrices.Id)
             {

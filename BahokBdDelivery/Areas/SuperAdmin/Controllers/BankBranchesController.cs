@@ -11,22 +11,23 @@ using BahokBdDelivery.Models;
 namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
 {
     [Area("SuperAdmin")]
-    public class PaymentBankingTypesController : Controller
+    public class BankBranchesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public PaymentBankingTypesController(ApplicationDbContext context)
+        public BankBranchesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: SuperAdmin/PaymentBankingTypes
+        // GET: SuperAdmin/BankBranches
         public async Task<IActionResult> Index()
         {
-            return View(await _context.PaymentBankingType.ToListAsync());
+            var applicationDbContext = _context.BankBranch.Include(b => b.Bank);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: SuperAdmin/PaymentBankingTypes/Details/5
+        // GET: SuperAdmin/BankBranches/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -34,40 +35,43 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                 return NotFound();
             }
 
-            var paymentBankingType = await _context.PaymentBankingType
+            var bankBranch = await _context.BankBranch
+                .Include(b => b.Bank)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (paymentBankingType == null)
+            if (bankBranch == null)
             {
                 return NotFound();
             }
 
-            return View(paymentBankingType);
+            return View(bankBranch);
         }
 
-        // GET: SuperAdmin/PaymentBankingTypes/Create
+        // GET: SuperAdmin/BankBranches/Create
         public IActionResult Create()
         {
+            ViewData["BankId"] = new SelectList(_context.PaymentBankingOrganization, "Id", "OrganizationName");
             return View();
         }
 
-        // POST: SuperAdmin/PaymentBankingTypes/Create
+        // POST: SuperAdmin/BankBranches/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( PaymentBankingType paymentBankingType)
+        public async Task<IActionResult> Create([Bind("Id,BranchName,RoutingName,BankId")] BankBranch bankBranch)
         {
             if (ModelState.IsValid)
             {
-                paymentBankingType.Id = Guid.NewGuid();
-                _context.Add(paymentBankingType);
+                bankBranch.Id = Guid.NewGuid();
+                _context.Add(bankBranch);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(paymentBankingType);
+            ViewData["BankId"] = new SelectList(_context.PaymentBankingOrganization, "Id", "OrganizationName", bankBranch.BankId);
+            return View(bankBranch);
         }
 
-        // GET: SuperAdmin/PaymentBankingTypes/Edit/5
+        // GET: SuperAdmin/BankBranches/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -75,22 +79,23 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                 return NotFound();
             }
 
-            var paymentBankingType = await _context.PaymentBankingType.FindAsync(id);
-            if (paymentBankingType == null)
+            var bankBranch = await _context.BankBranch.FindAsync(id);
+            if (bankBranch == null)
             {
                 return NotFound();
             }
-            return View(paymentBankingType);
+            ViewData["BankId"] = new SelectList(_context.PaymentBankingOrganization, "Id", "OrganizationName", bankBranch.BankId);
+            return View(bankBranch);
         }
 
-        // POST: SuperAdmin/PaymentBankingTypes/Edit/5
+        // POST: SuperAdmin/BankBranches/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, PaymentBankingType paymentBankingType)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,BranchName,RoutingName,BankId")] BankBranch bankBranch)
         {
-            if (id != paymentBankingType.Id)
+            if (id != bankBranch.Id)
             {
                 return NotFound();
             }
@@ -99,12 +104,12 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
             {
                 try
                 {
-                    _context.Update(paymentBankingType);
+                    _context.Update(bankBranch);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PaymentBankingTypeExists(paymentBankingType.Id))
+                    if (!BankBranchExists(bankBranch.Id))
                     {
                         return NotFound();
                     }
@@ -115,10 +120,11 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(paymentBankingType);
+            ViewData["BankId"] = new SelectList(_context.PaymentBankingOrganization, "Id", "OrganizationName", bankBranch.BankId);
+            return View(bankBranch);
         }
 
-        // GET: SuperAdmin/PaymentBankingTypes/Delete/5
+        // GET: SuperAdmin/BankBranches/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -126,30 +132,31 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                 return NotFound();
             }
 
-            var paymentBankingType = await _context.PaymentBankingType
+            var bankBranch = await _context.BankBranch
+                .Include(b => b.Bank)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (paymentBankingType == null)
+            if (bankBranch == null)
             {
                 return NotFound();
             }
 
-            return View(paymentBankingType);
+            return View(bankBranch);
         }
 
-        // POST: SuperAdmin/PaymentBankingTypes/Delete/5
+        // POST: SuperAdmin/BankBranches/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var paymentBankingType = await _context.PaymentBankingType.FindAsync(id);
-            _context.PaymentBankingType.Remove(paymentBankingType);
+            var bankBranch = await _context.BankBranch.FindAsync(id);
+            _context.BankBranch.Remove(bankBranch);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PaymentBankingTypeExists(Guid id)
+        private bool BankBranchExists(Guid id)
         {
-            return _context.PaymentBankingType.Any(e => e.Id == id);
+            return _context.BankBranch.Any(e => e.Id == id);
         }
     }
 }

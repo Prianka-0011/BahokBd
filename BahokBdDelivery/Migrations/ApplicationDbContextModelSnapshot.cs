@@ -19,6 +19,31 @@ namespace BahokBdDelivery.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("BahokBdDelivery.Models.BankBranch", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("BankId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BranchName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoutingName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BankId");
+
+                    b.ToTable("BankBranch");
+                });
+
             modelBuilder.Entity("BahokBdDelivery.Models.DeliveryAreaPrices", b =>
                 {
                     b.Property<Guid>("Id")
@@ -34,12 +59,75 @@ namespace BahokBdDelivery.Migrations
                     b.Property<decimal>("IncreaseChargePerKg")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("DeliveryAreaPrices");
                 });
 
-            modelBuilder.Entity("BahokBdDelivery.Models.MarchentProfileDetails", b =>
+            modelBuilder.Entity("BahokBdDelivery.Models.MarchentCharge", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("BaseCharge")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid?>("DeliveryAreaPriceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("IncreaseCharge")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("MarchentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeliveryAreaPriceId");
+
+                    b.HasIndex("MarchentId");
+
+                    b.ToTable("MarchentCharge");
+                });
+
+            modelBuilder.Entity("BahokBdDelivery.Models.MarchentPaymentDetails", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("BranchId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("MarchentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PaymentNameId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PaymentTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("MarchentId");
+
+                    b.ToTable("MarchentPaymentDetails");
+                });
+
+            modelBuilder.Entity("BahokBdDelivery.Models.MarchentProfileDetail", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,7 +151,7 @@ namespace BahokBdDelivery.Migrations
                     b.Property<string>("BusinessName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DateTime")
+                    b.Property<DateTime>("CreateDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -81,6 +169,9 @@ namespace BahokBdDelivery.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid?>("PaymentBankingId")
                         .HasColumnType("uniqueidentifier");
 
@@ -90,15 +181,43 @@ namespace BahokBdDelivery.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProfileStatus")
-                        .HasColumnType("int");
-
                     b.Property<string>("RoutingName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MarchentProfileDetail");
+                });
+
+            modelBuilder.Entity("BahokBdDelivery.Models.MarchentStore", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ManagerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("MarchentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("StoreName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("MarchentProfileDetails");
+                    b.HasIndex("MarchentId");
+
+                    b.ToTable("MarchentStore");
                 });
 
             modelBuilder.Entity("BahokBdDelivery.Models.PaymentBankingOrganization", b =>
@@ -112,6 +231,9 @@ namespace BahokBdDelivery.Migrations
 
                     b.Property<Guid>("PaymentBankingTypeId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -129,45 +251,12 @@ namespace BahokBdDelivery.Migrations
                     b.Property<string>("BankingMethodName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("PaymentBankingType");
-                });
-
-            modelBuilder.Entity("BahokBdDelivery.Models.PickupLocations", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AreaPriceId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("DeliveryAreaPricesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("DetailAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ManagerName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ManagerPhone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("MarchentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("StoreName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DeliveryAreaPricesId");
-
-                    b.HasIndex("MarchentId");
-
-                    b.ToTable("PickupLocations");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -366,24 +455,47 @@ namespace BahokBdDelivery.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("BahokBdDelivery.Models.BankBranch", b =>
+                {
+                    b.HasOne("BahokBdDelivery.Models.PaymentBankingOrganization", "Bank")
+                        .WithMany("BankBranch")
+                        .HasForeignKey("BankId");
+                });
+
+            modelBuilder.Entity("BahokBdDelivery.Models.MarchentCharge", b =>
+                {
+                    b.HasOne("BahokBdDelivery.Models.DeliveryAreaPrices", "DeliveryAreaPrice")
+                        .WithMany("MarchentCharge")
+                        .HasForeignKey("DeliveryAreaPriceId");
+
+                    b.HasOne("BahokBdDelivery.Models.MarchentProfileDetail", "Marchent")
+                        .WithMany("MarchentCharge")
+                        .HasForeignKey("MarchentId");
+                });
+
+            modelBuilder.Entity("BahokBdDelivery.Models.MarchentPaymentDetails", b =>
+                {
+                    b.HasOne("BahokBdDelivery.Models.BankBranch", "Branch")
+                        .WithMany("MarchentPaymentDetails")
+                        .HasForeignKey("BranchId");
+
+                    b.HasOne("BahokBdDelivery.Models.MarchentProfileDetail", "Marchent")
+                        .WithMany("MarchentPaymentDetails")
+                        .HasForeignKey("MarchentId");
+                });
+
+            modelBuilder.Entity("BahokBdDelivery.Models.MarchentStore", b =>
+                {
+                    b.HasOne("BahokBdDelivery.Models.MarchentProfileDetail", "Marchent")
+                        .WithMany("MarchentStore")
+                        .HasForeignKey("MarchentId");
+                });
+
             modelBuilder.Entity("BahokBdDelivery.Models.PaymentBankingOrganization", b =>
                 {
                     b.HasOne("BahokBdDelivery.Models.PaymentBankingType", "PaymentBankingType")
-                        .WithMany()
+                        .WithMany("PaymentBankingOrganization")
                         .HasForeignKey("PaymentBankingTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("BahokBdDelivery.Models.PickupLocations", b =>
-                {
-                    b.HasOne("BahokBdDelivery.Models.DeliveryAreaPrices", null)
-                        .WithMany("PickupLocations")
-                        .HasForeignKey("DeliveryAreaPricesId");
-
-                    b.HasOne("BahokBdDelivery.Models.MarchentProfileDetails", "Marchent")
-                        .WithMany("PickupLocations")
-                        .HasForeignKey("MarchentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

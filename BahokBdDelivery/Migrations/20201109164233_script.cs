@@ -53,7 +53,8 @@ namespace BahokBdDelivery.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Area = table.Column<string>(nullable: true),
                     BaseChargeAmount = table.Column<decimal>(nullable: false),
-                    IncreaseChargePerKg = table.Column<decimal>(nullable: false)
+                    IncreaseChargePerKg = table.Column<decimal>(nullable: false),
+                    Status = table.Column<bool>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -61,15 +62,17 @@ namespace BahokBdDelivery.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MarchentProfileDetails",
+                name: "MarchentProfileDetail",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true),
                     Image = table.Column<string>(nullable: true),
                     Logo = table.Column<string>(nullable: true),
                     Phone = table.Column<string>(nullable: true),
+                    Status = table.Column<bool>(nullable: false),
                     BusinessName = table.Column<string>(nullable: true),
                     BusinessLink = table.Column<string>(nullable: true),
                     BusinessAddress = table.Column<string>(nullable: true),
@@ -77,15 +80,14 @@ namespace BahokBdDelivery.Migrations
                     AccountNumber = table.Column<string>(nullable: true),
                     RoutingName = table.Column<string>(nullable: true),
                     BranchName = table.Column<string>(nullable: true),
-                    ProfileStatus = table.Column<int>(nullable: true),
                     LastIpAddress = table.Column<string>(nullable: true),
-                    DateTime = table.Column<DateTime>(nullable: true),
+                    CreateDateTime = table.Column<DateTime>(nullable: false),
                     PaymentTypeId = table.Column<Guid>(nullable: true),
                     PaymentBankingId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MarchentProfileDetails", x => x.Id);
+                    table.PrimaryKey("PK_MarchentProfileDetail", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -93,7 +95,8 @@ namespace BahokBdDelivery.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    BankingMethodName = table.Column<string>(nullable: true)
+                    BankingMethodName = table.Column<string>(nullable: true),
+                    Status = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -207,33 +210,54 @@ namespace BahokBdDelivery.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PickupLocations",
+                name: "MarchentCharge",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    StoreName = table.Column<string>(nullable: true),
-                    DetailAddress = table.Column<string>(nullable: true),
-                    ManagerName = table.Column<string>(nullable: true),
-                    ManagerPhone = table.Column<string>(nullable: true),
-                    MarchentId = table.Column<Guid>(nullable: false),
-                    AreaPriceId = table.Column<Guid>(nullable: false),
-                    DeliveryAreaPricesId = table.Column<Guid>(nullable: true)
+                    MarchentId = table.Column<Guid>(nullable: true),
+                    Location = table.Column<string>(nullable: true),
+                    BaseCharge = table.Column<decimal>(nullable: true),
+                    IncreaseCharge = table.Column<decimal>(nullable: true),
+                    DeliveryAreaPriceId = table.Column<Guid>(nullable: true),
+                    Status = table.Column<bool>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PickupLocations", x => x.Id);
+                    table.PrimaryKey("PK_MarchentCharge", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PickupLocations_DeliveryAreaPrices_DeliveryAreaPricesId",
-                        column: x => x.DeliveryAreaPricesId,
+                        name: "FK_MarchentCharge_DeliveryAreaPrices_DeliveryAreaPriceId",
+                        column: x => x.DeliveryAreaPriceId,
                         principalTable: "DeliveryAreaPrices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PickupLocations_MarchentProfileDetails_MarchentId",
+                        name: "FK_MarchentCharge_MarchentProfileDetail_MarchentId",
                         column: x => x.MarchentId,
-                        principalTable: "MarchentProfileDetails",
+                        principalTable: "MarchentProfileDetail",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MarchentStore",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    MarchentId = table.Column<Guid>(nullable: true),
+                    StoreName = table.Column<string>(nullable: true),
+                    ManagerName = table.Column<string>(nullable: true),
+                    Phone = table.Column<string>(nullable: true),
+                    Status = table.Column<bool>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MarchentStore", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MarchentStore_MarchentProfileDetail_MarchentId",
+                        column: x => x.MarchentId,
+                        principalTable: "MarchentProfileDetail",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -242,7 +266,8 @@ namespace BahokBdDelivery.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     OrganizationName = table.Column<string>(nullable: true),
-                    PaymentBankingTypeId = table.Column<Guid>(nullable: false)
+                    PaymentBankingTypeId = table.Column<Guid>(nullable: false),
+                    Status = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -253,6 +278,54 @@ namespace BahokBdDelivery.Migrations
                         principalTable: "PaymentBankingType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BankBranch",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    BranchName = table.Column<string>(nullable: true),
+                    RoutingName = table.Column<string>(nullable: true),
+                    BankId = table.Column<Guid>(nullable: true),
+                    Status = table.Column<bool>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BankBranch", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BankBranch_PaymentBankingOrganization_BankId",
+                        column: x => x.BankId,
+                        principalTable: "PaymentBankingOrganization",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MarchentPaymentDetails",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    MarchentId = table.Column<Guid>(nullable: true),
+                    PaymentTypeId = table.Column<Guid>(nullable: true),
+                    PaymentNameId = table.Column<Guid>(nullable: true),
+                    BranchId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MarchentPaymentDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MarchentPaymentDetails_BankBranch_BranchId",
+                        column: x => x.BranchId,
+                        principalTable: "BankBranch",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_MarchentPaymentDetails_MarchentProfileDetail_MarchentId",
+                        column: x => x.MarchentId,
+                        principalTable: "MarchentProfileDetail",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -295,19 +368,39 @@ namespace BahokBdDelivery.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BankBranch_BankId",
+                table: "BankBranch",
+                column: "BankId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MarchentCharge_DeliveryAreaPriceId",
+                table: "MarchentCharge",
+                column: "DeliveryAreaPriceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MarchentCharge_MarchentId",
+                table: "MarchentCharge",
+                column: "MarchentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MarchentPaymentDetails_BranchId",
+                table: "MarchentPaymentDetails",
+                column: "BranchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MarchentPaymentDetails_MarchentId",
+                table: "MarchentPaymentDetails",
+                column: "MarchentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MarchentStore_MarchentId",
+                table: "MarchentStore",
+                column: "MarchentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PaymentBankingOrganization_PaymentBankingTypeId",
                 table: "PaymentBankingOrganization",
                 column: "PaymentBankingTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PickupLocations_DeliveryAreaPricesId",
-                table: "PickupLocations",
-                column: "DeliveryAreaPricesId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PickupLocations_MarchentId",
-                table: "PickupLocations",
-                column: "MarchentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -328,10 +421,13 @@ namespace BahokBdDelivery.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "PaymentBankingOrganization");
+                name: "MarchentCharge");
 
             migrationBuilder.DropTable(
-                name: "PickupLocations");
+                name: "MarchentPaymentDetails");
+
+            migrationBuilder.DropTable(
+                name: "MarchentStore");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -340,13 +436,19 @@ namespace BahokBdDelivery.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "PaymentBankingType");
-
-            migrationBuilder.DropTable(
                 name: "DeliveryAreaPrices");
 
             migrationBuilder.DropTable(
-                name: "MarchentProfileDetails");
+                name: "BankBranch");
+
+            migrationBuilder.DropTable(
+                name: "MarchentProfileDetail");
+
+            migrationBuilder.DropTable(
+                name: "PaymentBankingOrganization");
+
+            migrationBuilder.DropTable(
+                name: "PaymentBankingType");
         }
     }
 }

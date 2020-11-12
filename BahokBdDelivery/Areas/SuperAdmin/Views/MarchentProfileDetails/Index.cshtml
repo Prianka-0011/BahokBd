@@ -1,31 +1,30 @@
-﻿@model IEnumerable<BahokBdDelivery.Models.MarchentProfileDetails>
+﻿@model IEnumerable<BahokBdDelivery.Models.MarchentProfileDetail>
 
 @{
+    int i = 1;
     ViewData["Title"] = "Index";
 }
 
+
+
 <div class="row">
-    <div class="col-11 offset-1  col-lg-12  col-md-11 offset-md-1">
+    <div class="col-12 col-lg-10 offset-lg-2">
         <div class="card mb-4">
             <div class="card-header bg-info">
-                <h2 class="">Manage Merchant</h2>
-                <a asp-action="Create" class=" text-white ">Create New</a>
+                <h2>Create Merchent</h2>
+                <a class="text-white text-decoration-none" asp-action="Create">create</a>
             </div>
             <div class="card-body">
-                <table class="table table-responsive table-striped">
+                <table class="table table-responsive">
                     <thead>
                         <tr>
+                            <th>Action</th>
+                            <th>#</th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Name)
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Email)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Image)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Logo)
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Phone)
@@ -45,26 +44,27 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.AccountNumber)
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.RoutingName)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.BranchName)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.ProfileStatus)
-                            </th>
+                         
                             <th>
                                 @Html.DisplayNameFor(model => model.LastIpAddress)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.DateTime)
+                                @Html.DisplayNameFor(model => model.CreateDateTime)
                             </th>
-                            <th>
+                            @*<th>
                                 @Html.DisplayNameFor(model => model.PaymentTypeId)
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.PaymentBankingId)
+                            </th>*@
+                            <th>
+                                @Html.DisplayNameFor(model => model.Image)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Logo)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Status)
                             </th>
                             <th></th>
                         </tr>
@@ -72,22 +72,23 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                        <tr>
+                        <tr>                         
+                            <td style="width:500px">
+                                <a class=" btn-success btn btn-sm " asp-action="Aprove"asp-route-id="@item.Id" asp-controller="MarchentApprove"><i class="far fa-thumbs-up"></i></a>
+                                <a class=" btn-info btn btn-sm mt-1" asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a>
+                            </td>
+                            <td>@i</td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Email)
                             </td>
-                            <td>
-                                <img src="~/@item.Image" style="height:50PX;width:50PX; border-radius:25px" />
-                            </td>
-                            <td>
-                                <img src="~/@item.Logo" style="height:50px;width:50px; border-radius:25px" />
-                            </td>
+                          
                             <td>
                                 @Html.DisplayFor(modelItem => item.Phone)
                             </td>
+
                             <td>
                                 @Html.DisplayFor(modelItem => item.BusinessName)
                             </td>
@@ -103,30 +104,30 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.AccountNumber)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.RoutingName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.BranchName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ProfileStatus)
-                            </td>
+      
                             <td>
                                 @Html.DisplayFor(modelItem => item.LastIpAddress)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.DateTime)
+                                @Html.DisplayFor(modelItem => item.CreateDateTime)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PaymentTypeId)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PaymentBankingId)
-                            </td>
-                            <partial name="_ButtonPartial" model="@item.Id" />
+                            <td><img src="~/@item.Image" style="height:50px;width:50px; border-radius:25px" /></td>
+                            <td><img src="~/@item.Logo" style="height:50px;width:50px; border-radius:25px" /></td>
+                            @if (item.Status)
+                            {
+                                <td class="text-success">Enable</td>
+                            }
+                            else
+                            {
+                                <td class="text-warning">Disable</td>
+                            }
+                            @*<partial name="_ButtonPartial" model="@item.Id" />*@
+
+
                         </tr>
+                            i++;
                         }
+                        
                     </tbody>
                 </table>
             </div>

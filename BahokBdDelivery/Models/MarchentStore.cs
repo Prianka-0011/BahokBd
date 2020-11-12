@@ -5,17 +5,15 @@ using System.Threading.Tasks;
 
 namespace BahokBdDelivery.Models
 {
-    public partial class MarchentCharge
+    public partial class MarchentStore
     {
         public Guid Id { get; set; }
         public Guid? MarchentId { get; set; }
-        public string Location { get; set; }
-        public decimal? BaseCharge { get; set; }
-        public decimal? IncreaseCharge { get; set; }
-        public Guid? DeliveryAreaPriceId { get; set; }
+        public string StoreName { get; set; }
+        public string ManagerName { get; set; }
+        public string Phone { get; set; }
         public bool? Status { get; set; }
 
-        public virtual DeliveryAreaPrices DeliveryAreaPrice { get; set; }
         public virtual MarchentProfileDetail Marchent { get; set; }
     }
 }
