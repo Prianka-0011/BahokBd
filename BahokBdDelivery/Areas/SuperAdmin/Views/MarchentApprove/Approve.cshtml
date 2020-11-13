@@ -1,7 +1,7 @@
 ﻿
 @model BahokBdDelivery.ViewModels.MarchentApproveVm
 @{
-    ViewData["Title"] = "Aprove";
+    ViewData["Title"] = "Approve";
 }
 
 <div class="row">
@@ -21,6 +21,7 @@
                                     <input type="hidden" id="marchentId" value="@Model.MarchentId" />
                                     <input id="check_@area.Id" type="checkbox" checked="@Model.IsSelected" />
                                     <label for="check_@area.Id">@area.Area</label>
+                                    <input type="hidden" id="check_@area.Area" class="area" value="@area.Area" />
                                     <input id="check_@area.BaseChargeAmount" type="number" class="form-control" value="@area.BaseChargeAmount" />
                                     <input id="check_@area.IncreaseChargePerKg" type="number" class="form-control" value="@area.IncreaseChargePerKg" />
                                 </li>
@@ -59,6 +60,14 @@
                 var currentCheckedId = arr[1];
                 var isSelected = $("#" + checkId).is(":checked", true)
                 if (isSelected) {
+                    //var obj = {
+                    //    cuCheckId:"",
+                    //    marchentId:"",
+                    //    area: "",
+                    //    basePrice: 0.0,
+                    //    increasePrice:0.0,
+                    //}
+                    //this.obj.marchentId = $("#AreaList li .area").val();
                     arrItem.push(currentCheckedId);
                 }
                 if (arrItem.length != 0) {
@@ -74,5 +83,6 @@
                 }
             });
         }
+
     </script>
 } 

@@ -17,7 +17,7 @@ namespace BahokBdDelivery.Models
         public decimal BaseChargeAmount { get; set; }
         public decimal IncreaseChargePerKg { get; set; }
         public bool? Status { get; set; }
-
+        //public bool? IsSelected { get; set; }
         public virtual ICollection<MarchentCharge> MarchentCharge { get; set; }
     }
 }

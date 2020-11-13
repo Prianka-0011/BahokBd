@@ -51,12 +51,7 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.CreateDateTime)
                             </th>
-                            @*<th>
-                                @Html.DisplayNameFor(model => model.PaymentTypeId)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.PaymentBankingId)
-                            </th>*@
+                         
                             <th>
                                 @Html.DisplayNameFor(model => model.Image)
                             </th>
@@ -74,7 +69,7 @@
                         {
                         <tr>                         
                             <td style="width:500px">
-                                <a class=" btn-success btn btn-sm " asp-action="Aprove"asp-route-id="@item.Id" asp-controller="MarchentApprove"><i class="far fa-thumbs-up"></i></a>
+                                <a class=" btn-success btn btn-sm " asp-action="ApproveCreate" asp-route-id="@item.Id" asp-controller="MarchentApprove" ><i class="far fa-thumbs-up"></i></a>
                                 <a class=" btn-info btn btn-sm mt-1" asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a>
                             </td>
                             <td>@i</td>

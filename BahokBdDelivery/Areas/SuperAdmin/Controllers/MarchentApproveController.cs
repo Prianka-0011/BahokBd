@@ -25,26 +25,46 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult Aprove(Guid id)
+        public IActionResult ApproveCreate(Guid id)
         {
-            var marchent = _context.MarchentProfileDetail.Find(id);
-            var marchentCharge = new MarchentApproveVm();
-            if (marchent!=null)
+            var marMarchentApprove = new MarchentApproveVm();
+            marMarchentApprove.MarchentId = id;
+            ViewBag.deiveryArea = _context.DeliveryAreaPrices.ToList();
+            return View(marMarchentApprove);
+        }
+        [HttpPost("/MarchentApprove/ApproveCreate1")]
+        public JsonResult ApproveCreate1(string itemlist)
+        {
+            string[] arr = itemlist.Split(',');
+            foreach (var item in arr)
             {
-               
-                marchentCharge.MarchentId = marchent.Id;
+                var currentId = item;
             }
-            ViewBag.deiveryArea = _context.DeliveryAreaPrices.ToList();
-            return View(marchentCharge);
+           
+            return Json("");
         }
-        [HttpPost("/MarchentApprove/Aprove")]
-        public IActionResult Aprove(MarchentApproveVm vm)
-        {
-            //foreach (Guid areaId in vm.Where(m => m.IsSelected == true).Select(m => m.model.Id))
-            //{
-            //}
-            ViewBag.deiveryArea = _context.DeliveryAreaPrices.ToList();
-            return View();
-        }
+        //public IActionResult Approve(Guid id)
+        //{
+        //    var marchent = _context.MarchentProfileDetail.Find(id);
+        //    var marchentCharge = new MarchentApproveVm();
+        //    if (marchent!=null)
+        //    {
+
+        //        marchentCharge.MarchentId = marchent.Id;
+        //    }
+        //    ViewBag.deiveryArea = _context.DeliveryAreaPrices.ToList();
+        //    return View();
+        //}
+        //[HttpPost("/MarchentApprove/Aprove")]
+        //public IActionResult Approve(string itemlist)
+        //{
+        //    string[] arr = itemlist.Split(',');
+        //    foreach (var item in arr)
+        //    {
+        //        var currentId = item;
+        //    }
+        //    ViewBag.deiveryArea = _context.DeliveryAreaPrices.ToList();
+        //    return View();
+        //}
     }
 }
