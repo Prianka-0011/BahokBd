@@ -10,6 +10,7 @@ namespace BahokBdDelivery.ViewModels
     {
         public Guid? MarchentId { get; set; }
         public Guid[] AreaId { get; set; }
+        public bool IsSelected { get; set; }
 
     }
 }

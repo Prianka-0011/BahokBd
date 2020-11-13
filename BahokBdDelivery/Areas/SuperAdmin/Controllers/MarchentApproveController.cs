@@ -37,8 +37,8 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
             ViewBag.deiveryArea = _context.DeliveryAreaPrices.ToList();
             return View(marchentCharge);
         }
-        [HttpPost]
-        public async Task<IActionResult> Aprove(MarchentApproveVm vm)
+        [HttpPost("/MarchentApprove/Aprove")]
+        public IActionResult Aprove(MarchentApproveVm vm)
         {
             //foreach (Guid areaId in vm.Where(m => m.IsSelected == true).Select(m => m.model.Id))
             //{
