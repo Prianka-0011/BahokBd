@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BahokBdDelivery.Data;
+using BahokBdDelivery.Models;
 using BahokBdDelivery.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,39 +33,44 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
             ViewBag.deiveryArea = _context.DeliveryAreaPrices.ToList();
             return View(marMarchentApprove);
         }
-        [HttpGet("/MarchentApprove/ApproveCreate1")]
-        public JsonResult ApproveCreate1( string obj)
+        [HttpPost("/MarchentApprove/ApproveCreate1")]
+        public async Task< IActionResult> ApproveCreate1(List<MarchentApproveVm> postArrItem)
         {
-            //string[] arr = itemlist.Split(',');
-            //foreach (var item in arr)
-            //{
-            //    var currentId = item;
-            //}
-           
-            return Json("");
-        }
-        //public IActionResult Approve(Guid id)
-        //{
-        //    var marchent = _context.MarchentProfileDetail.Find(id);
-        //    var marchentCharge = new MarchentApproveVm();
-        //    if (marchent!=null)
-        //    {
+            MarchentCharge charge;
+           // MarchentProfileDetail mProfie;
+            
+            if (postArrItem!=null)
+            {
+                foreach (var item in postArrItem)
+                {
+                    var areaId = _context.MarchentCharge.FirstOrDefault(c=>c.DeliveryAreaPriceId==item.Id && c.MarchentId==item.MarchentId);
+                    if (areaId !=null)
+                    {
+                        
+                        areaId.IncreaseCharge = item.IncreaseChargePerKg;
+                        areaId.BaseCharge = item.BaseChargeAmount;
+                        areaId.Location = item.Area;
+                        _context.MarchentCharge.Update(areaId);
+                    }
+                    else
+                    {
+                        charge = new MarchentCharge();
+                        charge.MarchentId = item.MarchentId;
+                        charge.IncreaseCharge = item.IncreaseChargePerKg;
+                        charge.BaseCharge = item.BaseChargeAmount;
+                        charge.DeliveryAreaPriceId = item.Id;
+                        charge.Location = item.Area;
+                        _context.MarchentCharge.Add(charge);
+                    }
 
-        //        marchentCharge.MarchentId = marchent.Id;
-        //    }
-        //    ViewBag.deiveryArea = _context.DeliveryAreaPrices.ToList();
-        //    return View();
-        //}
-        //[HttpPost("/MarchentApprove/Aprove")]
-        //public IActionResult Approve(string itemlist)
-        //{
-        //    string[] arr = itemlist.Split(',');
-        //    foreach (var item in arr)
-        //    {
-        //        var currentId = item;
-        //    }
-        //    ViewBag.deiveryArea = _context.DeliveryAreaPrices.ToList();
-        //    return View();
-        //}
+                    // mProfie = _context.MarchentProfileDetail.Find(item.MarchentId);
+                }
+                
+              await  _context.SaveChangesAsync();
+            }
+
+            return Ok();
+        }
+
     }
 }

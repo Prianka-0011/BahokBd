@@ -28,6 +28,8 @@
                                         <label>@area.Area</label>
                                         <input type="hidden" id="marchentId" value="@Model.MarchentId" />
                                         <input type="hidden" id="areaName" value="@area.Area" />
+                                        <br />
+                                        l
                                         <input id="base" class="base form-control" value="@area.BaseChargeAmount" />
                                         <input id="inc" class="inc form-control" value="@area.IncreaseChargePerKg" />
 
@@ -52,6 +54,8 @@
 </div>
 
 @section Scripts {
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
         function selectAll() {
             $("#AreaList tr").each(function (row, tr) {
@@ -68,6 +72,7 @@
 
     </script>
     <script>
+
         $(document).ready(function () {
 
 
@@ -89,15 +94,11 @@
                 })
                 if (arrItem.length != 0) {
                     console.log("piku", arrItem);
-
                     $.ajax({
                         url: "/MarchentApprove/ApproveCreate1",
-                        data: ({ a: 'No' }),
-                        type: "POST",
-                        contentType: 'application/json; charset=utf-8',
-                        traditional: true,
-                        dataType: "json",
-                        success: function (data) {
+                        type: 'POST',
+                        data: { "postArrItem": arrItem },
+                        success: function (response) {
 
                         }
                     })
