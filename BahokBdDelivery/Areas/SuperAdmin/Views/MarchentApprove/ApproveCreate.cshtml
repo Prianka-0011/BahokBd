@@ -12,25 +12,32 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-4 offset-md-4">
-                        <ul class="list-group" id="AreaList">
 
+                        <table id="AreaList">
+                            <tr>
+                                <td>
+                                    <input type="button" onclick='selectAll()' value="Select All" />
+
+                                </td>
+                            </tr>
                             @foreach (var area in ViewBag.deiveryArea)
                             {
-                                <li class="list-group-item">
-                                    @*<input type="hidden" id="marchentId" value="@Model.MarchentId" />*@
-                                    <input id="check_@area.Id" type="checkbox" checked="@area.Status" />
-                                    <label for="check_@area.Id">@area.Area</label>
-                                    <input type="hidden" id="check_@area.Area" class="Area" value="@area.Area" />
-                                    @*<input id="check_@area.Id+''+@area.BaseChargeAmount" type="number" class="base form-control" value="@area.BaseChargeAmount" />
-                                    <input id="check_@area.Id+''+@area.IncreaseChargePerKg" type="number" class="increase form-control" value="@area.IncreaseChargePerKg" />*@
-                                </li>
+                                <tr>
+                                    <td>
+                                        <input id="AreaId" type="checkbox" value="@area.Id" class="AreaId1" name="AreaCheck" checked="@area.Status" />
+                                        <label>@area.Area</label>
+                                        <input type="hidden" id="marchentId" value="@Model.MarchentId" />
+                                        <input type="hidden" id="areaName" value="@area.Area" />
+                                        <input id="base" class="base form-control" value="@area.BaseChargeAmount" />
+                                        <input id="inc" class="inc form-control" value="@area.IncreaseChargePerKg" />
+
+                                    </td>
+                                </tr>
                             }
-                            <li class="list-group-item">
-                                <div class="col-md-offset-2 col-md-10">
-                                    <input value="Approve" type="button" class="btn btn-info btn-sm" id="approveButton" />
-                                </div>
-                            </li>
-                        </ul>
+                            <tr>
+                                <td> <button type="button" id="approveButton" class="btn btn-danger">Approve</button></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -45,59 +52,60 @@
 </div>
 
 @section Scripts {
+    <script type="text/javascript">
+        function selectAll() {
+            $("#AreaList tr").each(function (row, tr) {
+                var isSelected = $(this).closest('tr').find('.AreaId1').is(":checked", true);
+                if (isSelected) {
+                    $(this).closest('tr').find('.AreaId1').prop('checked', false);
+                }
+                else {
+                    $(this).closest('tr').find('.AreaId1').prop('checked', true);
+                }
+
+            })
+        }
+
+    </script>
     <script>
         $(document).ready(function () {
-           
-            $("#approveButton").click(function () {
-                var arrItem = [];
-                var comaSeparatedAreaId = '';
-                $("#AreaList li input[type=checkbox]").each(function (index, val) {
-                    var checkId = $(val).attr("Id");
-                    var piku = {
-                        cuCheckId: "",
-                        marchentId: "",
-                        area: "",
-                        basePrice: 0.0,
-                        increasePrice: 0.0,
-                    }
-                    var arr = checkId.split('_');
-                    var currentCheckedId = arr[1];
-                    var isSelected = $("#" + checkId).is(":checked", true)
-                    if (isSelected) {
-                       
-                        var areaName = $(val).attr("Area");
-                        var concateArea = areaName.split('_');
-                        console.log(concateArea[1], "mango");
-                        if (concateArea[0] == currentCheckedId) {
-                            this.piku.area = concateArea[1];
-                        }
-                        var basePrice = $(val).attr("BaseChargeAmount");
-                        var concateBaseChargeAmount = basePrice.split('_');
-                        if (concateBaseChargeAmount[0] == currentCheckedId) {
-                            this.piku.basePrice = concateBaseChargeAmount[1];
-                        }
-                        var incPrice = $(val).attr("IncreaseChargePerKg");
-                        var concateIncAmount = incPrice.split('_');
-                        if (concateIncAmount[0] == currentCheckedId) {
-                            this.piku.increasePrice = concateIncAmount[1];
-                        }
-                        arrItem.push(piku);
-                    }
-                    if (arrItem.length != 0) {
-                        //comaSeparatedAreaId = arrItem.toString();
-                        console.log(arrItem,"Mondo");
-                        //$.ajax({
-                        //    url: "/MarchentApprove/ApproveCreate1",
-                        //    type: "POST",
-                        //    data: { AreaList: comaSeparatedAreaId },
-                        //    success: function (response) {
 
-                        //    }
-                        //})
+
+            $("#approveButton").click(function () {
+                var arrItem = new Array();
+
+                $("#AreaList tr").each(function (row, tr) {
+                    var isSelected = $(this).closest('tr').find('.AreaId1').is(":checked", true);
+                    if (isSelected) {
+                        arrItem.push({
+                            "Id": $(this).closest('tr').find('#AreaId').val(),
+                            "MarchentId": $(this).closest('tr').find('#marchentId').val(),
+                            "Area": $(this).closest('tr').find('#areaName').val(),
+                            "BaseChargeAmount": $(this).closest('tr').find('#base').val(),
+                            "IncreaseChargePerKg": $(this).closest('tr').find('#inc').val(),
+                        });
                     }
+
                 })
+                if (arrItem.length != 0) {
+                    console.log("piku", arrItem);
+
+                    $.ajax({
+                        url: "/MarchentApprove/ApproveCreate1",
+                        data: ({ a: 'No' }),
+                        type: "POST",
+                        contentType: 'application/json; charset=utf-8',
+                        traditional: true,
+                        dataType: "json",
+                        success: function (data) {
+
+                        }
+                    })
+                    console.log("kk", JSON.stringify(arrItem));
+
+                }
             })
-            
+
         })
 
     </script>

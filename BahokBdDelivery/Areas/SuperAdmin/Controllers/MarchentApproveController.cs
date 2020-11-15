@@ -32,14 +32,14 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
             ViewBag.deiveryArea = _context.DeliveryAreaPrices.ToList();
             return View(marMarchentApprove);
         }
-        [HttpPost("/MarchentApprove/ApproveCreate1")]
-        public JsonResult ApproveCreate1(string itemlist)
+        [HttpGet("/MarchentApprove/ApproveCreate1")]
+        public JsonResult ApproveCreate1( string obj)
         {
-            string[] arr = itemlist.Split(',');
-            foreach (var item in arr)
-            {
-                var currentId = item;
-            }
+            //string[] arr = itemlist.Split(',');
+            //foreach (var item in arr)
+            //{
+            //    var currentId = item;
+            //}
            
             return Json("");
         }

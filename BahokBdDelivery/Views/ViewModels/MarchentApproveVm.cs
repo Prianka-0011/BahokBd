@@ -8,8 +8,11 @@ namespace BahokBdDelivery.ViewModels
 {
     public class MarchentApproveVm
     {
+        public Guid? Id { get; set; }
         public Guid? MarchentId { get; set; }
-        public Guid[] AreaId { get; set; }
+        public string Area { get; set; }
+        public decimal BaseChargeAmount { get; set; }
+        public decimal IncreaseChargePerKg { get; set; }
         public bool IsSelected { get; set; }
 
     }
