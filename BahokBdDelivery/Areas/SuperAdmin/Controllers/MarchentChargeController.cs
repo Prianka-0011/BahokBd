@@ -10,43 +10,35 @@ using Microsoft.AspNetCore.Mvc;
 namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
 {
     [Area("SuperAdmin")]
-    public class MarchentApproveController : Controller
+    public class MarchentChargeController : Controller
     {
         private readonly ApplicationDbContext _context;
-        //private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public MarchentApproveController(ApplicationDbContext context /*IWebHostEnvironment webHostEnvironment*/)
+        public MarchentChargeController(ApplicationDbContext context )
         {
             _context = context;
-            //_webHostEnvironment = webHostEnvironment;
         }
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult AddCharge(Guid id)
         {
-            return View();
-        }
-        [HttpGet]
-        public IActionResult ApproveCreate(Guid id)
-        {
-            var marMarchentApprove = new MarchentApproveVm();
-            marMarchentApprove.MarchentId = id;
+            var marMarchentCharge = new MarchentChargeVm();
+            marMarchentCharge.MarchentId = id;
             ViewBag.deiveryArea = _context.DeliveryAreaPrices.ToList();
-            return View(marMarchentApprove);
+            return View(marMarchentCharge);
+           
         }
-        [HttpPost("/MarchentApprove/ApproveCreate1")]
-        public async Task< IActionResult> ApproveCreate1(List<MarchentApproveVm> postArrItem)
+        [HttpPost("/MarchentCharge/AddCharge1")]
+        public async Task<IActionResult> AddCharge1(List<MarchentChargeVm> postArrItem)
         {
             MarchentCharge charge;
-           // MarchentProfileDetail mProfie;
-            
-            if (postArrItem!=null)
+
+            if (postArrItem != null)
             {
                 foreach (var item in postArrItem)
                 {
-                    var areaId = _context.MarchentCharge.FirstOrDefault(c=>c.DeliveryAreaPriceId==item.Id && c.MarchentId==item.MarchentId);
-                    if (areaId !=null)
+                    var areaId = _context.MarchentCharge.FirstOrDefault(c => c.DeliveryAreaPriceId == item.Id && c.MarchentId == item.MarchentId);
+                    if (areaId != null)
                     {
-                        
+
                         areaId.IncreaseCharge = item.IncreaseChargePerKg;
                         areaId.BaseCharge = item.BaseChargeAmount;
                         areaId.Location = item.Area;
@@ -65,12 +57,11 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
 
                     // mProfie = _context.MarchentProfileDetail.Find(item.MarchentId);
                 }
-                
-              await  _context.SaveChangesAsync();
+
+                await _context.SaveChangesAsync();
             }
 
             return Ok();
         }
-
     }
 }

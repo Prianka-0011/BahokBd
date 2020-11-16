@@ -176,6 +176,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                 entity.AccountNumber = vm.AccountNumber;
                 entity.LastIpAddress = vm.LastIpAddress;
                 entity.CreateDateTime = vm.DateTime;
+                entity.Status = vm.Status;
                 string uniqueFileNameForImage = null;
                 string uniqueFileNameForLogo = null;
                 if (vm.Image != null)

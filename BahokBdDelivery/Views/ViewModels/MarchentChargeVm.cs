@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BahokBdDelivery.ViewModels
 {
-    public class MarchentApproveVm
+    public class MarchentChargeVm
     {
         public Guid? Id { get; set; }
         public Guid? MarchentId { get; set; }

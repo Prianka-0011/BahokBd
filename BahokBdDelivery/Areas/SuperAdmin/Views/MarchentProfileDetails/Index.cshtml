@@ -15,11 +15,12 @@
                 <a class="text-white text-decoration-none" asp-action="Create">create</a>
             </div>
             <div class="card-body">
-                <table class="table table-responsive">
+                <table class="table table-responsive table-striped">
                     <thead>
                         <tr>
-                            <th>Action</th>
                             <th>#</th>
+                            <th>Action</th>
+
                             <th>
                                 @Html.DisplayNameFor(model => model.Name)
                             </th>
@@ -44,14 +45,14 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.AccountNumber)
                             </th>
-                         
+
                             <th>
                                 @Html.DisplayNameFor(model => model.LastIpAddress)
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.CreateDateTime)
                             </th>
-                         
+
                             <th>
                                 @Html.DisplayNameFor(model => model.Image)
                             </th>
@@ -67,19 +68,21 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                        <tr>                         
-                            <td style="width:500px">
-                                <a class=" btn-success btn btn-sm " asp-action="ApproveCreate" asp-route-id="@item.Id" asp-controller="MarchentApprove" ><i class="far fa-thumbs-up"></i></a>
-                                <a class=" btn-info btn btn-sm mt-1" asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a>
-                            </td>
+                        <tr>
                             <td>@i</td>
+                            <td>         
+                                <a class=" btn-success btn btn-sm " asp-action="AddCharge" asp-route-id="@item.Id" asp-controller="MarchentCharge"><i class="fas fa-dollar-sign"></i></a>
+                                <a class=" btn-info btn btn-sm mt-1" asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a>
+                                <a class=" btn-warning btn btn-sm mt-1" asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-check"></i></a>
+                            </td>
+
                             <td>
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Email)
                             </td>
-                          
+
                             <td>
                                 @Html.DisplayFor(modelItem => item.Phone)
                             </td>
@@ -99,7 +102,7 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.AccountNumber)
                             </td>
-      
+
                             <td>
                                 @Html.DisplayFor(modelItem => item.LastIpAddress)
                             </td>

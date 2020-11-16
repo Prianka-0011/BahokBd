@@ -1,8 +1,7 @@
-﻿@model BahokBdDelivery.ViewModels.MarchentApproveVm
+﻿@model BahokBdDelivery.ViewModels.MarchentChargeVm
 @{
-    ViewData["Title"] = "ApproveCreate";
-}
-
+    ViewData["Title"] = "AddCharge";
+} 
 <div class="row">
     <div class="col-12 col-lg-10 offset-lg-2">
         <div class="card mb-4">
@@ -11,12 +10,13 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-4 offset-md-4">
+                    <div class="col-md-10 offset-lg-2 offset-md-2 col-lg-10">
 
-                        <table id="AreaList">
+                        <table class="table-responsive" id="AreaList">
                             <tr>
                                 <td>
-                                    <input type="button" onclick='selectAll()' value="Select All" />
+                                    <button class="btn btn-success" onclick='selectAll()'><i class="far fa-check-square"></i></button>
+                                    <button class="btn btn-danger" onclick='unSelectAll()'><i class="fas fa-times"></i></button>
 
                                 </td>
                             </tr>
@@ -29,15 +29,16 @@
                                         <input type="hidden" id="marchentId" value="@Model.MarchentId" />
                                         <input type="hidden" id="areaName" value="@area.Area" />
                                         <br />
-                                        l
+                                        <label>Base Charge</label>
                                         <input id="base" class="base form-control" value="@area.BaseChargeAmount" />
+                                        <label>Increase Charge</label>
                                         <input id="inc" class="inc form-control" value="@area.IncreaseChargePerKg" />
 
                                     </td>
                                 </tr>
                             }
                             <tr>
-                                <td> <button type="button" id="approveButton" class="btn btn-danger">Approve</button></td>
+                                <td> <button type="button" id="addButton" class="btn btn-info mt-3">Add</button></td>
                             </tr>
                         </table>
                     </div>
@@ -49,9 +50,6 @@
 
 
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
 
@@ -59,12 +57,18 @@
     <script type="text/javascript">
         function selectAll() {
             $("#AreaList tr").each(function (row, tr) {
+                $(this).closest('tr').find('.AreaId1').prop('checked', true);
+            });
+
+        }
+    </script>
+    <script type="text/javascript">
+
+        function unSelectAll() {
+            $("#AreaList tr").each(function (row, tr) {
                 var isSelected = $(this).closest('tr').find('.AreaId1').is(":checked", true);
                 if (isSelected) {
                     $(this).closest('tr').find('.AreaId1').prop('checked', false);
-                }
-                else {
-                    $(this).closest('tr').find('.AreaId1').prop('checked', true);
                 }
 
             })
@@ -76,7 +80,7 @@
         $(document).ready(function () {
 
 
-            $("#approveButton").click(function () {
+            $("#addButton").click(function () {
                 var arrItem = new Array();
 
                 $("#AreaList tr").each(function (row, tr) {
@@ -95,14 +99,14 @@
                 if (arrItem.length != 0) {
                     console.log("piku", arrItem);
                     $.ajax({
-                        url: "/MarchentApprove/ApproveCreate1",
+                        url: "/MarchentCharge/AddCharge1",
                         type: 'POST',
                         data: { "postArrItem": arrItem },
                         success: function (response) {
 
                         }
                     })
-                    console.log("kk", JSON.stringify(arrItem));
+                    console.log("prianka", JSON.stringify(arrItem));
 
                 }
             })
