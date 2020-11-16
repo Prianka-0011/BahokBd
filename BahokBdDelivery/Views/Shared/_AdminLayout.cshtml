@@ -6,75 +6,76 @@
     <title>@ViewData["Title"] - BahokBdDelivery</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,800;0,900;1,100;1,600;1,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
-            <div class="container">
-                <a class="navbar-brand text-white" href="#">BahokBd</a>
+    <div class="wrapper">
+        <div class="sidebar">
+            <div class="top-img">
+                <img src="~/images/scooter.gif" alt="Alternate Text" />
+            </div>
+            <ul>
+                <li class="dropdown show">
+                    <a class=" dropdown-toggle " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="mr-3 fas fa-university"></i> Dropdown link
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item text-dark" href="#">Action</a>
+                        <a class="dropdown-item text-dark" href="#">Another action</a>
+                    </div>
+                </li>
+                <li class="dropdown show">
+                    <a class=" dropdown-toggle " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="mr-3 fas fa-university"></i> Dropdown link
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item text-dark" href="#">Action</a>
+                        <a class="dropdown-item text-dark" href="#">Another action</a>
+                    </div>
+                </li>
+                <li class="dropdown show">
+                    <a class=" dropdown-toggle " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="mr-3 fas fa-university"></i> Dropdown link
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item text-dark" href="#">Action</a>
+                        <a class="dropdown-item text-dark" href="#">Another action</a>
+                    </div>
+                </li>
+                @*<li><a href="#" class="dropdown-btn"><i class="fas fa-users mr-3"></i>Marchent <i class="fa fa-caret-down"></i></a></li>
+        <li class="dropdown-container">
+
+                <a href="#">Link 1</a>
+                <a href="#">Link 2</a>
+                <a href="#">Link 3</a>
+
+        </li>*@
+                @*<li><a href="#"><i class="mr-3 fas fa-university"></i>Bank <i class="fa fa-caret-down"></i></a></li>
+                <li><a href="#"><i class="fas fa-users mr-3"></i>Charge <i class="fa fa-caret-down"></i></a></li>*@
+            </ul>
+        </div>
+        <div class="main">
+            <nav class="navbar navbar-expand-lg  navbar-custom">
+                <a class="navbar-brand" href="#">BAHOK BD</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="" role="button"><i class="fa fa-bars" aria-hidden="true" style="color:#e6e6ff"></i></span>
-                </button>
-                <div class="collapse navbar-collapse " id="navbarNav">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item white-btn active">
-                            <form class="form-inline" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
-                                <button type="submit" href="#" class="nav-link nav-span logout-btn"><i class="fas fa-power-off nav-icon"></i><span class="text-white ml-1">LogOut</span></button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="sidenav">
-        <ul class="navbar-nav">
-            <li class="nav-item white-btn mt-5 active">
-                <a class="dropdown-btn text-decoration-none hide">
-                    <i class="fas fa-truck mr-2"></i>
-                    <span>Area&Price</span>
-                    <i class="fa fa-caret-down "></i>
-                </a>
-                <div class="dropdown-container">
-                    <a asp-area="SuperAdmin" asp-controller="DeliveryAreaPrices" asp-action="Index">Price List</a>
-                    <a asp-area="SuperAdmin" asp-controller="DeliveryAreaPrices" asp-action="Create">Add Price</a>
-                </div>
-            </li>
-            <li class="nav-item white-btn active">
-                <a asp-area="SuperAdmin" asp-controller="MarchentProfileDetails" asp-action="Index" class="text-decoration-none hide"><i class="fas fa-users mr-3"></i><span>Merchant</span></a>
-            </li>
-            <li class="nav-item white-btn active">
-
-                <a asp-area="SuperAdmin" asp-controller="PaymentBankingTypes" asp-action="Index" class="text-decoration-none hide"> <i class="fas fa-money-check-alt mr-3"></i><span>Bank Type</span></a>
-            </li>
-            <li class="nav-item white-btn active">
-
-                <a asp-area="SuperAdmin" asp-controller="PaymentBankingOrganizations" asp-action="Index" class="text-decoration-none hide"><span><i class="mr-3 fas fa-university"></i>Bank</span></a>
-            </li>
-            <li class="nav-item white-btn active">
-
-                <a asp-area="SuperAdmin" asp-controller="BankBranches" asp-action="Index" class="text-decoration-none hide"><span><i class="mr-3 fas fa-university"></i>Bank Branch</span></a>
-            </li>
-        </ul>
-    </div>
-    <div class="content">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 my-3">
-                    @RenderBody()
-                </div>
-            </div>
-
+                    <span class="navbar-toggler-icon"></span>
+                </button>               
+            </nav>
+            <div class="container"> @RenderBody()</div>
         </div>
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    @*<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>*@
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        @*<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>*@
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @RenderSection("Scripts", required: false)
 </body>
 </html>

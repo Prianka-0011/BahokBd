@@ -1,5 +1,87 @@
 ﻿
-html {
+* {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+}
+/*sidebar*/
+.wrapper{
+    display:flex;
+    position:relative;
+}
+    .wrapper .top-img{
+        padding:0px 4px 30px 30px;
+    }
+    .wrapper .top-img img {
+        height: 80px;
+        width: 80px;
+        border-radius: 40px;
+        border: solid 1px;
+        border-color: red;
+    }
+    .wrapper .sidebar {
+        width: 210px;
+        height: 100%;
+        position:fixed;
+        background: #222e3c;
+        padding:30px 0px;
+    }
+    .wrapper .sidebar ul li{
+        padding:15px;
+    }
+        .wrapper .sidebar ul li a {
+            color:#fff;
+            display:block;
+        }
+        .wrapper .sidebar ul li a:hover {
+           text-decoration:none;
+        }
+        .wrapper .sidebar ul li a .fas{
+            width:20px;
+        }
+            .wrapper .sidebar ul li a .fa {
+                float: right;
+                padding-right: 8px;
+            }
+        .wrapper .sidebar ul li:hover {
+            background: #900C3F;
+        }
+/*.dropdown-container {
+    display: none;
+    background-color: #262626;
+    padding-left: 8px;
+}*/
+ /*   .dropdown-container a {
+        color: #fff;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }*/
+/*.dropdown-menu .dropdown-item {
+    color: #222e3c!important;
+}
+    .dropdown-menu .dropdown-item:hover {
+        background: #900C3F!important;
+    }*/
+/* main*/
+.wrapper .main {
+    width: 100%;
+    margin-left: 200px;
+}
+/*navbar*/
+    .wrapper .main .navbar-custom {
+        padding: 20px;
+        background: #900C3F;
+    }
+.navbar-brand {
+     font-size:25px;
+     text-transform:uppercase;
+    color: #fff !important;
+}
+/*html {
     margin: 0px;
     height: 100%;
     width: 100%;
@@ -16,18 +98,14 @@ html {
     margin: 0;
     padding: 0;
 }
-.sidenav {
+#sidebar-wrapper {
+
     height: 100%;
-    width: 160px;
-    position: fixed;
-    z-index: 1;
-    box-shadow: 10px 10px 20px rgb(10, 0, 26);
-    top: 0;
-    left: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    padding-top: 20px;
-}
+    width: 200px;
+   
+    background: #222e3c;*/
+  /*  transition: all 0.5s ease;*/
+/*}
 .dropdown-btn {
     padding: 6px 8px 6px 16px;
     text-decoration: none;
@@ -42,10 +120,10 @@ html {
 }
 .dropdown-container .show {
         display: block;
-    }
+    }*/
 
 /* Optional: Style the caret down icon */
-.fa-caret-down {
+/*.fa-caret-down {
     padding-right: 8px;
 }
     .sidenav a {
@@ -57,10 +135,35 @@ html {
     }
    .sidenav a:hover {
             color: #f1f1f1;
-        }
+        }*/
+/*wrapper start */
+/*#wrapper.toggled {
+    padding-left: 270px;
+}
+#page-content-wrapper {
+    width: 100%;
+    transition: all 0.5s ease;
+}
 
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -270px;
+    transition: all 0.5s ease;
+}
+
+.toggled#page-content-wrapper {
+    margin-left: 270px;
+    transition: all 0.5s ease;
+}
+
+@media only screen and (min-width:992px) {
+    .toggled#page-content-wrapper {
+        width: calc(100% - 270px);
+    }
+}*/
+/*wrapper end */
 /*navigation bar start*/
-.navbar-nav .nav-span {
+/*.navbar-nav .nav-span {
     padding: 10px 30px;
     cursor: pointer;
     background: transparent;
@@ -97,26 +200,32 @@ html {
 }
 
 .navbar-custom {
-    background-color: slateblue !important;
-    box-shadow: 10px 10px 20px rgb(10, 0, 26) !important;
+    background-color: #900C3F !important;
+    padding: 0px;
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.16);
 }
-
-    .navbar-custom .nav-link .icon {
-        color: rgb(10, 0, 26);
-    }
+.navbar-brand .gif-img{
+    height:20px;
+    width:20px;
+    border-radius:10px;
+}
+.navbar-custom .nav-link .icon {
+    color: rgb(10, 0, 26);
+}*/
 /*navigation bar end*/
+
 /*content  start*/
-.content {
+/*.content {
     width: 100%;
     margin-top: 80px;
     margin-top: 150px;
     -webkit-transition: all ease 0.25s;
     transition: all ease 0.25s;
-}
+}*/
 
 /*content  end*/
 /*delivery area and price  start*/
-.card h2{
+/*.card h2{
 
-}
+}*/
 /*delivery area and price  end*/
