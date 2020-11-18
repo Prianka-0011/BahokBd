@@ -19,6 +19,8 @@ namespace BahokBdDelivery.ViewModels
         public IFormFile Logo { get; set; }
         public string DisplayImage { get; set; }
         public string DisplayLogo { get; set; }
+        [Phone]
+        [Required]
         public string Phone { get; set; }
         public bool Status { get; set; }
         public string BusinessName { get; set; }

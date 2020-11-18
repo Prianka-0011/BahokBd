@@ -8,47 +8,52 @@
     font-family: 'Poppins', sans-serif;
 }
 /*sidebar*/
-.wrapper{
+#wrapper{
     display:flex;
     position:relative;
 }
-    .wrapper .top-img{
+    #wrapper .top-img{
         padding:0px 4px 30px 30px;
     }
-    .wrapper .top-img img {
+    #wrapper .top-img img {
         height: 80px;
         width: 80px;
         border-radius: 40px;
         border: solid 1px;
         border-color: red;
     }
-    .wrapper .sidebar {
+    #wrapper .sidebar {
         width: 210px;
         height: 100%;
         position:fixed;
         background: #222e3c;
         padding:30px 0px;
     }
-    .wrapper .sidebar ul li{
-        padding:15px;
-    }
-        .wrapper .sidebar ul li a {
-            color:#fff;
-            display:block;
+        #wrapper .sidebar ul li {
+            padding: 15px;
         }
-        .wrapper .sidebar ul li a:hover {
-           text-decoration:none;
-        }
-        .wrapper .sidebar ul li a .fas{
-            width:20px;
-        }
-            .wrapper .sidebar ul li a .fa {
-                float: right;
-                padding-right: 8px;
+            #wrapper .sidebar ul li a {
+                color: #fff;
+                display: block;
+                text-align: left;
+                text-transform: uppercase;
             }
-        .wrapper .sidebar ul li:hover {
-            background: #900C3F;
+                #wrapper.sidebar ul li a:hover {
+                    text-decoration: none;
+                }
+        #wrapper .sidebar .submenu a .fas {
+            float: right;
+            padding-right: 4px;
+            padding-top: 2px;
         }
+        .submenu a .fa {
+            width: 25px;
+           
+        }
+#wrapper .sidebar ul li:hover {
+    background: #900C3F;
+}
+
 /*.dropdown-container {
     display: none;
     background-color: #262626;
@@ -67,79 +72,81 @@
         background: #900C3F!important;
     }*/
 /* main*/
-.wrapper .main {
+
+#wrapper #main {
     width: 100%;
-    margin-left: 200px;
+    margin-left: 210px;
 }
 /*navbar*/
-    .wrapper .main .navbar-custom {
-        padding: 20px;
-        background: #900C3F;
-    }
+#wrapper #main .navbar-custom {
+    padding: 20px;
+    background: #900C3F;
+}
 .navbar-brand {
      font-size:25px;
      text-transform:uppercase;
     color: #fff !important;
 }
-/*html {
-    margin: 0px;
-    height: 100%;
-    width: 100%;
-}
-.card h2 {
-    text-align:left;
-    font-size:16px;
-    color:#fff;
-}
-.card a{
-    text-decoration:none;
-}
-* {
-    margin: 0;
-    padding: 0;
-}
-#sidebar-wrapper {
-
-    height: 100%;
-    width: 200px;
-   
-    background: #222e3c;*/
-  /*  transition: all 0.5s ease;*/
-/*}
-.dropdown-btn {
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 15px;
-    color: #818181;
+/*humburger*/
+.nav-icon1 {
+    z-index: 999;
+    position: relative;
     display: block;
+    width: 23px;
+    margin: 0px 30px 0px 25px;
+    cursor: pointer;
+    height: 25px;
 }
-.dropdown-container {
-   //display: none;
-    background-color: #262626;
-    padding-left: 8px;
-}
-.dropdown-container .show {
-        display: block;
-    }*/
 
-/* Optional: Style the caret down icon */
-/*.fa-caret-down {
-    padding-right: 8px;
-}
-    .sidenav a {
-        padding: 6px 8px 6px 16px;
-        text-decoration: none;
-        font-size: 15px;
-        color: #818181;
-        display: block;
+
+    .nav-icon1 span {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 3px;
+        cursor: pointer;
+        background-color: #fff;
+        left: 0;
+        transform: rotate(0deg);
+        transition: .30s ease-in-out;
     }
-   .sidenav a:hover {
-            color: #f1f1f1;
-        }*/
-/*wrapper start */
-/*#wrapper.toggled {
-    padding-left: 270px;
-}
+
+    .nav-icon1:hover span:nth-of-type(1) {
+        top: -3px
+    }
+
+    .nav-icon1:hover span:nth-of-type(3) {
+        top: 19px;
+    }
+
+    .nav-icon1 span:nth-of-type(1) {
+        top: 0;
+    }
+
+    .nav-icon1 span:nth-of-type(2) {
+        top: 8px;
+    }
+
+    .nav-icon1 span:nth-of-type(3) {
+        top: 16px;
+    }
+
+    .nav-icon1.open span:nth-of-type(1) {
+        top: 8px;
+        transform: rotate(135deg);
+    }
+
+    .nav-icon1.open span:nth-of-type(2) {
+        top: 8px;
+        opacity: 0;
+        left: -30px;
+    }
+
+    .nav-icon1.open span:nth-of-type(3) {
+        top: 8px;
+        transform: rotate(-135deg);
+    }
+   /* expriment content sidebar hide command show*/
 #page-content-wrapper {
     width: 100%;
     transition: all 0.5s ease;
@@ -160,72 +167,21 @@
     .toggled#page-content-wrapper {
         width: calc(100% - 270px);
     }
-}*/
-/*wrapper end */
-/*navigation bar start*/
-/*.navbar-nav .nav-span {
-    padding: 10px 30px;
-    cursor: pointer;
-    background: transparent;
-    border: 0;
-    color: #fff;
-    outline: none;
-    font-size: 15px;
-    position: relative;
 }
-
-.bg-mattBlackLight {
-    background-color: rgb(10, 0, 26);
-    box-shadow: #290066;
+#wrapper.toggled {
+    padding-left: 270px;
 }
 
 
-.navbar-brand h3 {
-    color: floralwhite;
-    text-transform: uppercase;
-    font-size: 15px;
-    font-weight: 600;
+
+.toggled.sidebar {
+    width: 270px !important;
+    height: 100%;
+    left: 0px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: all 0.5s ease;
 }
-
-.navbar-brand span {
-    color: sandybrown;
+#wrapper.toggled {
+    padding-left: 270px;
 }
-
-.white-btn i {
-    color: aliceblue;
-}
-
-.white-btn span {
-    color: aliceblue;
-}
-
-.navbar-custom {
-    background-color: #900C3F !important;
-    padding: 0px;
-    box-shadow: 0 1px 1px 0 rgba(0,0,0,.16);
-}
-.navbar-brand .gif-img{
-    height:20px;
-    width:20px;
-    border-radius:10px;
-}
-.navbar-custom .nav-link .icon {
-    color: rgb(10, 0, 26);
-}*/
-/*navigation bar end*/
-
-/*content  start*/
-/*.content {
-    width: 100%;
-    margin-top: 80px;
-    margin-top: 150px;
-    -webkit-transition: all ease 0.25s;
-    transition: all ease 0.25s;
-}*/
-
-/*content  end*/
-/*delivery area and price  start*/
-/*.card h2{
-
-}*/
-/*delivery area and price  end*/

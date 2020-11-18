@@ -57,7 +57,7 @@
                                 <div class="col-md-6 col-12 col-lg-6 ">
                                     <div class="form-group">
                                         <label asp-for="Phone" class="control-label"></label>
-                                        <input asp-for="Phone" class="form-control" />
+                                        <input asp-for="Phone" class="form-control" id="phone" />
                                         <span asp-validation-for="Phone" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -101,48 +101,43 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                                <div class="row">
-                                    <div class="col-md-6 col-12 col-lg-6">
-                                        <div class="form-group">
-                                            <label asp-for="PaymentTypeId" class="control-label"></label>
-                                            <select asp-for="PaymentTypeId" class="form-control" id="Type"></select>
-                                            <span asp-validation-for="PaymentTypeId" class="text-danger"></span>
-                                        </div>
+
+                            <div class="row">
+                                <div class="col-md-6 col-12 col-lg-6">
+                                    <div class="form-group">
+                                        <label asp-for="PaymentTypeId" class="control-label"></label>
+                                        <select asp-for="PaymentTypeId" class="form-control" id="Type"></select>
+                                        <span asp-validation-for="PaymentTypeId" class="text-danger"></span>
                                     </div>
-                                    <div class="col-md-6 col-12 col-lg-6 ">
-                                        <div class="form-group">
-                                            <label asp-for="PaymentBankingId" class="control-label"></label>
-                                            <select asp-for="PaymentBankingId" class="form-control" id="Organize"></select>
-                                            <span asp-validation-for="PaymentBankingId" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 col-12 col-lg-6 ">
+                                    <div class="form-group">
+                                        <label asp-for="PaymentBankingId" class="control-label"></label>
+                                        <select asp-for="PaymentBankingId" class="form-control" id="Organize"></select>
+                                        <span asp-validation-for="PaymentBankingId" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="hideDiv">
+                                <div class="col-md-12 col-12 col-lg 12">
+                                    <div class="row">
+                                        <div class="col-md-6 col-12 col-lg-6 ">
+                                            <div class="form-group">
+                                                <label asp-for="RoutingName" class="control-label" ></label>
+                                                <input asp-for="RoutingName" class="form-control"id="Route" />
+                                                <span asp-validation-for="RoutingName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12 col-lg-6 ">
+                                            <div class="form-group">
+                                                <label asp-for="BranchId" class="control-label"></label>
+                                                <select asp-for="BranchId" class="form-control" id="Branch"></select>
+                                                <span asp-validation-for="BranchId" class="text-danger"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6 col-12 col-lg-6 ">
-                                        <div class="form-group">
-                                            <label asp-for="BranchId" class="control-label"></label>
-                                            <select asp-for="BranchId" class="form-control" id="Branch"></select>
-                                            <span asp-validation-for="BranchId" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 col-12 col-lg-6 ">
-                                        <div class="form-group">
-                                            <label asp-for="RoutingName" class="control-label"></label>
-                                            <input asp-for="RoutingName"  class="form-control" />
-                                            <span asp-validation-for="RoutingName" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-12 col-lg-6 ">
-                                        <div class="form-group">
-                                            <label asp-for="LastIpAddress" class="control-label"></label>
-                                            <input asp-for="LastIpAddress" class="form-control" />
-                                            <span asp-validation-for="LastIpAddress" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-6 col-12 col-lg-6">
                                     <div class="form-group">
@@ -172,7 +167,7 @@
                                     <img id="logo" src="#" style="height: 100PX; width: 100PX;" />
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </form>
@@ -232,6 +227,9 @@
     </script>
     <script type="text/javascript">
         $(document).ready(function () {
+            jQuery('#phone').keyup(function () {
+                this.value = this.value.replace(/[^0-9\.]/g, '');
+            });
             $.ajax({
                 url: '/MarchentProfileDetail/GetBankingType',
                 type: 'GET',
@@ -243,7 +241,24 @@
                         var s = '<option value="' + obj.id + '">' + obj.bankingMethodName + '</option>';
                         console.log(s);
                         $("#Type").append(s);
+                        $("#Type").change(function () {
+                            if ($(this).val() == "841cc88d-c86f-4359-a9be-3c848114fb49") {
+                                $('#hideDiv').show();
+                                $('#Route').attr('required', '');
+                                $('#Route').attr('data-error', 'This field is required.');
+                                $('#Branch').attr('required', '');
+                                $('#Branch').attr('data-error', 'This field is required.');
+                            } else {
+                                $('#hideDiv').hide();
+                                $('#Route').removeAttr('required');
+                                $('#Route').removeAttr('data-error');
+                                $('#Branch').removeAttr('required');
+                                $('#Branch').removeAttr('data-error');
+                            }
+                        });
+                        $("#Type").trigger("change");
                     });
+                   
                 },
                 error: function (res) {
                     console.log(res);
@@ -287,7 +302,7 @@
                         $.each(data, function (i, obj) {
                             console.log(obj, "mondal");
                             var s = '<option value="' + obj.id + '">' + obj.branchName + '</option>';
-                            console.log(s,"hdfjhs");
+                            console.log(s, "hdfjhs");
                             $("#Branch").append(s);
                         });
                     },

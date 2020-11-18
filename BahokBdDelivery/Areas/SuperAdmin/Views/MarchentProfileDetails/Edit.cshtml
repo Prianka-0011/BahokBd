@@ -120,19 +120,23 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-6 col-12 col-lg-6 ">
-                                                <div class="form-group">
-                                                    <label asp-for="BranchId" class="control-label"></label>
-                                                    <select asp-for="BranchId" class="form-control" id="Branch"></select>
-                                                    <span asp-validation-for="BranchId" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-12 col-lg-6 ">
-                                                <div class="form-group">
-                                                    <label asp-for="RoutingName" class="control-label"></label>
-                                                    <input asp-for="RoutingName" class="form-control" />
-                                                    <span asp-validation-for="RoutingName" class="text-danger"></span>
+                                        <div class="row" id="hideDiv">
+                                            <div class="col-md-12 col-lg-12 col-12">
+                                                <div class="row">
+                                                    <div class="col-md-6 col-12 col-lg-6 ">
+                                                        <div class="form-group">
+                                                            <label asp-for="BranchId" class="control-label"></label>
+                                                            <select asp-for="BranchId" class="form-control" id="Branch"></select>
+                                                            <span asp-validation-for="BranchId" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-12 col-lg-6 ">
+                                                        <div class="form-group">
+                                                            <label asp-for="RoutingName" class="control-label"></label>
+                                                            <input asp-for="RoutingName" class="form-control" id="Route"/>
+                                                            <span asp-validation-for="RoutingName" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -269,6 +273,22 @@
                         var s = '<option value="' + obj.id + '">' + obj.bankingMethodName + '</option>';
                         console.log(s);
                         $("#Type").append(s);
+                        $("#Type").change(function () {
+                            if ($(this).val() == "841cc88d-c86f-4359-a9be-3c848114fb49") {
+                                $('#hideDiv').show();
+                                $('#Route').attr('required', '');
+                                $('#Route').attr('data-error', 'This field is required.');
+                                $('#Branch').attr('required', '');
+                                $('#Branch').attr('data-error', 'This field is required.');
+                            } else {
+                                $('#hideDiv').hide();
+                                $('#Route').removeAttr('required');
+                                $('#Route').removeAttr('data-error');
+                                $('#Branch').removeAttr('required');
+                                $('#Branch').removeAttr('data-error');
+                            }
+                        });
+                        $("#Type").trigger("change");
                     });
                 },
                 error: function (res) {

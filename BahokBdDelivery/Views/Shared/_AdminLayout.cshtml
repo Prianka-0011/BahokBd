@@ -12,70 +12,94 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <div class="wrapper">
+    <div id="wrapper">
+        <div class="overlay"></div>
         <div class="sidebar">
             <div class="top-img">
                 <img src="~/images/scooter.gif" alt="Alternate Text" />
             </div>
             <ul>
-                <li class="dropdown show">
-                    <a class=" dropdown-toggle " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="mr-3 fas fa-university"></i> Dropdown link
+                <li class="submenu">
+                    <a class="nav-link collapsed text-left" href="#collapseExample1" role="button" data-toggle="collapse">
+                        <i class="fa fa-money-check-alt pre-i mr-2 "></i> Payment<i class="fas fa-caret-down"></i>
                     </a>
+                    <div class="collapse menu mega-dropdown" id="collapseExample1">
+                        <div class="dropmenu" aria-labelledby="navbarDropdown">
+                            <div class="container-fluid ">
+                                <div class="row">
+                                    <div class="col-lg-12 px-2">
+                                        <div class="submenu-box">
+                                            <ul class="list-unstyled m-0">
+                                                <li><a asp-action="Index" asp-area="SuperAdmin" asp-controller="PaymentBankingTypes">Method List</a></li>
+                                                <li><a asp-action="Index" asp-area="SuperAdmin" asp-controller="PaymentBankingOrganizations">Bank List</a></li>
+                                                <li><a asp-action="Index" asp-area="SuperAdmin" asp-controller="BankBranches">Branch List</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
 
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item text-dark" href="#">Action</a>
-                        <a class="dropdown-item text-dark" href="#">Another action</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </li>
-                <li class="dropdown show">
-                    <a class=" dropdown-toggle " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="mr-3 fas fa-university"></i> Dropdown link
+                <li class="submenu">
+                    <a class="nav-link collapsed text-left" href="#collapseExample2" role="button" data-toggle="collapse">
+                        <i class="fa fa-truck pre-i mr-2"></i>Delivery<i class="fas fa-caret-down"></i>
                     </a>
-
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item text-dark" href="#">Action</a>
-                        <a class="dropdown-item text-dark" href="#">Another action</a>
+                    <div class="collapse menu mega-dropdown" id="collapseExample2">
+                        <div class="dropmenu" aria-labelledby="navbarDropdown">
+                            <div class="container-fluid ">
+                                <div class="row">
+                                    <div class="col-lg-12 px-2">
+                                        <div class="submenu-box">
+                                            <ul class="list-unstyled m-0">
+                                                <li><a asp-action="Index" asp-area="SuperAdmin" asp-controller="DeliveryAreaPrices">Area List</a></li>
+                                                <li><a asp-action="Create" asp-area="SuperAdmin" asp-controller="DeliveryAreaPrices">Add Area</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </li>
-                <li class="dropdown show">
-                    <a class=" dropdown-toggle " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="mr-3 fas fa-university"></i> Dropdown link
+                <li class="submenu">
+                    <a asp-action="Index" asp-area="SuperAdmin" asp-controller="MarchentProfileDetails" class="nav-link collapsed text-left" >
+                        <i class="fa fa-users pre-i mr-2"></i>Marchent
                     </a>
-
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item text-dark" href="#">Action</a>
-                        <a class="dropdown-item text-dark" href="#">Another action</a>
-                    </div>
                 </li>
-                @*<li><a href="#" class="dropdown-btn"><i class="fas fa-users mr-3"></i>Marchent <i class="fa fa-caret-down"></i></a></li>
-        <li class="dropdown-container">
-
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-
-        </li>*@
-                @*<li><a href="#"><i class="mr-3 fas fa-university"></i>Bank <i class="fa fa-caret-down"></i></a></li>
-                <li><a href="#"><i class="fas fa-users mr-3"></i>Charge <i class="fa fa-caret-down"></i></a></li>*@
             </ul>
         </div>
-        <div class="main">
+        <div id="main">
             <nav class="navbar navbar-expand-lg  navbar-custom">
+                <div type="button" id="bar" class="nav-icon1 hamburger animated fadeInLeft is-closed" data-toggle="offcanvas">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
                 <a class="navbar-brand" href="#">BAHOK BD</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
-                </button>               
+                </button>
             </nav>
             <div class="container"> @RenderBody()</div>
         </div>
     </div>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        @*<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>*@
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-        @RenderSection("Scripts", required: false)
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    @*<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+
+        $('#bar').click(function () {
+            $(this).toggleClass('open');
+            $('#main ,#sidebar').toggleClass('toggled');
+
+        });
+    </script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
