@@ -7,10 +7,11 @@
 
 
 <div class="row">
-    <div class="col-12 col-lg-10 offset-lg-2">
+    <div class="col-12 col-lg-12">
         <div class="card mb-4">
-            <div class="card-header bg-info">
+            <div class="card-header ">
                 <h2>Create Merchent</h2>
+
             </div>
             <div class="card-body">
                 <form asp-action="Create" enctype="multipart/form-data">
@@ -29,6 +30,7 @@
                                     <div class="form-group">
                                         <label asp-for="Email" class="control-label"></label>
                                         <input type="email" asp-for="Email" class="form-control" />
+                                        <input type="hidden" asp-for="Password" id="password" />
                                         <span asp-validation-for="Email" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -123,8 +125,8 @@
                                     <div class="row">
                                         <div class="col-md-6 col-12 col-lg-6 ">
                                             <div class="form-group">
-                                                <label asp-for="RoutingName" class="control-label" ></label>
-                                                <input asp-for="RoutingName" class="form-control"id="Route" />
+                                                <label asp-for="RoutingName" class="control-label"></label>
+                                                <input asp-for="RoutingName" class="form-control" id="Route" />
                                                 <span asp-validation-for="RoutingName" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -138,24 +140,20 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6 col-12 col-lg-6">
-                                    <div class="form-group">
-                                        <label asp-for="DateTime" class="control-label"></label>
-                                        <input asp-for="DateTime" class="form-control" />
-                                        <span asp-validation-for="DateTime" class="text-danger"></span>
+                            @*<div class="row">
+                                    <div class="col-md-6 col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label asp-for="DateTime" class="control-label"></label>
+                                            <input asp-for="DateTime" class="form-control" />
+                                            <span asp-validation-for="DateTime" class="text-danger"></span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-12 col-lg-6">
-                                    <div class="form-group">
-                                        <label asp-for="Status"></label>
-                                        <input asp-for="Status" type="checkbox" />
-                                        <span asp-validation-for="Status"></span>
-                                    </div>
-                                </div>
-                            </div>
+
+                                </div>*@
                             <div class="form-group">
                                 <input type="submit" value="Create" class="btn btn-primary" />
+                                <a asp-action="Index" class="btn btn-info"><i class="fas fa-list-ul"></i></a>
+
                             </div>
                         </div>
                         <div class="col-12 col-lg-4 col-md-4">
@@ -179,7 +177,27 @@
 
 @section Scripts{
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(function(){
+            var error = '@ViewBag.error';
+            if (error != null) {
+                toastr.error(error);
+            }
 
+        });
+    </script>
+    <script type="text/javascript">
+        function getRandomSymbol() {
+            var symbol = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRSTUVWXYZ!#$%^&*(){}[]=<>/,.|~?";
+            var passlength = 6;
+            var password = '';
+            for (var i = 0; i < passlength.length; i++) {
+                var randnum = symbol.Math.floor(Math.random() * symbol.length);
+                password += symbol.substring(randnum, randnum +);
+            }
+            window.password = document.getElementById("password").value;
+        }
+    </script>
     <script>
         $(document).ready(function () {
             function readURL(input) {
@@ -258,7 +276,7 @@
                         });
                         $("#Type").trigger("change");
                     });
-                   
+
                 },
                 error: function (res) {
                     console.log(res);

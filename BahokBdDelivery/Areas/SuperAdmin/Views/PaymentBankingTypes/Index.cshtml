@@ -6,14 +6,14 @@
 }
 
 <div class="row">
-    <div class="col-12 col-lg-10 offset-lg-2">
+    <div class="col-12 col-lg-10 ">
         <div class="card mb-4">
-            <div class="card-header bg-info">
-                <h2>Create</h2>
-                <a asp-action="Create" class=" text-white ">Create New</a>
+            <div class="card-header ">
+                <h2>Manage Method</h2>
+                <a asp-action="Create" >Create New</a>
             </div>
             <div class="card-body">
-                <table class="table">
+                <table class="table table-responsive table-striped">
                     <thead>
                         <tr>
                             <th>Serial No</th>
@@ -21,7 +21,7 @@
                                 @Html.DisplayNameFor(model => model.BankingMethodName)
                             </th>
                             <th> @Html.DisplayNameFor(model => model.Status)</th>
-                            <th></th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>

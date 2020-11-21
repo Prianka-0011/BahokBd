@@ -13,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
+
 namespace BahokBdDelivery
 {
     public class Startup
@@ -31,7 +33,10 @@ namespace BahokBdDelivery
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DatabaseConnection")));
             services.AddIdentity<IdentityUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultUI().AddDefaultTokenProviders(); 
+            //services.AddMvc().AddRazorPagesOptions(options => {
+            //     options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "");
+            // }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             //services.AddMvc().AddJsonOptions(options => options.JsonSerializerOptions.Converters = new DefaultContractResolver());
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
@@ -42,6 +47,8 @@ namespace BahokBdDelivery
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 4;
+              //  options.Lockout.AllowedForNewUsers = true;
+                //options.SignIn.RequireConfirmedEmail = false;
             });
         }
 
@@ -71,9 +78,16 @@ namespace BahokBdDelivery
             {
                 endpoints.MapControllerRoute(
                     name: "areas",
-                    pattern: "{area=SuperAdmin}/{controller=Admin}/{action=Index}/{id?}");
+                    pattern: "{area=Login}/{controller=UserLogin}/{action=Login}/{id?}");
                 endpoints.MapRazorPages();
             });
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllerRoute(
+            //        name: "areas",
+            //        pattern: "{area=SuperAdmin}/{controller=Admin}/{action=Index}/{id?}");
+            //    endpoints.MapRazorPages();
+            //});
         }
     }
 }

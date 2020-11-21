@@ -10,9 +10,9 @@
 <div class="row">
     <div class="col-12 col-lg-12 ">
         <div class="card mb-4">
-            <div class="card-header bg-info">
-                <h2>Create Merchent</h2>
-                <a class="text-white text-decoration-none" asp-action="Create">create</a>
+            <div class="card-header">
+                <h2>Manage Merchent</h2>
+                <a class="text-decoration-none" asp-action="Create">create</a>
             </div>
             <div class="card-body">
                 <table class="table table-responsive table-striped">
@@ -62,73 +62,87 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.Status)
                             </th>
-                            <th></th>
+
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
-                        <tr>
-                            <td>@i</td>
-                            <td>         
-                                <a class=" btn-success btn btn-sm " asp-action="AddCharge" asp-route-id="@item.Id" asp-controller="MarchentCharge"><i class="fas fa-dollar-sign"></i></a>
-                                <a class=" btn-info btn btn-sm mt-1" asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a>
-                                <a class=" btn-warning btn btn-sm mt-1" asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-check"></i></a>
-                            </td>
+                            <tr>
+                                <td>@i</td>
+                                <td>
+                                    <a class=" btn-success btn btn-sm " asp-action="AddCharge" asp-route-id="@item.Id" asp-controller="MarchentCharge"><i class="fas fa-dollar-sign"></i></a>
+                                    <a class=" btn-info btn btn-sm mt-1" asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a>
+                                    <a class=" btn-warning btn btn-sm mt-1" asp-action="Approve" asp-route-id="@item.Id"><i class="fas fa-check"></i></a>
+                                </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Email)
-                            </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Phone)
-                            </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Phone)
+                                </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.BusinessName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.BusinessLink)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.BusinessAddress)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.AccountName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.AccountNumber)
-                            </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BusinessName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BusinessLink)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BusinessAddress)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AccountName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AccountNumber)
+                                </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LastIpAddress)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CreateDateTime)
-                            </td>
-                            <td><img src="~/@item.Image" style="height:50px;width:50px; border-radius:25px" /></td>
-                            <td><img src="~/@item.Logo" style="height:50px;width:50px; border-radius:25px" /></td>
-                            @if (item.Status)
-                            {
-                                <td class="text-success">Enable</td>
-                            }
-                            else
-                            {
-                                <td class="text-warning">Disable</td>
-                            }
-                            @*<partial name="_ButtonPartial" model="@item.Id" />*@
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LastIpAddress)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreateDateTime)
+                                </td>
+                                <td><img src="~/@item.Image" style="height:50px;width:50px; border-radius:25px" /></td>
+                                <td><img src="~/@item.Logo" style="height:50px;width:50px; border-radius:25px" /></td>
+                                @if (item.Status)
+                                {
+                                    <td class="text-success">Enable</td>
+                                }
+                                else
+                                {
+                                    <td class="text-warning">Disable</td>
+                                }
+                                @*<partial name="_ButtonPartial" model="@item.Id" />*@
 
 
-                        </tr>
+                            </tr>
                             i++;
                         }
-                        
+
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script>
+        $(function(){
+            var approve = '@ViewBag.approve'; 
+            if (approve != null) {
+                toastr.success(approve);
+            }
+
+        });
+    </script>
+}
+

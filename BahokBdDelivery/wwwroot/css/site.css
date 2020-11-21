@@ -1,4 +1,13 @@
-﻿
+﻿.card h2 {
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #060445
+}
+.card-header a{
+    text-decoration:none!important;
+    color:#000000!important;
+}
 * {
     padding: 0;
     margin: 0;
@@ -23,19 +32,23 @@
         border-color: red;
     }
     #wrapper .sidebar {
-        width: 210px;
+        width: 230px;
         height: 100%;
         position:fixed;
         background: #222e3c;
         padding:30px 0px;
     }
-        #wrapper .sidebar ul li {
-            padding: 15px;
-        }
+.submenu  a{
+    font-size:15px;
+}
+#wrapper .sidebar ul li {
+    padding:3px;
+}
             #wrapper .sidebar ul li a {
                 color: #fff;
                 display: block;
                 text-align: left;
+                text-decoration:none;
                 text-transform: uppercase;
             }
                 #wrapper.sidebar ul li a:hover {
@@ -51,7 +64,7 @@
            
         }
 #wrapper .sidebar ul li:hover {
-    background: #900C3F;
+    background: #060445;
 }
 
 /*.dropdown-container {
@@ -75,13 +88,13 @@
 
 #wrapper #main {
     width: 100%;
-    margin-left: 210px;
+    margin-left: 230px;
 }
 /*navbar*/
-#wrapper #main .navbar-custom {
-    padding: 20px;
-    background: #900C3F;
-}
+    #wrapper #main .navbar-custom {
+        padding: 20px;
+        background: #060445!important;
+    }
 .navbar-brand {
      font-size:25px;
      text-transform:uppercase;

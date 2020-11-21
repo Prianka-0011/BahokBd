@@ -10,6 +10,12 @@ using BahokBdDelivery.Models;
 using Microsoft.AspNetCore.Hosting;
 using BahokBdDelivery.ViewModels;
 using System.IO;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
+using System.Text.Encodings.Web;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
 {
@@ -18,19 +24,86 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public MarchentProfileDetailsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly ILogger<MarchentProfileDetailsController> _logger;
+        private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public MarchentProfileDetailsController(ILogger<MarchentProfileDetailsController> logger, IEmailSender emailSender, RoleManager<IdentityRole> roleManager, ApplicationDbContext context, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _signInManager = signInManager;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _emailSender = emailSender;
+            _logger = logger;
         }
 
         // GET: SuperAdmin/MarchentProfileDetail
         public async Task<IActionResult> Index()
         {
+            string msg = Convert.ToString(TempData["msg"]);
+            ViewBag.approve = msg;
             return View(await _context.MarchentProfileDetail.ToListAsync());
         }
+        [HttpGet]
+        public async Task< IActionResult> Approve(Guid?id)
+        {
+            var marchent = _context.MarchentProfileDetail.FirstOrDefault(c => c.Id == id);
+            var user = new IdentityUser { UserName = marchent.Phone, Email = marchent.Email};
+            var result = await _userManager.CreateAsync(user, marchent.Password);
+            
+            var uName = await _userManager.FindByNameAsync(marchent.Phone);
+            if (result.Succeeded)
+            {
+               // _logger.LogInformation("User created a new account with password.");
 
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                var callbackUrl = Url.Page(
+                    "/Account/ConfirmEmail",
+                    pageHandler: null,
+                    values: new { area = "Identity", userId = user.Id, code = code},
+                    protocol: Request.Scheme);
+
+                await _emailSender.SendEmailAsync(marchent.Email, "Confirm your email",
+                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                {
+                    code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+                    var result1 = await _userManager.ConfirmEmailAsync(user, code);
+                }
+                //else
+                //{
+                //    await _signInManager.SignInAsync(user, isPersistent: false);
+                //    return LocalRedirect(returnUrl);
+                //}
+            }
+            if (uName!=null)
+            {
+                var roleName = "Marchent";
+                var mRole = await _roleManager.FindByNameAsync(roleName);
+                if (mRole!=null)
+                {
+                   await _userManager.AddToRoleAsync(uName, mRole.Name);
+                }
+            }
+            //if (result.Succeeded)
+            //{
+
+
+            //    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            //    var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new { token, email = user.Email }, Request.Scheme);
+            //    var message = new Message(new string[] { user.Email }, "Confirmation email link", confirmationLink, null);
+            //    await _emailSender.SendEmailAsync(message);
+            //    await _userManager.AddToRoleAsync(user, "Visitor");
+            //    return RedirectToAction(nameof(SuccessRegistration));
+            //}
+            TempData["msg"] = "Approve Successfully";
+            return RedirectToAction(nameof(Index));
+        }
         // GET: SuperAdmin/MarchentProfileDetail/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
@@ -64,7 +137,15 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 MarchentProfileDetail entity = new MarchentProfileDetail();
+                var samePhone = _context.MarchentProfileDetail.Where(c => c.Phone == vm.Phone);
+                var count = samePhone.Count();
+                if (count>0)
+                {
+                    ViewBag.error = "The phone number already exist";
+                    return View(vm);
+                }
                 entity.Name = vm.Name;
                 entity.Email = vm.Email;
                 entity.Phone = vm.Phone;
@@ -73,10 +154,10 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                 entity.BusinessAddress = vm.BusinessAddress;
                 entity.AccountName = vm.AccountName;
                 entity.AccountNumber = vm.AccountNumber;
-       
+
                 entity.LastIpAddress = vm.LastIpAddress;
-                entity.CreateDateTime = vm.DateTime;
-                
+                entity.CreateDateTime = DateTime.Now;
+                entity.Password = "112345";
                 string uniqueFileNameForImage = null;
                 string uniqueFileNameForLogo = null;
                 if (vm.Image != null)
@@ -197,15 +278,15 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                     await vm.Logo.CopyToAsync(new FileStream(filePath, FileMode.Create));
                     entity.Logo = "logos/" + uniqueFileNameForLogo;
                 }
-            
+
                 _context.MarchentProfileDetail.Update(entity);
                 await _context.SaveChangesAsync();
-                if (vm.PaymentTypeId!=Guid.Empty && vm.PaymentBankingId!=null && vm.BranchId!=null)
+                if (vm.PaymentTypeId != Guid.Empty && vm.PaymentBankingId != null && vm.BranchId != null)
                 {
                     var paymentDetail = _context.MarchentPaymentDetails.FirstOrDefault(c => c.MarchentId == entity.Id);
-                    if (paymentDetail!=null)
+                    if (paymentDetail != null)
                     {
-            
+
                         paymentDetail.MarchentId = entity.Id;
                         paymentDetail.PaymentNameId = vm.PaymentBankingId;
                         paymentDetail.PaymentTypeId = vm.PaymentTypeId;
@@ -224,7 +305,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                         _context.MarchentPaymentDetails.Add(paymentDetail1);
                     }
                 }
-               
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -282,7 +363,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         [HttpGet("/MarchentProfileDetail/GetOrganizationName")]
         public IActionResult GetOrganizationName(Guid id)
         {
-            var org = _context.PaymentBankingOrganization.Where(o=>o.PaymentBankingTypeId==id);
+            var org = _context.PaymentBankingOrganization.Where(o => o.PaymentBankingTypeId == id);
             return Json(org.ToList());
         }
         [HttpGet("/MarchentProfileDetail/GetBranch")]

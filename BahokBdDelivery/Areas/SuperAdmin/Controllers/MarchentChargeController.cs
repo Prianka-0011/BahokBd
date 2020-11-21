@@ -22,7 +22,9 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         {
             var marMarchentCharge = new MarchentChargeVm();
             marMarchentCharge.MarchentId = id;
-            ViewBag.deiveryArea = _context.DeliveryAreaPrices.ToList();
+            ViewBag.deiveryArea = _context.DeliveryAreaPrices.ToList(); 
+            //string msg = Convert.ToString(TempData["charge"]);
+            //ViewBag.charge = msg;
             return View(marMarchentCharge);
            
         }
@@ -59,9 +61,11 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                 }
 
                 await _context.SaveChangesAsync();
+                ViewBag.charge = "Charge Add Successfully";
+                return RedirectToAction("AddCharge");
             }
-
             return Ok();
+           
         }
     }
 }

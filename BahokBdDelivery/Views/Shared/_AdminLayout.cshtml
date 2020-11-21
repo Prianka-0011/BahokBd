@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,800;0,900;1,100;1,600;1,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -21,7 +22,7 @@
             <ul>
                 <li class="submenu">
                     <a class="nav-link collapsed text-left" href="#collapseExample1" role="button" data-toggle="collapse">
-                        <i class="fa fa-money-check-alt pre-i mr-2 "></i> Payment<i class="fas fa-caret-down"></i>
+                        <i class="fa fa-money-check-alt pre-i mr-2 "></i> Payment Settings<i class="fas fa-caret-down"></i>
                     </a>
                     <div class="collapse menu mega-dropdown" id="collapseExample1">
                         <div class="dropmenu" aria-labelledby="navbarDropdown">
@@ -44,7 +45,7 @@
                 </li>
                 <li class="submenu">
                     <a class="nav-link collapsed text-left" href="#collapseExample2" role="button" data-toggle="collapse">
-                        <i class="fa fa-truck pre-i mr-2"></i>Delivery<i class="fas fa-caret-down"></i>
+                        <i class="fa fa-truck pre-i mr-2"></i>Delivery Settings<i class="fas fa-caret-down"></i>
                     </a>
                     <div class="collapse menu mega-dropdown" id="collapseExample2">
                         <div class="dropmenu" aria-labelledby="navbarDropdown">
@@ -64,10 +65,53 @@
                     </div>
                 </li>
                 <li class="submenu">
-                    <a asp-action="Index" asp-area="SuperAdmin" asp-controller="MarchentProfileDetails" class="nav-link collapsed text-left" >
-                        <i class="fa fa-users pre-i mr-2"></i>Marchent
+                    <a asp-action="Index" asp-area="SuperAdmin" asp-controller="MarchentProfileDetails" class="nav-link collapsed text-left">
+                        <i class="fa fa-users pre-i mr-2"></i>Marchent Settings
                     </a>
                 </li>
+                <li class="submenu">
+                    <a class="nav-link collapsed text-left" href="#collapseExample3" role="button" data-toggle="collapse">
+                        <i class="fa fa-user-friends pre-i mr-2"></i>User Settings<i class="fas fa-caret-down"></i>
+                    </a>
+                    <div class="collapse menu mega-dropdown" id="collapseExample3">
+                        <div class="dropmenu" aria-labelledby="navbarDropdown">
+                            <div class="container-fluid ">
+                                <div class="row">
+                                    <div class="col-lg-12 px-2">
+                                        <div class="submenu-box">
+                                            <ul class="list-unstyled m-0">
+                                                <li><a asp-action="AssignRole" asp-area="SuperAdmin" asp-controller="Account">Assign Role</a></li>
+                                                <li><a asp-action="CreateRole" asp-area="SuperAdmin" asp-controller="Account">Add Role</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="submenu">
+                    <a class="nav-link collapsed text-left" href="#collapseExample4" role="button" data-toggle="collapse">
+                        <i class="fa fa-user-friends pre-i mr-2"></i>User Settings<i class="fas fa-caret-down"></i>
+                    </a>
+                    <div class="collapse menu mega-dropdown" id="collapseExample4">
+                        <div class="dropmenu" aria-labelledby="navbarDropdown">
+                            <div class="container-fluid ">
+                                <div class="row">
+                                    <div class="col-lg-12 px-2">
+                                        <div class="submenu-box">
+                                            <ul class="list-unstyled m-0">
+                                                <li><a asp-action="AssignRole" asp-area="SuperAdmin" asp-controller="Account">Assign Role</a></li>
+                                                <li><a asp-action="CreateRole" asp-area="SuperAdmin" asp-controller="Account">Add Role</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
             </ul>
         </div>
         <div id="main">
@@ -83,12 +127,12 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
             </nav>
-            <div class="container"> @RenderBody()</div>
+            <div class=""> @RenderBody()</div>
         </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    @*<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
