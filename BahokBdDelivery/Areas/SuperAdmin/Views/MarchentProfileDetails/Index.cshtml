@@ -15,103 +15,27 @@
                 <a class="text-decoration-none" asp-action="Create">create</a>
             </div>
             <div class="card-body">
-                <table class="table table-responsive table-striped">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Action</th>
+                <table class="table table-scripted">
 
-                            <th>
-                                @Html.DisplayNameFor(model => model.Name)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Email)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Phone)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.BusinessName)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.BusinessLink)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.BusinessAddress)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.AccountName)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.AccountNumber)
-                            </th>
-
-                            <th>
-                                @Html.DisplayNameFor(model => model.LastIpAddress)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.CreateDateTime)
-                            </th>
-
-                            <th>
-                                @Html.DisplayNameFor(model => model.Image)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Logo)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Status)
-                            </th>
-
-                        </tr>
-                    </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td>@i</td>
+                                <td style="width:15px"><img src="~/@item.Image" style="height:20px;width:20px; margin-top:8px;" /></td>
                                 <td>
-                                    <a class=" btn-success btn btn-sm " asp-action="AddCharge" asp-route-id="@item.Id" asp-controller="MarchentCharge"><i class="fas fa-dollar-sign"></i></a>
-                                    <a class=" btn-info btn btn-sm mt-1" asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a>
-                                    <a class=" btn-warning btn btn-sm mt-1" asp-action="Approve" asp-route-id="@item.Id"><i class="fas fa-check"></i></a>
+                                    @Html.DisplayFor(modelItem => item.Name)<br />
+                                    @Html.DisplayFor(modelItem => item.Phone),@Html.DisplayFor(modelItem => item.Email)
+
                                 </td>
 
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Email)
-                                </td>
 
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Phone)
+                                <td style="width:80px">
+                                    <a  asp-action="AddCharge" asp-route-id="@item.Id" asp-controller="MarchentCharge"><i class="fas fa-dollar-sign"></i></a>
+                                    <a  asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a>
+                                    <a  asp-action="Approve" asp-route-id="@item.Id"><i class="fas fa-check"></i></a>
                                 </td>
-
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.BusinessName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.BusinessLink)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.BusinessAddress)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.AccountName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.AccountNumber)
-                                </td>
-
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.LastIpAddress)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CreateDateTime)
-                                </td>
-                                <td><img src="~/@item.Image" style="height:50px;width:50px; border-radius:25px" /></td>
-                                <td><img src="~/@item.Logo" style="height:50px;width:50px; border-radius:25px" /></td>
-                                @if (item.Status)
+                                
+                                @*@if (item.Status)
                                 {
                                     <td class="text-success">Enable</td>
                                 }
@@ -119,11 +43,11 @@
                                 {
                                     <td class="text-warning">Disable</td>
                                 }
-                                @*<partial name="_ButtonPartial" model="@item.Id" />*@
+                                <partial name="_ButtonPartial" model="@item.Id" />*@
 
 
                             </tr>
-                            i++;
+                            //i++;
                         }
 
                     </tbody>
@@ -137,7 +61,7 @@
 {
     <script>
         $(function(){
-            var approve = '@ViewBag.approve'; 
+            var approve = '@ViewBag.approve';
             if (approve != null) {
                 toastr.success(approve);
             }

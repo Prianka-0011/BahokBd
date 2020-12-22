@@ -15,13 +15,14 @@
 <body>
     <div id="wrapper">
         <div class="overlay"></div>
-        <div class="sidebar">
+        <div id="mySidebar" class="sidebar">
             <div class="top-img">
                 <img src="~/images/scooter.gif" alt="Alternate Text" />
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
             </div>
-            <ul>
+            <ul id="display">
                 <li class="submenu">
-                    <a class="nav-link collapsed text-left" href="#collapseExample1" role="button" data-toggle="collapse">
+                    <a class="nav-link nav-link1 collapsed text-left" href="#collapseExample1" role="button" data-toggle="collapse">
                         <i class="fa fa-money-check-alt pre-i mr-2 "></i> Payment Settings<i class="fas fa-caret-down"></i>
                     </a>
                     <div class="collapse menu mega-dropdown" id="collapseExample1">
@@ -116,7 +117,7 @@
         </div>
         <div id="main">
             <nav class="navbar navbar-expand-lg  navbar-custom">
-                <div type="button" id="bar" class="nav-icon1 hamburger animated fadeInLeft is-closed" data-toggle="offcanvas">
+                <div type="button" onclick="openNav()" class="nav-icon1 hamburger animated fadeInLeft is-closed"id="sidebarCollapse" data-toggle="offcanvas">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -127,7 +128,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
             </nav>
-            <div class=""> @RenderBody()</div>
+            <div > @RenderBody()</div>
         </div>
     </div>
 
@@ -137,7 +138,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
-
+        
         $('#bar').click(function () {
             $(this).toggleClass('open');
             $('#main ,#sidebar').toggleClass('toggled');

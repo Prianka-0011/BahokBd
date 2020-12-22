@@ -5,48 +5,42 @@
     int i = 1;
 }
 
-<div class="row">
-    <div class="col-12 col-lg-10 ">
-        <div class="card mb-4">
-            <div class="card-header ">
-                <h2>Manage Method</h2>
-                <a asp-action="Create" >Create New</a>
-            </div>
-            <div class="card-body">
-                <table class="table table-responsive table-striped">
-                    <thead>
+
+<div class="type-wrapper">
+    <div class="card mb-4">
+        <div class="card-header ">
+            <h2>Manage Method</h2>
+            <a asp-action="Create">Create New</a>
+        </div>
+        <div class="card-body">
+            <table class="table  table-striped">
+                <thead>
+
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
                         <tr>
-                            <th>Serial No</th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.BankingMethodName)
-                            </th>
-                            <th> @Html.DisplayNameFor(model => model.Status)</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                        <tr>
-                            <td>@i</td>
+
                             <td>
                                 @Html.DisplayFor(modelItem => item.BankingMethodName)
                             </td>
-                            @if (item.Status)
-                            {
-                                <td class="text-success">Enable</td>
-                            }
-                            else
-                            {
-                                <td class="text-warning">Disable</td>
-                            }
+                            @*@if (item.Status)
+                                {
+                                    <td class="text-success">Enable</td>
+                                }
+                                else
+                                {
+                                    <td class="text-warning">Disable</td>
+                                }*@
                             <partial name="_ButtonPartial" model="@item.Id" />
                         </tr>
-                            i++;
-                        }
-                    </tbody>
-                </table>
-            </div>
+                        i++;
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
+    <div id="type" class="type-sidebar"></div>
 </div>
+        

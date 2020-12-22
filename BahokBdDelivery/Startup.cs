@@ -78,7 +78,7 @@ namespace BahokBdDelivery
             {
                 endpoints.MapControllerRoute(
                     name: "areas",
-                    pattern: "{area=Login}/{controller=UserLogin}/{action=Login}/{id?}");
+                    pattern: "{area=SuperAdmin}/{controller=Admin}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
             //app.UseEndpoints(endpoints =>
