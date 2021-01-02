@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BahokBdDelivery.Data;
 using BahokBdDelivery.Models;
+using BahokBdDelivery.Views.ViewModels;
+using static BahokBdDelivery.Helper;
 
 namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
 {
@@ -21,52 +23,72 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         }
 
         // GET: SuperAdmin/PaymentBankingTypes
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        [DisableRequestSizeLimit]
+        public IActionResult Index()
+        {
+            return View(/*await _context.PaymentBankingType.ToListAsync()*/);
+        }
+        [HttpGet("/PaymentBankingTypes/litPayType")]
+        [DisableRequestSizeLimit]
+        public async Task<IActionResult> GetAllType()
         {
             return View(await _context.PaymentBankingType.ToListAsync());
         }
-
         // GET: SuperAdmin/PaymentBankingTypes/Details/5
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Details(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var paymentBankingType = await _context.PaymentBankingType
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (paymentBankingType == null)
-            {
-                return NotFound();
-            }
+        //    var paymentBankingType = await _context.PaymentBankingType
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (paymentBankingType == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(paymentBankingType);
-        }
+        //    return View(paymentBankingType);
+        //}
 
         // GET: SuperAdmin/PaymentBankingTypes/Create
-        public IActionResult Create()
+        [NoDirectAccess]
+        public async Task<IActionResult> AddOrEdit(Guid id)
         {
-            return View();
+            if (id == Guid.Parse("00000000-0000-0000-0000-000000000000"))
+                return View(new PaymentBankingType());
+            else
+            {
+                var typeModel = await _context.PaymentBankingType.FindAsync(id);
+                if (typeModel == null)
+                {
+                    return NotFound();
+                }
+                return View(typeModel);
+            }
+
         }
 
         // POST: SuperAdmin/PaymentBankingTypes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( PaymentBankingType paymentBankingType)
+        [HttpPost("/PaymentBankingTypes/postPayType")]
+        [DisableRequestSizeLimit]
+        public async Task<IActionResult> Create(PayMethodVm postItem)
         {
             if (ModelState.IsValid)
             {
-                paymentBankingType.Id = Guid.NewGuid();
-                _context.Add(paymentBankingType);
+                PaymentBankingType entity = new PaymentBankingType();
+                entity.Id = Guid.NewGuid();
+                entity.BankingMethodName = postItem.BankingMethodName;
+                _context.Add(entity);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // return RedirectToAction(nameof(Index));
             }
-            return View(paymentBankingType);
+            return View(postItem);
         }
-
         // GET: SuperAdmin/PaymentBankingTypes/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
@@ -88,34 +110,42 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, PaymentBankingType paymentBankingType)
+        public async Task<IActionResult> AddOrEdit(Guid id, PaymentBankingType paymentBankingType)
         {
-            if (id != paymentBankingType.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
+                if (id == Guid.Parse("00000000-0000-0000-0000-000000000000"))
                 {
-                    _context.Update(paymentBankingType);
+                    PaymentBankingType entity = new PaymentBankingType();
+                    entity.Id = Guid.NewGuid();
+                    entity.BankingMethodName = paymentBankingType.BankingMethodName;
+                    _context.Add(entity);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+
+                else
                 {
-                    if (!PaymentBankingTypeExists(paymentBankingType.Id))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(paymentBankingType);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!PaymentBankingTypeExists(paymentBankingType.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _context.PaymentBankingType.ToList()) });
             }
-            return View(paymentBankingType);
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", paymentBankingType) });
+
         }
 
         // GET: SuperAdmin/PaymentBankingTypes/Delete/5

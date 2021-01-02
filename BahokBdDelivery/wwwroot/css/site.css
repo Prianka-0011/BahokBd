@@ -3,17 +3,34 @@
     display: flex;
     position: relative;
 }
+.tablebody{
+    width:100%;
+}
 .type-sidebar {
-    width: 250px;
+    width: 0;
     height: 100%;
     position: fixed;
-    padding: 30px 0px;
+    /*padding: 30px 0px;*/
     transition: 0.5s;
-    background: #222e3c;
+    background: #fff;
     overflow-x: hidden;
     z-index: 1;
     top: 0;
-    left: 0;
+    right: 0;
+}
+.card-title{
+    font-size:15px;
+    color:#fff;
+    text-align:center
+}
+.type-sidebar .closebtn {
+    position: absolute;
+    top: 0;
+    left: 25px;
+    font-size: 36px;
+    margin-right: 50px;
+    color: #fff;
+    text-decoration: none;
 }
 .card h2 {
     font-size: 18px;

@@ -29,7 +29,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
            
         }
         [HttpPost("/MarchentCharge/AddCharge1")]
-        public async Task<IActionResult> AddCharge1(List<MarchentChargeVm> postArrItem)
+        public ActionResult AddCharge1(List<MarchentChargeVm> postArrItem)
         {
             MarchentCharge charge;
 
@@ -60,7 +60,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                     // mProfie = _context.MarchentProfileDetail.Find(item.MarchentId);
                 }
 
-                await _context.SaveChangesAsync();
+                 _context.SaveChanges();
                 ViewBag.charge = "Charge Add Successfully";
                 return RedirectToAction("AddCharge");
             }

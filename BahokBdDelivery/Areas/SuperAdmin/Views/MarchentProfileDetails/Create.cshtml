@@ -251,6 +251,7 @@
             $.ajax({
                 url: '/MarchentProfileDetail/GetBankingType',
                 type: 'GET',
+
                 dataType: 'JSON',
                 success: function (data) {
                     console.log(data);
@@ -342,11 +343,6 @@
                         s = data.RoutingName;
                         $("#rout").empty();
                         $("#rout").append(s);
-                        //$.each(data, function (i, obj) {
-                        //    var s = '<option value="' + obj.id + '">' + obj.BranchName + '</option>';
-                        //    //console.log(s);
-                        //    $("#Branch").append(s);
-                        //});
                     },
                     error: function (res) {
                         console.log(res);
