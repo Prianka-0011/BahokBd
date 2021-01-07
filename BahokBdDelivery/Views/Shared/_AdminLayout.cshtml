@@ -56,7 +56,6 @@
                                         <div class="submenu-box">
                                             <ul class="list-unstyled m-0">
                                                 <li><a asp-action="Index" asp-area="SuperAdmin" asp-controller="DeliveryAreaPrices">Area List</a></li>
-                                                <li><a asp-action="Create" asp-area="SuperAdmin" asp-controller="DeliveryAreaPrices">Add Area</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -139,7 +138,7 @@
                         <div class="card-header">
                             <h2>Create New </h2>
                         </div>
-                        <div class="card-body">                        
+                        <div class="card-body">
                         </div>
                     </div>
                 </div>
@@ -153,7 +152,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
-        
+
         $('#bar').click(function () {
             $(this).toggleClass('open');
             $('#main ,#sidebar').toggleClass('toggled');
@@ -163,3 +162,6 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

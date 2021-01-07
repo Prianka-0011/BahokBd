@@ -1,0 +1,36 @@
+﻿@model BahokBdDelivery.Models.DeliveryAreaPrices
+@{
+    ViewData["Title"] = "AddOrEdit";
+    Layout = null;
+}
+
+<div class="card mb-4">
+    <div class="card-header">
+        Create Branch
+    </div>
+    <div class="card-body">
+        <form asp-action="AddOrEdit" asp-route-id="@Model.Id" onsubmit="return jQueryAjaxPost(this);" autocomplete="off">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="hidden" asp-for="Id" />
+                <label asp-for="Area" class="control-label"></label>
+                <input asp-for="Area" class="form-control" />
+                <span asp-validation-for="Area" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BaseChargeAmount" class="control-label"></label>
+                <input asp-for="BaseChargeAmount" class="form-control" />
+                <span asp-validation-for="BaseChargeAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IncreaseChargePerKg" class="control-label"></label>
+                <input asp-for="IncreaseChargePerKg" class="form-control" />
+                <span asp-validation-for="IncreaseChargePerKg" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Update" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+

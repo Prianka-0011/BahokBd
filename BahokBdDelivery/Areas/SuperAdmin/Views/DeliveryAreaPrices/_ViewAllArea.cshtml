@@ -1,0 +1,21 @@
+﻿@model IEnumerable<BahokBdDelivery.Models.DeliveryAreaPrices>
+@if (Model != null)
+{
+    <table class="table table-responsive table-striped">
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+
+                <td style="width:1050px;">
+                    <span class="font-weight-bold"> @Html.DisplayFor(modelItem => item.Area)<br /></span>
+                    <span>Base Charge:</span>@Html.DisplayFor(modelItem => item.BaseChargeAmount)<br />
+                    <span>Increase Charge Per/kg:</span> @Html.DisplayFor(modelItem => item.IncreaseChargePerKg)
+                </td>
+           
+                <td> <a onclick="showInPopup('@Url.Action("AddOrEdit", "DeliveryAreaPrices", new { id = item.Id }, Context.Request.Scheme)','Update Branch' )" class="btn btn-sm btn-info text-white"><i class="fas fa-random"></i></a></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}

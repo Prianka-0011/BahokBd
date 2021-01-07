@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BahokBdDelivery.Data;
 using BahokBdDelivery.Models;
+using static BahokBdDelivery.Helper;
 
 namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
 {
@@ -27,101 +28,66 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: SuperAdmin/BankBranches/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        [NoDirectAccess]
+        public async Task<IActionResult> AddOrEdit(Guid id)
         {
-            if (id == null)
+            if (id == Guid.Parse("00000000-0000-0000-0000-000000000000"))
             {
-                return NotFound();
+                ViewData["BankId"] = new SelectList(_context.PaymentBankingOrganization, "Id", "OrganizationName");
+                return View(new BankBranch());
             }
-
-            var bankBranch = await _context.BankBranch
-                .Include(b => b.Bank)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (bankBranch == null)
+                
+            else
             {
-                return NotFound();
-            }
-
-            return View(bankBranch);
-        }
-
-        // GET: SuperAdmin/BankBranches/Create
-        public IActionResult Create()
-        {
-            ViewData["BankId"] = new SelectList(_context.PaymentBankingOrganization, "Id", "OrganizationName");
-            return View();
-        }
-
-        // POST: SuperAdmin/BankBranches/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BranchName,RoutingName,BankId")] BankBranch bankBranch)
-        {
-            if (ModelState.IsValid)
-            {
-                bankBranch.Id = Guid.NewGuid();
-                _context.Add(bankBranch);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["BankId"] = new SelectList(_context.PaymentBankingOrganization, "Id", "OrganizationName", bankBranch.BankId);
-            return View(bankBranch);
-        }
-
-        // GET: SuperAdmin/BankBranches/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var bankBranch = await _context.BankBranch.FindAsync(id);
-            if (bankBranch == null)
-            {
-                return NotFound();
-            }
-            ViewData["BankId"] = new SelectList(_context.PaymentBankingOrganization, "Id", "OrganizationName", bankBranch.BankId);
-            return View(bankBranch);
-        }
-
-        // POST: SuperAdmin/BankBranches/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,BranchName,RoutingName,BankId")] BankBranch bankBranch)
-        {
-            if (id != bankBranch.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                var branchModel = await _context.BankBranch.FindAsync(id);
+                if (branchModel == null)
                 {
-                    _context.Update(bankBranch);
+                    return NotFound();
+                }
+                ViewData["BankId"] = new SelectList(_context.PaymentBankingOrganization, "Id", "OrganizationName", branchModel.BankId);
+                return View(branchModel);
+            }
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddOrEdit(Guid id, BankBranch branch)
+        {
+            if (ModelState.IsValid)
+            {
+                if (id == Guid.Parse("00000000-0000-0000-0000-000000000000"))
+                {
+                    BankBranch entity = new BankBranch();
+                    entity.Id = Guid.NewGuid();
+                    entity.BranchName = branch.BranchName;
+                    entity.BankId = branch.BankId;
+                    _context.Add(entity);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+
+                else
                 {
-                    if (!BankBranchExists(bankBranch.Id))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(branch);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!BankBranchExists(branch.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAllBranch", _context.BankBranch.Include(c=>c.Bank).ToList()) });
             }
-            ViewData["BankId"] = new SelectList(_context.PaymentBankingOrganization, "Id", "OrganizationName", bankBranch.BankId);
-            return View(bankBranch);
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", branch) });
+
         }
 
         // GET: SuperAdmin/BankBranches/Delete/5

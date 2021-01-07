@@ -25,9 +25,9 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         // GET: SuperAdmin/PaymentBankingTypes
         [HttpGet]
         [DisableRequestSizeLimit]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(/*await _context.PaymentBankingType.ToListAsync()*/);
+            return View(await _context.PaymentBankingType.ToListAsync());
         }
         [HttpGet("/PaymentBankingTypes/litPayType")]
         [DisableRequestSizeLimit]
@@ -35,25 +35,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         {
             return View(await _context.PaymentBankingType.ToListAsync());
         }
-        // GET: SuperAdmin/PaymentBankingTypes/Details/5
-        //public async Task<IActionResult> Details(Guid? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var paymentBankingType = await _context.PaymentBankingType
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (paymentBankingType == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(paymentBankingType);
-        //}
-
-        // GET: SuperAdmin/PaymentBankingTypes/Create
+  
         [NoDirectAccess]
         public async Task<IActionResult> AddOrEdit(Guid id)
         {

@@ -4,71 +4,12 @@
     //int i = 1;
 }
 
-<div id="view-all" class="card mb-4">
+<div class="card mb-4">
     <div class="card-header ">
         <h2>Manage Method</h2>
+        <a onclick="showInPopup('@Url.Action("AddOrEdit","PaymentBankingTypes",null,Context.Request.Scheme)','New PaymentBankingTypes' )" class="btn  text-black-50"><i class="fas fa-random"></i> New Type</a>
     </div>
-    <div class="card-body">
-        @await Html.PartialAsync("_ViewAll", Model);
+    <div id="view-all"  class="card-body">
+        @await Html.PartialAsync("_ViewAll", Model)
     </div>
 </div>
-
-
-<!--<div id="type" class="type-sidebar card mb-4">
-    <div class="card-header bg-info p-4">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNavType()">×</a>
-    </div>
-    <div class="card-body">
-        <div class="card mb-4">
-            <div class="card-header">
-                <h2>Create New Type</h2>
-            </div>
-            <div class="card-body">-->
-@*<form id="typefrom">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label class="control-label"></label>
-            <input id="type" name="BankingMethodName" class="form-control" />
-        </div>
-        <div class="form-group">
-            <input type="submit" id="btnsubmit" value="Create" class="btn btn-primary" />
-        </div>
-    </form>*@
-<!--</div>
-        </div>
-    </div>
-</div>-->
-@*</div>*@
-@*@section scripts{
-        <script>
-            $(document).ready(function () {
-                $("#btnsubmit").click(function (e) {
-                    e.preventDefault();
-                    //Serialize the form datas.
-                    console.log("Hello")
-                    var formData = $("#typefrom").serialize();
-                    //to get alert popup
-                    console.log("formData", formData)
-                    $.ajax({
-                        url: "/PaymentBankingTypes/postPayType",
-                        type: 'POST',
-                        dataType: 'json',
-                        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                        data: formData,
-                        success: function (response) {
-                            toastr.success("Successfully Charge Add");
-                        }
-                    })
-                });
-                $("#Edit").click(function (e) {
-
-                });
-            });
-
-        </script>
-    }*@
-@*.done(function (res) {
-        var $productList = $("#product-list");
-        var url = $productList.data("/PaymentBankingTypes/litPayType");
-        $productList.load(url);
-    });*@

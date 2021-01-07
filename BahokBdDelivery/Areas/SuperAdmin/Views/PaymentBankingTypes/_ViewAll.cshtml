@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<BahokBdDelivery.Models.PaymentBankingType>
+
+
 @if (Model != null)
 {
     <table class="table table-responsive table-striped">
@@ -7,18 +9,10 @@
             {
                 <tr>
 
-                    <td>
+                    <td style="width:1050px;">
                         @Html.DisplayFor(modelItem => item.BankingMethodName)
                     </td>
-                    @if (item.Status)
-                    {
-                        <td class="text-success">Enable</td>
-                    }
-                    else
-                    {
-                        <td class="text-warning">Disable</td>
-                    }
-                    <td> <a onclick="showInPopup('@Url.Action("AddOrEdit","PaymentBankingTypes",null,Context.Request.Scheme)','New PaymentBankingTypes' )" class="btn btn-success text-white"><i class="fas fa-random"></i> New Type</a></td>
+                    <td> <a onclick="showInPopup('@Url.Action("AddOrEdit","PaymentBankingTypes",new { id=item.Id},Context.Request.Scheme)','Update PaymentBankingTypes' )" class="btn btn-sm btn-info text-white"><i class="fas fa-random"></i></a></td>
                 </tr>
             }
         </tbody>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BahokBdDelivery.Data;
 using BahokBdDelivery.Models;
+using static BahokBdDelivery.Helper;
 
 namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
 {
@@ -26,122 +27,184 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
             var applicationDbContext = _context.PaymentBankingOrganization.Include(p => p.PaymentBankingType);
             return View(await applicationDbContext.ToListAsync());
         }
-
-        // GET: SuperAdmin/PaymentBankingOrganizations/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        [NoDirectAccess]
+        public async Task<IActionResult> AddOrEdit(Guid id)
         {
-            if (id == null)
+            if (id == Guid.Parse("00000000-0000-0000-0000-000000000000"))
             {
-                return NotFound();
+                ViewData["TypeId"] = new SelectList(_context.PaymentBankingType, "Id", "BankingMethodName");
+                return View(new PaymentBankingOrganization());
             }
 
-            var paymentBankingOrganization = await _context.PaymentBankingOrganization
-                .Include(p => p.PaymentBankingType)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (paymentBankingOrganization == null)
+            else
             {
-                return NotFound();
-            }
-
-            return View(paymentBankingOrganization);
-        }
-
-        // GET: SuperAdmin/PaymentBankingOrganizations/Create
-        public IActionResult Create()
-        {
-            ViewData["PaymentBankingTypeId"] = new SelectList(_context.PaymentBankingType, "Id", "BankingMethodName");
-            return View();
-        }
-
-        // POST: SuperAdmin/PaymentBankingOrganizations/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( PaymentBankingOrganization paymentBankingOrganization)
-        {
-            if (ModelState.IsValid)
-            {
-                paymentBankingOrganization.Id = Guid.NewGuid();
-                _context.Add(paymentBankingOrganization);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["PaymentBankingTypeId"] = new SelectList(_context.PaymentBankingType, "Id", "BankingMethodName", paymentBankingOrganization.PaymentBankingTypeId);
-            return View(paymentBankingOrganization);
-        }
-
-        // GET: SuperAdmin/PaymentBankingOrganizations/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var paymentBankingOrganization = await _context.PaymentBankingOrganization.FindAsync(id);
-            if (paymentBankingOrganization == null)
-            {
-                return NotFound();
-            }
-            ViewData["PaymentBankingTypeId"] = new SelectList(_context.PaymentBankingType, "Id", "BankingMethodName", paymentBankingOrganization.PaymentBankingTypeId);
-            return View(paymentBankingOrganization);
-        }
-
-        // POST: SuperAdmin/PaymentBankingOrganizations/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, PaymentBankingOrganization paymentBankingOrganization)
-        {
-            if (id != paymentBankingOrganization.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                var bankModel = await _context.PaymentBankingOrganization.FindAsync(id);
+                if (bankModel == null)
                 {
-                    _context.Update(paymentBankingOrganization);
+                    return NotFound();
+                }
+                ViewData["TypeId"] = new SelectList(_context.PaymentBankingType, "Id", "BankingMethodName", bankModel.PaymentBankingTypeId);
+                return View(bankModel);
+            }
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddOrEdit(Guid id, PaymentBankingOrganization bank)
+        {
+            if (ModelState.IsValid)
+            {
+                if (id == Guid.Parse("00000000-0000-0000-0000-000000000000"))
+                {
+                    PaymentBankingOrganization entity = new PaymentBankingOrganization();
+                    entity.Id = Guid.NewGuid();
+                    entity.OrganizationName = bank.OrganizationName;
+                    entity.PaymentBankingTypeId = bank.PaymentBankingTypeId;
+                    _context.Add(entity);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+
+                else
                 {
-                    if (!PaymentBankingOrganizationExists(paymentBankingOrganization.Id))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(bank);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!PaymentBankingOrganizationExists(bank.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAllBank", _context.PaymentBankingOrganization.Include(c => c.PaymentBankingType).ToList()) });
             }
-            ViewData["PaymentBankingTypeId"] = new SelectList(_context.PaymentBankingType, "Id", "BankingMethodName", paymentBankingOrganization.PaymentBankingTypeId);
-            return View(paymentBankingOrganization);
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", bank) });
+
         }
+
+
+        // GET: SuperAdmin/PaymentBankingOrganizations/Details/5
+        //public async Task<IActionResult> Details(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var paymentBankingOrganization = await _context.PaymentBankingOrganization
+        //        .Include(p => p.PaymentBankingType)
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (paymentBankingOrganization == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(paymentBankingOrganization);
+        //}
+
+        //// GET: SuperAdmin/PaymentBankingOrganizations/Create
+        //public IActionResult Create()
+        //{
+        //    ViewData["PaymentBankingTypeId"] = new SelectList(_context.PaymentBankingType, "Id", "BankingMethodName");
+        //    return View();
+        //}
+
+        //// POST: SuperAdmin/PaymentBankingOrganizations/Create
+        //// To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        //// more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create( PaymentBankingOrganization paymentBankingOrganization)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        paymentBankingOrganization.Id = Guid.NewGuid();
+        //        _context.Add(paymentBankingOrganization);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["PaymentBankingTypeId"] = new SelectList(_context.PaymentBankingType, "Id", "BankingMethodName", paymentBankingOrganization.PaymentBankingTypeId);
+        //    return View(paymentBankingOrganization);
+        //}
+
+        //// GET: SuperAdmin/PaymentBankingOrganizations/Edit/5
+        //public async Task<IActionResult> Edit(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var paymentBankingOrganization = await _context.PaymentBankingOrganization.FindAsync(id);
+        //    if (paymentBankingOrganization == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ViewData["PaymentBankingTypeId"] = new SelectList(_context.PaymentBankingType, "Id", "BankingMethodName", paymentBankingOrganization.PaymentBankingTypeId);
+        //    return View(paymentBankingOrganization);
+        //}
+
+        //// POST: SuperAdmin/PaymentBankingOrganizations/Edit/5
+        //// To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        //// more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(Guid id, PaymentBankingOrganization paymentBankingOrganization)
+        //{
+        //    if (id != paymentBankingOrganization.Id)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            _context.Update(paymentBankingOrganization);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!PaymentBankingOrganizationExists(paymentBankingOrganization.Id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["PaymentBankingTypeId"] = new SelectList(_context.PaymentBankingType, "Id", "BankingMethodName", paymentBankingOrganization.PaymentBankingTypeId);
+        //    return View(paymentBankingOrganization);
+        //}
 
         // GET: SuperAdmin/PaymentBankingOrganizations/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Delete(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var paymentBankingOrganization = await _context.PaymentBankingOrganization
-                .Include(p => p.PaymentBankingType)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (paymentBankingOrganization == null)
-            {
-                return NotFound();
-            }
+        //    var paymentBankingOrganization = await _context.PaymentBankingOrganization
+        //        .Include(p => p.PaymentBankingType)
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (paymentBankingOrganization == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(paymentBankingOrganization);
-        }
+        //    return View(paymentBankingOrganization);
+        //}
 
         // POST: SuperAdmin/PaymentBankingOrganizations/Delete/5
         [HttpPost, ActionName("Delete")]

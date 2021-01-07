@@ -1,0 +1,56 @@
+﻿@model IEnumerable<BahokBdDelivery.Models.MarchentProfileDetail>
+
+@if (Model != null)
+{
+    <table class="table table-scripted">
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="width:15px"><img src="~/@item.Image" style="height:20px;width:20px; margin-top:8px;" /></td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)<br />
+                        @Html.DisplayFor(modelItem => item.Phone),@Html.DisplayFor(modelItem => item.Email)<br />
+                        @if (item.Status)
+                        {
+                            <span class="text-success">Enable</span>
+                        }
+                        else
+                        {
+                            <span class="text-warning">Disable</span>
+                        }
+                    </td>
+
+
+                    <td style="width:200px">
+                        <a onclick="showInPopup('@Url.Action("AddCharge", "MarchentCharge", new { id = item.Id }, Context.Request.Scheme)','Marchent Charge Details' )" class="btn btn-sm btn-info text-white"><i class="fas fa-dollar-sign"></i></a>
+                        <a onclick="showInPopup('@Url.Action("AddOrEdit", "MarchentProfileDetails", new { id = item.Id }, Context.Request.Scheme)','Marchent Profile Details' )" class="btn btn-sm btn-info text-white"><i class="fas fa-random"></i></a>
+
+                        <a asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a>
+                        <a asp-action="Approve" asp-route-id="@item.Id"><i class="fas fa-check"></i></a>
+                    </td>
+
+
+
+
+                </tr>
+
+            }
+
+        </tbody>
+    </table>
+}
+@section Scripts
+{
+    <script>
+        $(function(){
+            var approve = '@ViewBag.approve';
+            if (approve != null) {
+                toastr.success(approve);
+            }
+
+        });
+    </script>
+}
+

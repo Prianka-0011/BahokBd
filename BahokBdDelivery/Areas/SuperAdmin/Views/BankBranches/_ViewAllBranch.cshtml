@@ -1,0 +1,20 @@
+﻿@model IEnumerable<BahokBdDelivery.Models.BankBranch>
+
+@if (Model != null)
+{
+    <table class="table table-responsive table-striped">
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td style="width:1050px;">
+                        @Html.DisplayFor(modelItem => item.BranchName)<br />
+                        @Html.DisplayFor(modelItem => item.Bank.OrganizationName)
+                    </td>
+                    <td> <a onclick="showInPopup('@Url.Action("AddOrEdit","BankBranches",new { id=item.Id},Context.Request.Scheme)','Update Branch' )" class="btn btn-sm btn-info text-white"><i class="fas fa-random"></i></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}    

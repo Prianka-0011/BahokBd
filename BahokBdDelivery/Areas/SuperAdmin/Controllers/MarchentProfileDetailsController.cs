@@ -16,6 +16,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using static BahokBdDelivery.Helper;
 
 namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
 {
@@ -105,32 +106,31 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
         // GET: SuperAdmin/MarchentProfileDetail/Details/5
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Details(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var MarchentProfileDetail = await _context.MarchentProfileDetail
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (MarchentProfileDetail == null)
-            {
-                return NotFound();
-            }
+        //    var MarchentProfileDetail = await _context.MarchentProfileDetail
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (MarchentProfileDetail == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(MarchentProfileDetail);
-        }
+        //    return View(MarchentProfileDetail);
+        //}
 
-        // GET: SuperAdmin/MarchentProfileDetail/Create
+        //// GET: SuperAdmin/MarchentProfileDetail/Create
         public IActionResult Create()
         {
+            ViewData["TypeId"] = new SelectList(_context.PaymentBankingType, "Id", "BankingMethodName");
             return View();
         }
 
-        // POST: SuperAdmin/MarchentProfileDetail/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MarchentProfileDetailVm vm)
@@ -141,7 +141,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                 MarchentProfileDetail entity = new MarchentProfileDetail();
                 var samePhone = _context.MarchentProfileDetail.Where(c => c.Phone == vm.Phone);
                 var count = samePhone.Count();
-                if (count>0)
+                if (count > 0)
                 {
                     ViewBag.error = "The phone number already exist";
                     return View(vm);
@@ -196,48 +196,92 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         }
 
         // GET: SuperAdmin/MarchentProfileDetail/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        [NoDirectAccess]
+        public async Task<IActionResult> AddOrEdit(Guid id)
         {
-            if (id == null)
+            if (id == Guid.Parse("00000000-0000-0000-0000-000000000000"))
             {
-                return NotFound();
+                ViewData["TypeId"] = new SelectList(_context.PaymentBankingType, "Id", "BankingMethodName");
+                return View(new MarchentProfileDetailVm());
             }
-            MarchentProfileDetailVm vm = new MarchentProfileDetailVm();
-            var entity = await _context.MarchentProfileDetail.FindAsync(id);
-            if (vm == null)
+
+            else
             {
-                return NotFound();
+                MarchentProfileDetailVm vm = new MarchentProfileDetailVm();
+                var entity = await _context.MarchentProfileDetail.FindAsync(id);
+                var BankType = await _context.PaymentBankingType.FindAsync(id);
+                if (vm == null)
+                {
+                    return NotFound();
+                }
+                vm.Id = entity.Id;
+                vm.Name = entity.Name;
+                vm.Email = entity.Email;
+                vm.Phone = entity.Phone;
+                vm.BusinessName = entity.BusinessName;
+                vm.BusinessLink = entity.BusinessLink;
+                vm.BusinessAddress = entity.BusinessAddress;
+                vm.AccountName = entity.AccountName;
+                vm.AccountNumber = entity.AccountNumber;
+                vm.LastIpAddress = entity.LastIpAddress;
+                vm.DateTime = entity.CreateDateTime;
+                vm.DisplayImage = entity.Image;
+                vm.DisplayLogo = entity.Logo;
+                vm.Status = entity.Status;
+                var marchant = _context.MarchentPaymentDetails.FirstOrDefault(c => c.MarchentId == entity.Id);
+                var odlPaymentType = _context.PaymentBankingType.FirstOrDefault(c => c.Id == marchant.PaymentTypeId);
+                vm.OdlPaymentTypeName = odlPaymentType.BankingMethodName;
+                var odlBank = _context.PaymentBankingOrganization.FirstOrDefault(c => c.Id == marchant.PaymentNameId);
+                vm.OdlBankName = odlBank.OrganizationName;
+                var odlBranch = _context.BankBranch.FirstOrDefault(c => c.Id == marchant.BranchId);
+                vm.OdlBranchName = odlBranch.BranchName;
+                vm.OdlRouting = marchant.RoutingName;
+                ViewData["TypeId"] = new SelectList(_context.PaymentBankingType, "Id", "BankingMethodName");
+                return View(vm);
             }
-            vm.Name = entity.Name;
-            vm.Email = entity.Email;
-            vm.Phone = entity.Phone;
-            vm.BusinessName = entity.BusinessName;
-            vm.BusinessLink = entity.BusinessLink;
-            vm.BusinessAddress = entity.BusinessAddress;
-            vm.AccountName = entity.AccountName;
-            vm.AccountNumber = entity.AccountNumber;
-            vm.LastIpAddress = entity.LastIpAddress;
-            vm.DateTime = entity.CreateDateTime;
-            vm.DisplayImage = entity.Image;
-            vm.DisplayLogo = entity.Logo;
-            vm.Status = entity.Status;
-            var marchant = _context.MarchentPaymentDetails.FirstOrDefault(c => c.MarchentId == entity.Id);
-            var odlPaymentType = _context.PaymentBankingType.FirstOrDefault(c => c.Id == marchant.PaymentTypeId);
-            vm.OdlPaymentTypeName = odlPaymentType.BankingMethodName;
-            var odlBank = _context.PaymentBankingOrganization.FirstOrDefault(c => c.Id == marchant.PaymentNameId);
-            vm.OdlBankName = odlBank.OrganizationName;
-            var odlBranch = _context.BankBranch.FirstOrDefault(c => c.Id == marchant.BranchId);
-            vm.OdlBranchName = odlBranch.BranchName;
-            vm.OdlRouting = marchant.RoutingName;
-            return View(vm);
         }
+        //public async Task<IActionResult> Edit(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    MarchentProfileDetailVm vm = new MarchentProfileDetailVm();
+        //    var entity = await _context.MarchentProfileDetail.FindAsync(id);
+        //    if (vm == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    vm.Name = entity.Name;
+        //    vm.Email = entity.Email;
+        //    vm.Phone = entity.Phone;
+        //    vm.BusinessName = entity.BusinessName;
+        //    vm.BusinessLink = entity.BusinessLink;
+        //    vm.BusinessAddress = entity.BusinessAddress;
+        //    vm.AccountName = entity.AccountName;
+        //    vm.AccountNumber = entity.AccountNumber;
+        //    vm.LastIpAddress = entity.LastIpAddress;
+        //    vm.DateTime = entity.CreateDateTime;
+        //    vm.DisplayImage = entity.Image;
+        //    vm.DisplayLogo = entity.Logo;
+        //    vm.Status = entity.Status;
+        //    var marchant = _context.MarchentPaymentDetails.FirstOrDefault(c => c.MarchentId == entity.Id);
+        //    var odlPaymentType = _context.PaymentBankingType.FirstOrDefault(c => c.Id == marchant.PaymentTypeId);
+        //    vm.OdlPaymentTypeName = odlPaymentType.BankingMethodName;
+        //    var odlBank = _context.PaymentBankingOrganization.FirstOrDefault(c => c.Id == marchant.PaymentNameId);
+        //    vm.OdlBankName = odlBank.OrganizationName;
+        //    var odlBranch = _context.BankBranch.FirstOrDefault(c => c.Id == marchant.BranchId);
+        //    vm.OdlBranchName = odlBranch.BranchName;
+        //    vm.OdlRouting = marchant.RoutingName;
+        //    return View(vm);
+        //}
 
         // POST: SuperAdmin/MarchentProfileDetail/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, MarchentProfileDetailVm vm)
+        public async Task<IActionResult> AddOrEdit(Guid id, MarchentProfileDetailVm vm)
         {
             if (id != vm.Id)
             {

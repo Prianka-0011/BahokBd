@@ -1,62 +1,56 @@
 ﻿@model BahokBdDelivery.ViewModels.MarchentChargeVm
 @{
     ViewData["Title"] = "AddCharge";
+    Layout = null;
 }
-<div class="row">
-    <div class="col-12 col-lg-12">
-        <div class="card mb-4">
-            <div class="card-header ">
-                <h2>Aprove</h2>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-10  col-12 col-lg-10">
 
-                        <table class="table-responsive table table-striped" id="AreaList">
-                            <tr>
-                                <th>
-                                    <button class="btn btn-success" onclick='selectAll()'><i class="far fa-check-square"></i></button>
-                                    <button class="btn btn-danger" onclick='unSelectAll()'><i class="fas fa-times"></i></button>
+<div class="card mb-4">
+    <div class="card-header ">
+        <h2>Add charge</h2>
+    </div>
+    <div class="card-body">
+        <table class="table-responsive table table-striped" id="AreaList">
+            <tr>
+                <th>
+                    <button class="btn btn-success" onclick='selectAll()'><i class="far fa-check-square"></i></button>
+                    <button class="btn btn-danger" onclick='unSelectAll()'><i class="fas fa-times"></i></button>
 
-                                </th>
-                                <th>Area</th>
-                                <th>Base Charge</th>
-                                <th>Increase Charge/kg</th>
-                            </tr>
-                            @foreach (var area in ViewBag.deiveryArea)
-                            {
-                                <tr>
+                </th>
+                <th>Area</th>
+                <th>Base Charge</th>
+                <th>Increase Charge/kg</th>
+            </tr>
+            @foreach (var area in ViewBag.deiveryArea)
+            {
+                <tr>
 
-                                    <td> <input id="AreaId" type="checkbox" value="@area.Id" class="AreaId1" name="AreaCheck" checked="@area.Status" /></td>
-                                    <td>
-                                        <label>@area.Area</label>
-                                        <input type="hidden" id="areaName" value="@area.Area" />
-                                    </td>
-                                    <td>
-                                        <input id="base" class="base form-control" value="@area.BaseChargeAmount" />
-                                        <input type="hidden" id="marchentId" value="@Model.MarchentId" />
-                                    </td>
+                    <td> <input id="AreaId" type="checkbox" value="@area.Id" class="AreaId1" name="AreaCheck" checked="@area.Status" /></td>
+                    <td>
+                        <label>@area.Area</label>
+                        <input type="hidden" id="areaName" value="@area.Area" />
+                    </td>
+                    <td>
+                        <input id="base" class="base form-control" value="@area.BaseChargeAmount" />
+                        <input type="hidden" id="marchentId" value="@Model.MarchentId" />
+                    </td>
 
-                                    <td>
-                                        <input id="inc" class="inc form-control" value="@area.IncreaseChargePerKg" />
-                                    </td>
+                    <td>
+                        <input id="inc" class="inc form-control" value="@area.IncreaseChargePerKg" />
+                    </td>
 
 
-                                </tr>
-                            }
-                            <tr>
-                                <td> <button type="button" id="addButton" class="btn btn-info mt-3">Add</button></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+                </tr>
+            }
+            <tr>
+                <td> <button type="button" onclick='addButton()' class="btn btn-info mt-3">Add Charge</button></td>
+            </tr>
+        </table>
     </div>
 </div>
 
 
-@section Scripts {
+
+@*@section Scripts {
     <script type="text/javascript">
 
         function selectAll() {
@@ -99,9 +93,9 @@
                         type: 'POST',
                         data: { "postArrItem": arrItem },
                         success: function (response) {
-                         
-                          toastr.success("Successfully Charge Add");
-                          
+
+                            toastr.success("Successfully Charge Add");
+
                         }
                     })
                     console.log("prianka", JSON.stringify(arrItem));
@@ -111,4 +105,4 @@
 
         })
     </script>
-}
+}*@

@@ -11,18 +11,15 @@
                Create Type
             </div>
             <div class="card-body">
-                <form asp-action="AddOrEdit"asp-route-id="@Model.Id" onsubmit="return jQueryAjaxPost(this);">
+                <form asp-action="AddOrEdit"asp-route-id="@Model.Id" onsubmit="return jQueryAjaxPost(this);" autocomplete="off">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
+                        <input type="hidden" asp-for="Id" />
                         <label asp-for="BankingMethodName" class="control-label"></label>
                         <input asp-for="BankingMethodName" class="form-control" />
                         <span asp-validation-for="BankingMethodName" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="Status"></label>
-                        <input asp-for="Status" type="checkbox" />
-                        <span asp-validation-for="Status"></span>
-                    </div>
+                 
                     <div class="form-group">
                         <input type="submit" value="Submit" class="btn btn-primary" />
                     </div>

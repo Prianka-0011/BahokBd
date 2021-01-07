@@ -2,56 +2,14 @@
 
 @{
     ViewData["Title"] = "Index";
-    int i = 1;
+    //  int i = 1;
 }
-
-<div class="row">
-    <div class="col-12 col-lg-8 col-md-8 ">
-        <div class="card mb-4">
-            <div class="card-header">
-                <h2 class="">Manage Area & Price</h2>
-                <a asp-action="Create" >Create New</a>
-            </div>
-            <div class="card-body">
-                <table class="table table-responsive table-striped">
-                    <thead>
-                        <tr>
-                            <th>Serial No</th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.BranchName)
-                            </th>
-                            @*<th>
-                                @Html.DisplayNameFor(model => model.RoutingName)
-                            </th>*@
-                            <th>
-                                @Html.DisplayNameFor(model => model.Bank)
-                            </th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                        <tr>
-                            <td>@i</td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.BranchName)
-                            </td>
-                            @*<td>
-                                @Html.DisplayFor(modelItem => item.RoutingName)
-                            </td>*@
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Bank.OrganizationName)
-                            </td>
-                            
-                                <partial name="_ButtonPartial" model="@item.Id" />
-                            
-                        </tr>
-                            i++;
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<div class="card mb-4">
+    <div class="card-header ">
+        <h2>Manage Branch</h2>
+        <a onclick="showInPopup('@Url.Action("AddOrEdit","BankBranches",null,Context.Request.Scheme)','New Branch' )" class="btn  text-black-50"><i class="fas fa-random"></i> New Branch</a>
+    </div>
+    <div id="view-all" class="card-body">
+        @await Html.PartialAsync("_ViewAllBranch", Model)
     </div>
 </div>

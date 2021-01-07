@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BahokBdDelivery.Data;
 using BahokBdDelivery.Models;
+using static BahokBdDelivery.Helper;
 
 namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
 {
@@ -25,7 +26,68 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         {
             return View(await _context.DeliveryAreaPrices.ToListAsync());
         }
+        [NoDirectAccess]
+        public async Task<IActionResult> AddOrEdit(Guid id)
+        {
+            if (id == Guid.Parse("00000000-0000-0000-0000-000000000000"))
+            {
+            
+                return View(new DeliveryAreaPrices());
+            }
 
+            else
+            {
+                var deliveryAreaModel = await _context.DeliveryAreaPrices.FindAsync(id);
+                if (deliveryAreaModel == null)
+                {
+                    return NotFound();
+                }
+                
+                return View(deliveryAreaModel);
+            }
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddOrEdit(Guid id, DeliveryAreaPrices deliveryarea)
+        {
+            if (ModelState.IsValid)
+            {
+                if (id == Guid.Parse("00000000-0000-0000-0000-000000000000"))
+                {
+                    DeliveryAreaPrices entity = new DeliveryAreaPrices();
+                    entity.Id = Guid.NewGuid();
+                    entity.Area = deliveryarea.Area;
+                    entity.BaseChargeAmount = deliveryarea.BaseChargeAmount;
+                    entity.IncreaseChargePerKg = deliveryarea.IncreaseChargePerKg;
+                    _context.Add(entity);
+                    await _context.SaveChangesAsync();
+                }
+
+                else
+                {
+                    try
+                    {
+                        _context.Update(deliveryarea);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!DeliveryAreaPricesExists(deliveryarea.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                }
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAllArea", _context.DeliveryAreaPrices.ToList()) });
+            }
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", deliveryarea) });
+
+        }
         // GET: SuperAdmin/DeliveryAreaPrices/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
