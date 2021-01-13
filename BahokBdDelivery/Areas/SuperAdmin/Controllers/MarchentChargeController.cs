@@ -61,11 +61,61 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                 }
 
                  _context.SaveChanges();
+                ViewBag.deiveryArea = _context.DeliveryAreaPrices.ToList();
                 ViewBag.charge = "Charge Add Successfully";
-                return RedirectToAction("AddCharge");
+                return Ok();
             }
             return Ok();
-           
+
+        }
+        [HttpGet]
+        public IActionResult EditCharge(Guid id)
+        {
+            //var marMarchentCharge = new MarchentChargeVm();
+            //marMarchentCharge.MarchentId = id;
+            ViewBag.editMarchentCharge = _context.MarchentCharge.Where(c=>c.MarchentId==id).ToList();
+            //ViewBag.deiveryArea = _context.DeliveryAreaPrices.ToList();
+            return View(/*marMarchentCharge*/);
+
+        }
+        [HttpPost("/MarchentCharge/PostEditMArchentCharge")]
+        public ActionResult PostEditMarchentCharge(List<MarchentChargeVm> postArrItem)
+        {
+           // MarchentCharge charge;
+
+            if (postArrItem != null)
+            {
+                foreach (var item in postArrItem)
+                {
+                    var areaId = _context.MarchentCharge.FirstOrDefault(c =>c.MarchentId == item.MarchentId);
+                    if (areaId != null)
+                    {
+
+                        areaId.IncreaseCharge = item.IncreaseChargePerKg;
+                        areaId.BaseCharge = item.BaseChargeAmount;
+                        areaId.Location = item.Area;
+                        _context.MarchentCharge.Update(areaId);
+                    }
+                    //else
+                    //{
+                    //    charge = new MarchentCharge();
+                    //    charge.MarchentId = item.MarchentId;
+                    //    charge.IncreaseCharge = item.IncreaseChargePerKg;
+                    //    charge.BaseCharge = item.BaseChargeAmount;
+                    //    charge.DeliveryAreaPriceId = item.Id;
+                    //    charge.Location = item.Area;
+                    //    _context.MarchentCharge.Add(charge);
+                    //}
+
+                    // mProfie = _context.MarchentProfileDetail.Find(item.MarchentId);
+                }
+
+                _context.SaveChanges();
+                ViewBag.deiveryArea = _context.DeliveryAreaPrices.ToList();
+                ViewBag.charge = "Charge Add Successfully";
+                return Ok();
+            }
+            return Ok();
         }
     }
 }

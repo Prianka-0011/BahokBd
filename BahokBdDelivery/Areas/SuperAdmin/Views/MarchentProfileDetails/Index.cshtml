@@ -15,55 +15,6 @@
         @await Html.PartialAsync("_ViewAllMarchent", Model)
     </div>
 </div>
-@*<div class="row">
-    <div class="col-12 col-lg-12 ">
-        <div class="card mb-4">
-            <div class="card-header">
-                <h2>Manage Merchent</h2>
-                <a class="text-decoration-none" asp-action="Create">create</a>
-            </div>
-            <div class="card-body">
-                <table class="table table-scripted">
-
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td style="width:15px"><img src="~/@item.Image" style="height:20px;width:20px; margin-top:8px;" /></td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Name)<br />
-                                    @Html.DisplayFor(modelItem => item.Phone),@Html.DisplayFor(modelItem => item.Email)
-
-                                </td>
-
-
-                                <td style="width:80px">
-                                    <a  asp-action="AddCharge" asp-route-id="@item.Id" asp-controller="MarchentCharge"><i class="fas fa-dollar-sign"></i></a>
-                                    <a  asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a>
-                                    <a  asp-action="Approve" asp-route-id="@item.Id"><i class="fas fa-check"></i></a>
-                                </td>
-                                
-                                @if (item.Status)
-                                {
-                                    <td class="text-success">Enable</td>
-                                }
-                                else
-                                {
-                                    <td class="text-warning">Disable</td>
-                                }
-                                <partial name="_ButtonPartial" model="@item.Id" />
-
-
-                            </tr>
-                           
-                        }
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>*@
 
 @section Scripts
 {

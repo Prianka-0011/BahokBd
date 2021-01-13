@@ -12,11 +12,11 @@ using static BahokBdDelivery.Helper;
 namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
 {
     [Area("SuperAdmin")]
-    public class BankBranchesController : Controller
+    public class BranchesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public BankBranchesController(ApplicationDbContext context)
+        public BranchesController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -24,7 +24,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         // GET: SuperAdmin/BankBranches
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.BankBranch.Include(b => b.Bank);
+            var applicationDbContext = _context.Branch;
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -33,34 +33,34 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         {
             if (id == Guid.Parse("00000000-0000-0000-0000-000000000000"))
             {
-                ViewData["BankId"] = new SelectList(_context.PaymentBankingOrganization, "Id", "OrganizationName");
-                return View(new BankBranch());
+                
+                return View(new Branch());
             }
                 
             else
             {
-                var branchModel = await _context.BankBranch.FindAsync(id);
+                var branchModel = await _context.Branch.FindAsync(id);
                 if (branchModel == null)
                 {
                     return NotFound();
                 }
-                ViewData["BankId"] = new SelectList(_context.PaymentBankingOrganization, "Id", "OrganizationName", branchModel.BankId);
+                
                 return View(branchModel);
             }
 
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddOrEdit(Guid id, BankBranch branch)
+        public async Task<IActionResult> AddOrEdit(Guid id, Branch branch)
         {
             if (ModelState.IsValid)
             {
                 if (id == Guid.Parse("00000000-0000-0000-0000-000000000000"))
                 {
-                    BankBranch entity = new BankBranch();
+                    Branch entity = new Branch();
                     entity.Id = Guid.NewGuid();
-                    entity.BranchName = branch.BranchName;
-                    entity.BankId = branch.BankId;
+                    entity.Name = branch.Name;
+                    
                     _context.Add(entity);
                     await _context.SaveChangesAsync();
                 }
@@ -84,40 +84,41 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                         }
                     }
                 }
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAllBranch", _context.BankBranch.Include(c=>c.Bank).ToList()) });
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAllBranch", _context.Branch.ToList()) });
             }
             return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", branch) });
 
         }
 
         // GET: SuperAdmin/BankBranches/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Delete(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var bankBranch = await _context.BankBranch
-                .Include(b => b.Bank)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (bankBranch == null)
-            {
-                return NotFound();
-            }
+        //    var bankBranch = await _context.BankBranch
+        //        .Include(b => b.Bank)
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (bankBranch == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(bankBranch);
-        }
+        //    return View(bankBranch);
+        //}
 
         // POST: SuperAdmin/BankBranches/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[ ActionName("Delete")]
+        [HttpGet]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var bankBranch = await _context.BankBranch.FindAsync(id);
-            _context.BankBranch.Remove(bankBranch);
+            var bankBranch = await _context.Branch.FindAsync(id);
+            _context.Branch.Remove(bankBranch);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAllBranch", _context.Branch.ToList()) });
         }
 
         private bool BankBranchExists(Guid id)

@@ -12,16 +12,16 @@ function closeNav() {
 }
 function openNavType() {
     document.getElementById("side-drawer").style.width = "400px";
-   
-    
+
+
 }
 showInPopup = (url, title) => {
-    
+
     $.ajax({
         type: 'GET',
         url: url,
         success: function (res) {
-            document.getElementById("side-drawer").style.width = "600px";
+            document.getElementById("side-drawer").style.width = "auto";
             $('#side-drawer .card-body').html(res);
             $('#side-drawer .card-title').html(title);
             $.ajax({
@@ -36,7 +36,7 @@ showInPopup = (url, title) => {
                         console.log(s);
                         $("#Type").append(s);
                         $("#Type").change(function () {
-                            if ($(this).val() == "841cc88d-c86f-4359-a9be-3c848114fb49") {
+                            if ($(this).val() == "c85a689b-e845-492a-8a00-c360ac19b63e") {
                                 $('#hideDiv').show();
                                 $('#Route').attr('required', '');
                                 $('#Route').attr('data-error', 'This field is required.');
@@ -98,125 +98,195 @@ function closeNavType() {
     document.getElementById("tablebody").style.marginLeft = "0";
     $('#side-drawer .card-body').html('');
     $('#side-drawer .card-title').html('');
-    
+
 }
-//Add Marchet Charge
-function selectAll() {
-    $("#AreaList tr").each(function (row, tr) {
-        $(this).closest('tr').find('.AreaId1').prop('checked', true);
-    });
-}
-function unSelectAll() {
-    $("#AreaList tr").each(function (row, tr) {
-        var isSelected = $(this).closest('tr').find('.AreaId1').is(":checked", true);
-        if (isSelected) {
-            $(this).closest('tr').find('.AreaId1').prop('checked', false);
-        }
-
-    });
-}
-function addButton() {
-    var arrItem = new Array();
-
-    $("#AreaList tr").each(function (row, tr) {
-        var isSelected = $(this).closest('tr').find('.AreaId1').is(":checked", true);
-        if (isSelected) {
-            arrItem.push({
-                "Id": $(this).closest('tr').find('#AreaId').val(),
-                "MarchentId": $(this).closest('tr').find('#marchentId').val(),
-                "Area": $(this).closest('tr').find('#areaName').val(),
-                "BaseChargeAmount": $(this).closest('tr').find('#base').val(),
-                "IncreaseChargePerKg": $(this).closest('tr').find('#inc').val(),
-            });
-        }
-
-    })
-    if (arrItem.length != 0) {
-        console.log("piku", arrItem);
-        $.ajax({
-            url: "/MarchentCharge/AddCharge1",
-            type: 'POST',
-            data: { "postArrItem": arrItem },
-            success: function (response) {
-
-                toastr.success("Successfully Charge Add");
-
-            }
-        })
-        console.log("prianka", JSON.stringify(arrItem));
-
-    }
-}
- //Add Marchent
-function bankList() {
-    var d = $("#Type option:selected").val();
-
-    console.log(d);
+//delete
+Delete = (url, title) => {
     $.ajax({
-        url: '/MarchentProfileDetail/GetOrganizationName/?id=' + d,
         type: 'GET',
-        dataType: 'JSON',
-        success: function (data) {
-            console.log(data);
-            $("#Organize").empty();
-            $("#Branch").empty();
-            $.each(data, function (i, obj) {
-                var s = '<option value="' + obj.id + '">' + obj.organizationName + '</option>';
-                //console.log(s);
-                $("#Organize").append(s);
-            });
+        url: url,
+        success: function (res) {
+         
+            if (res.isValid) {
+                $('#view-all').html(res.html)
+                toastr.success("Delete Success");
+            } else {
+                toastr.warning("Delete wrang");
+            }
         },
         error: function (res) {
             console.log(res);
         }
     });
+
+    console.log(res, "check");
 }
-function branchList() {
-    $("#Organize").click(function () {
-        var d = $("#Organize option:selected").val();
+
+
+
+    //Add Marchet Charge
+    function selectAll() {
+        $("#AreaList tr").each(function (row, tr) {
+            $(this).closest('tr').find('.AreaId1').prop('checked', true);
+        });
+    }
+    function unSelectAll() {
+        $("#AreaList tr").each(function (row, tr) {
+            var isSelected = $(this).closest('tr').find('.AreaId1').is(":checked", true);
+            if (isSelected) {
+                $(this).closest('tr').find('.AreaId1').prop('checked', false);
+            }
+
+        });
+    }
+    //Add MArchcent Charge
+    function addButton() {
+        var arrItem = new Array();
+
+        $("#AreaList tr").each(function (row, tr) {
+            var isSelected = $(this).closest('tr').find('.AreaId1').is(":checked", true);
+            if (isSelected) {
+                arrItem.push({
+                    "Id": $(this).closest('tr').find('#AreaId').val(),
+                    "MarchentId": $(this).closest('tr').find('#marchentId').val(),
+                    "Area": $(this).closest('tr').find('#areaName').val(),
+                    "BaseChargeAmount": $(this).closest('tr').find('#base').val(),
+                    "IncreaseChargePerKg": $(this).closest('tr').find('#inc').val(),
+                });
+            }
+
+        })
+        if (arrItem.length != 0) {
+            console.log("piku", arrItem);
+            $.ajax({
+                url: "/MarchentCharge/AddCharge1",
+                type: 'POST',
+                data: { "postArrItem": arrItem },
+                success: function (response) {
+
+                    toastr.success("Successfully Charge Add");
+                    document.getElementById("side-drawer").style.width = "0";
+                }
+            })
+            console.log("prianka", JSON.stringify(arrItem));
+
+        }
+    }
+    //Edit Marchent
+    function editButton() {
+        var arrItem = new Array();
+
+        $("#AreaList tr").each(function (row, tr) {
+            var isSelected = $(this).closest('tr').find('.AreaId1').is(":checked", true);
+            if (isSelected) {
+                arrItem.push({
+                    "Id": $(this).closest('tr').find('#AreaId').val(),
+                    "MarchentId": $(this).closest('tr').find('#marchentId').val(),
+                    "Area": $(this).closest('tr').find('#areaName').val(),
+                    "BaseChargeAmount": $(this).closest('tr').find('#base').val(),
+                    "IncreaseChargePerKg": $(this).closest('tr').find('#inc').val(),
+                });
+            }
+
+        })
+        if (arrItem.length != 0) {
+            console.log("piku", arrItem);
+            $.ajax({
+                url: "/MarchentCharge/PostEditMArchentCharge",
+                type: 'POST',
+                data: { "postArrItem": arrItem },
+                success: function (response) {
+
+                    toastr.success("Successfully Charge Update");
+                    document.getElementById("side-drawer").style.width = "0";
+                }
+            })
+            console.log("prianka", JSON.stringify(arrItem));
+
+        }
+    }
+    //Add Marchent
+
+    function bankList() {
+        var d = $("#Type option:selected").val();
+
         console.log(d);
         $.ajax({
-            url: '/MarchentProfileDetail/GetBranch/?id=' + d,
+            url: '/MarchentProfileDetail/GetOrganizationName/?id=' + d,
             type: 'GET',
             dataType: 'JSON',
             success: function (data) {
-                console.log(data, "prianka");
+                console.log(data);
+                $("#Organize").empty();
                 $("#Branch").empty();
-                //$("#rout").empty();
                 $.each(data, function (i, obj) {
-                    console.log(obj, "mondal");
-                    var s = '<option value="' + obj.id + '">' + obj.branchName + '</option>';
-                    console.log(s, "hdfjhs");
-                    $("#Branch").append(s);
+                    var s = '<option value="' + obj.id + '">' + obj.organizationName + '</option>';
+                    //console.log(s);
+                    $("#Organize").append(s);
                 });
             },
             error: function (res) {
                 console.log(res);
             }
         });
-    });
-}
-var loadImg = function loadImg(event) {
-   
-    var output = document.getElementById('img');
-    output.src = URL.createObjectURL(event.target.files[0]);
-    output.onload = function () {
-        URL.revokeObjectURL(output.src) // free memory
     }
-};
-var loadLogo = function loadLogo(event) {
-    var output = document.getElementById('logo');
-    output.src = URL.createObjectURL(event.target.files[0]);
-    output.onload = function () {
-        URL.revokeObjectURL(output.src) // free memory
+    function branchList() {
+        $("#Organize").click(function () {
+            var d = $("#Organize option:selected").val();
+            console.log(d);
+            $.ajax({
+                url: '/MarchentProfileDetail/GetBranch/?id=' + d,
+                type: 'GET',
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data, "prianka");
+                    $("#Branch").empty();
+                    //$("#rout").empty();
+                    $.each(data, function (i, obj) {
+                        console.log(obj, "mondal");
+                        var s = '<option value="' + obj.id + '">' + obj.branchName + '</option>';
+                        console.log(s, "hdfjhs");
+                        $("#Branch").append(s);
+                    });
+                },
+                error: function (res) {
+                    console.log(res);
+                }
+            });
+        });
     }
-};
-//$('.custom-file-input').on("change", function () {
-//    var fileLabel = $(this).next('.custom-file-label');
-//    var files = $(this)[0].files;
+    var loadImg = function loadImg(event) {
 
-//    if (files.length == 1) {
-//        fileLabel.html(files[0].name)
-//    }
-//});
-//Marchent Profile Detail 
+        var output = document.getElementById('img');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function () {
+            URL.revokeObjectURL(output.src) // free memory
+        }
+    };
+    var loadLogo = function loadLogo(event) {
+        var output = document.getElementById('logo');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function () {
+            URL.revokeObjectURL(output.src) // free memory
+        }
+    };
+
+    Approve = (url, title) => {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function (res) {
+                //var approve = '@ViewBag.approve';
+                //if (approve != null) {
+                //    toastr.success(approve);
+                //}
+                toastr.success("Approve Success");
+            },
+            error: function (res) {
+                console.log(res);
+            }
+        });
+
+        console.log(res, "check");
+    }
+

@@ -13,6 +13,8 @@ namespace BahokBdDelivery.Models
         public string ManagerName { get; set; }
         public string Phone { get; set; }
         public bool? Status { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTimeOffset? CreatedDateTime { get; set; }
 
         public virtual MarchentProfileDetail Marchent { get; set; }
     }

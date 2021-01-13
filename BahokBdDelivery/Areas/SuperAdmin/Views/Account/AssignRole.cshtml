@@ -1,16 +1,23 @@
-﻿<div class="row">
+﻿
+@{
+    ViewData["Title"] = "AssigRole";
+    //  int i = 1;
+    Layout = null;
+}
+
+<div class="row">
     <div class="col-12 col-lg-12">
         <div class="card mb-4">
             <div class="card-header ">
                 <h2>Assign Role</h2>
             </div>
             <div class="card-body">
-                <form asp-action="AssignRole" asp-controller="Account" method="post">
+                <form asp-action="AssignRole" onsubmit="return jQueryAjaxPost(this);" autocomplete="off">
 
                     <div asp-validation-summary="ModelOnly"></div>
                     <label class="text-success">@ViewBag.msg</label>
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-8 offset-md-2">
                             <div class="form-group">
 
                                 <label class="text-white">User List</label>
@@ -25,7 +32,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-8 offset-md-2">
                             <div class="form-group">
                                 <label class="text-white">Role List</label>
                                 <select name="approle" class="form-control">
@@ -39,7 +46,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <div class="col-md-3">
+                        <div class="col-md-4 offset-md-4">
                             <button type="submit" class="btn btn-sm btn-success text-center ml-5">Assign Role</button>
                         </div>
                     </div>

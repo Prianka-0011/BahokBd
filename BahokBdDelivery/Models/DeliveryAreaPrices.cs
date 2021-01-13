@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace BahokBdDelivery.Models
 {
+
     public partial class DeliveryAreaPrices
     {
         public DeliveryAreaPrices()
@@ -17,7 +18,9 @@ namespace BahokBdDelivery.Models
         public decimal BaseChargeAmount { get; set; }
         public decimal IncreaseChargePerKg { get; set; }
         public bool? Status { get; set; }
-        //public bool? IsSelected { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTimeOffset? CreatedDateTime { get; set; }
+
         public virtual ICollection<MarchentCharge> MarchentCharge { get; set; }
     }
 }

@@ -13,7 +13,10 @@ namespace BahokBdDelivery.Models
         public Guid? PaymentNameId { get; set; }
         public Guid? BranchId { get; set; }
         public string RoutingName { get; set; }
-        public virtual BankBranch Branch { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTimeOffset? CreatedDateTime { get; set; }
+
         public virtual MarchentProfileDetail Marchent { get; set; }
     }
 }
+

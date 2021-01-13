@@ -108,7 +108,7 @@
                             <div class="row">
                                 <div class="col-md-6 col-12 col-lg-6">
                                     <div class="form-group">
-                                        <label asp-for="PaymentTypeId" class="control-label"></label>
+                                        <label  class="control-label">PaymentType</label>
                                         <select asp-for="PaymentTypeId" class="form-control" onclick="bankList()" id="Type"></select>
                                         <span asp-validation-for="PaymentTypeId" class="text-danger"></span>
                                     </div>
@@ -133,8 +133,9 @@
                                         </div>
                                         <div class="col-md-6 col-12 col-lg-6 ">
                                             <div class="form-group">
-                                                <label asp-for="BranchId" class="control-label"></label>
-                                                <select asp-for="BranchId" class="form-control" id="Branch"></select>
+                                                <label  class="control-label">Branch</label>
+                                                <input asp-for="BranchId" class="form-control" />
+                                                @*<input asp-for="BranchId" class="form-control" id="Branch"></input>*@
                                                 <span asp-validation-for="BranchId" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -142,7 +143,9 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input type="submit" value="Create" class="btn btn-primary" />                              
+                                <input type="submit" value="Submit" class="btn btn-primary" />   
+                                <a class="btn btn-info" href="#">Send SMS</a>
+                                <a class="btn btn-info" href="#">Send Mail</a>
                             </div>
                         </div>
 

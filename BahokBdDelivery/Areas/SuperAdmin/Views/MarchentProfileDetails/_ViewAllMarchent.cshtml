@@ -25,15 +25,10 @@
 
                     <td style="width:200px">
                         <a onclick="showInPopup('@Url.Action("AddCharge", "MarchentCharge", new { id = item.Id }, Context.Request.Scheme)','Marchent Charge Details' )" class="btn btn-sm btn-info text-white"><i class="fas fa-dollar-sign"></i></a>
-                        <a onclick="showInPopup('@Url.Action("AddOrEdit", "MarchentProfileDetails", new { id = item.Id }, Context.Request.Scheme)','Marchent Profile Details' )" class="btn btn-sm btn-info text-white"><i class="fas fa-random"></i></a>
-
-                        <a asp-action="Edit" asp-route-id="@item.Id"><i class="far fa-edit"></i></a>
-                        <a asp-action="Approve" asp-route-id="@item.Id"><i class="fas fa-check"></i></a>
+                        <a onclick="showInPopup('@Url.Action("Edit", "MarchentProfileDetails", new { id = item.Id }, Context.Request.Scheme)','Marchent Profile Details' )" class="btn btn-sm btn-info text-white"><i class="fas fa-random"></i></a>                       
+                        <a onclick="Approve('@Url.Action("Approve", "MarchentProfileDetails", new { id = item.Id }, Context.Request.Scheme)','Marchent Profile Details')" class="btn btn-sm btn-info text-white"><i class="fas fa-check"></i></a>
+                        <a onclick="showInPopup('@Url.Action("EditCharge", "MarchentCharge", new { id = item.Id }, Context.Request.Scheme)','UpDate Marchent Charge Details')" class="btn btn-sm btn-info text-white"><i class="fas fa-file-invoice-dollar"></i></a>
                     </td>
-
-
-
-
                 </tr>
 
             }
@@ -41,7 +36,7 @@
         </tbody>
     </table>
 }
-@section Scripts
+@*@section Scripts
 {
     <script>
         $(function(){
@@ -52,5 +47,5 @@
 
         });
     </script>
-}
+}*@
 

@@ -48,7 +48,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
             ViewBag.approve = msg;
             return View(await _context.MarchentProfileDetail.ToListAsync());
         }
-        [HttpGet]
+  
         public async Task< IActionResult> Approve(Guid?id)
         {
             var marchent = _context.MarchentProfileDetail.FirstOrDefault(c => c.Id == id);
@@ -105,29 +105,13 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
             TempData["msg"] = "Approve Successfully";
             return RedirectToAction(nameof(Index));
         }
-        // GET: SuperAdmin/MarchentProfileDetail/Details/5
-        //public async Task<IActionResult> Details(Guid? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var MarchentProfileDetail = await _context.MarchentProfileDetail
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (MarchentProfileDetail == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(MarchentProfileDetail);
-        //}
-
+        
         //// GET: SuperAdmin/MarchentProfileDetail/Create
+        [NoDirectAccess]
         public IActionResult Create()
         {
-            ViewData["TypeId"] = new SelectList(_context.PaymentBankingType, "Id", "BankingMethodName");
-            return View();
+           // ViewData["TypeId"] = new SelectList(_context.PaymentBankingType, "Id", "BankingMethodName");
+            return View(new MarchentProfileDetailVm());
         }
 
        
@@ -189,99 +173,56 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                 paymentDetail.RoutingName = vm.RoutingName;
                 _context.MarchentPaymentDetails.Add(paymentDetail);
                 await _context.SaveChangesAsync();
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAllMarchent", _context.MarchentProfileDetail.ToList()) });
 
-                return RedirectToAction(nameof(Index));
+                
             }
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Create", vm) });
+        }
+
+        [NoDirectAccess]
+        public async Task<IActionResult> Edit(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            MarchentProfileDetailVm vm = new MarchentProfileDetailVm();
+            var entity = await _context.MarchentProfileDetail.FindAsync(id);
+            if (vm == null)
+            {
+                return NotFound();
+            }
+            vm.Name = entity.Name;
+            vm.Email = entity.Email;
+            vm.Phone = entity.Phone;
+            vm.BusinessName = entity.BusinessName;
+            vm.BusinessLink = entity.BusinessLink;
+            vm.BusinessAddress = entity.BusinessAddress;
+            vm.AccountName = entity.AccountName;
+            vm.AccountNumber = entity.AccountNumber;
+            vm.LastIpAddress = entity.LastIpAddress;
+            vm.DateTime = entity.CreateDateTime;
+            vm.DisplayImage = entity.Image;
+            vm.DisplayLogo = entity.Logo;
+            vm.Status = entity.Status;
+            var marchant = _context.MarchentPaymentDetails.FirstOrDefault(c => c.MarchentId == entity.Id);
+            var odlPaymentType = _context.PaymentBankingType.FirstOrDefault(c => c.Id == marchant.PaymentTypeId);
+            vm.OdlPaymentTypeName = odlPaymentType.BankingMethodName;
+            var odlBank = _context.PaymentBankingOrganization.FirstOrDefault(c => c.Id == marchant.PaymentNameId);
+            vm.OdlBankName = odlBank.OrganizationName;
+            var odlBranch = _context.BankBranch.FirstOrDefault(c => c.Id == marchant.BranchId);
+            vm.OdlBranchName = odlBranch.BranchName;
+            vm.OdlRouting = marchant.RoutingName;
             return View(vm);
         }
-
-        // GET: SuperAdmin/MarchentProfileDetail/Edit/5
-        [NoDirectAccess]
-        public async Task<IActionResult> AddOrEdit(Guid id)
-        {
-            if (id == Guid.Parse("00000000-0000-0000-0000-000000000000"))
-            {
-                ViewData["TypeId"] = new SelectList(_context.PaymentBankingType, "Id", "BankingMethodName");
-                return View(new MarchentProfileDetailVm());
-            }
-
-            else
-            {
-                MarchentProfileDetailVm vm = new MarchentProfileDetailVm();
-                var entity = await _context.MarchentProfileDetail.FindAsync(id);
-                var BankType = await _context.PaymentBankingType.FindAsync(id);
-                if (vm == null)
-                {
-                    return NotFound();
-                }
-                vm.Id = entity.Id;
-                vm.Name = entity.Name;
-                vm.Email = entity.Email;
-                vm.Phone = entity.Phone;
-                vm.BusinessName = entity.BusinessName;
-                vm.BusinessLink = entity.BusinessLink;
-                vm.BusinessAddress = entity.BusinessAddress;
-                vm.AccountName = entity.AccountName;
-                vm.AccountNumber = entity.AccountNumber;
-                vm.LastIpAddress = entity.LastIpAddress;
-                vm.DateTime = entity.CreateDateTime;
-                vm.DisplayImage = entity.Image;
-                vm.DisplayLogo = entity.Logo;
-                vm.Status = entity.Status;
-                var marchant = _context.MarchentPaymentDetails.FirstOrDefault(c => c.MarchentId == entity.Id);
-                var odlPaymentType = _context.PaymentBankingType.FirstOrDefault(c => c.Id == marchant.PaymentTypeId);
-                vm.OdlPaymentTypeName = odlPaymentType.BankingMethodName;
-                var odlBank = _context.PaymentBankingOrganization.FirstOrDefault(c => c.Id == marchant.PaymentNameId);
-                vm.OdlBankName = odlBank.OrganizationName;
-                var odlBranch = _context.BankBranch.FirstOrDefault(c => c.Id == marchant.BranchId);
-                vm.OdlBranchName = odlBranch.BranchName;
-                vm.OdlRouting = marchant.RoutingName;
-                ViewData["TypeId"] = new SelectList(_context.PaymentBankingType, "Id", "BankingMethodName");
-                return View(vm);
-            }
-        }
-        //public async Task<IActionResult> Edit(Guid? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    MarchentProfileDetailVm vm = new MarchentProfileDetailVm();
-        //    var entity = await _context.MarchentProfileDetail.FindAsync(id);
-        //    if (vm == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    vm.Name = entity.Name;
-        //    vm.Email = entity.Email;
-        //    vm.Phone = entity.Phone;
-        //    vm.BusinessName = entity.BusinessName;
-        //    vm.BusinessLink = entity.BusinessLink;
-        //    vm.BusinessAddress = entity.BusinessAddress;
-        //    vm.AccountName = entity.AccountName;
-        //    vm.AccountNumber = entity.AccountNumber;
-        //    vm.LastIpAddress = entity.LastIpAddress;
-        //    vm.DateTime = entity.CreateDateTime;
-        //    vm.DisplayImage = entity.Image;
-        //    vm.DisplayLogo = entity.Logo;
-        //    vm.Status = entity.Status;
-        //    var marchant = _context.MarchentPaymentDetails.FirstOrDefault(c => c.MarchentId == entity.Id);
-        //    var odlPaymentType = _context.PaymentBankingType.FirstOrDefault(c => c.Id == marchant.PaymentTypeId);
-        //    vm.OdlPaymentTypeName = odlPaymentType.BankingMethodName;
-        //    var odlBank = _context.PaymentBankingOrganization.FirstOrDefault(c => c.Id == marchant.PaymentNameId);
-        //    vm.OdlBankName = odlBank.OrganizationName;
-        //    var odlBranch = _context.BankBranch.FirstOrDefault(c => c.Id == marchant.BranchId);
-        //    vm.OdlBranchName = odlBranch.BranchName;
-        //    vm.OdlRouting = marchant.RoutingName;
-        //    return View(vm);
-        //}
 
         // POST: SuperAdmin/MarchentProfileDetail/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddOrEdit(Guid id, MarchentProfileDetailVm vm)
+        public async Task<IActionResult> Edit(Guid id, MarchentProfileDetailVm vm)
         {
             if (id != vm.Id)
             {
@@ -349,11 +290,10 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                         _context.MarchentPaymentDetails.Add(paymentDetail1);
                     }
                 }
-
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAllMarchent", _context.MarchentProfileDetail.ToList()) });
             }
-            return View(vm);
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Edit", vm) });
         }
 
         // GET: SuperAdmin/MarchentProfileDetail/Delete/5

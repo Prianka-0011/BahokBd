@@ -67,6 +67,13 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         }
         [HttpGet]
         [AllowAnonymous]
+       public IActionResult  Index()
+        {
+            var role = _roleManager.Roles.ToList();
+            return View(role);
+        }
+        [HttpGet]
+        [AllowAnonymous]
         public IActionResult CreateRole()
         {
 
