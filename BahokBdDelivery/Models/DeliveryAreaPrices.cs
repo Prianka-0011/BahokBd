@@ -11,6 +11,7 @@ namespace BahokBdDelivery.Models
         public DeliveryAreaPrices()
         {
             MarchentCharge = new HashSet<MarchentCharge>();
+            MarchentStore = new HashSet<MarchentStore>();
         }
 
         public Guid Id { get; set; }
@@ -22,5 +23,6 @@ namespace BahokBdDelivery.Models
         public DateTimeOffset? CreatedDateTime { get; set; }
 
         public virtual ICollection<MarchentCharge> MarchentCharge { get; set; }
+        public virtual ICollection<MarchentStore> MarchentStore { get; set; }
     }
 }

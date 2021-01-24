@@ -95,19 +95,11 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         // GET: SuperAdmin/PaymentBankingTypes/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var paymentBankingType = await _context.PaymentBankingType.FindAsync(id);
+            _context.PaymentBankingType.Remove(paymentBankingType);
+            await _context.SaveChangesAsync();
 
-            var paymentBankingType = await _context.PaymentBankingType
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (paymentBankingType == null)
-            {
-                return NotFound();
-            }
-
-            return View(paymentBankingType);
+            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _context.PaymentBankingType.ToList()) });
         }
 
         // POST: SuperAdmin/PaymentBankingTypes/Delete/5

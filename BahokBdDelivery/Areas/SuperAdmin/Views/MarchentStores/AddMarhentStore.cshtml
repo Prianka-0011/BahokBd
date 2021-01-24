@@ -1,10 +1,9 @@
 ﻿@model BahokBdDelivery.Models.MarchentStore
 
-
 @{
     ViewData["Title"] = "AddMarhentStore";
+    Layout = null;
 }
-
 
 <div class="card mb-4">
     <div class="card-header ">
@@ -13,68 +12,65 @@
     </div>
     <div class="card-body">
         <div id="StoreForm">
-            <div class="row">
-                <div class="col-md-6 col-12 col-lg-6">
-                    <div class="form-group">
-                        <label class="control-label">Marchent List</label>
-                        <select asp-for="MarchentId" class="form-control" onclick="marchentList()" id="Marchent"></select>
-                        <span asp-validation-for="MarchentId" class="text-danger"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label class="control-label">Manager Name</label>
-                        <input type="text" asp-for="ManagerName" />
-                        <span asp-validation-for="ManagerName" class="text-danger"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div id="container-from">
-
+            <div id="incdiv">
+                <div class="row">
+                    <div class="col-md-12 col-12">
+                        <div class="row">
+                            <div class="col-md-3 offset-md-4">
+                                <h1 class="" style="font-size:20px;font-weight:bold;text-transform:capitalize;margin-top:10px;">Store</h1>
+                            </div>
+                          
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Store Loation</label>
+                                            <select class="form-control"  id="Location"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Store Name</label>
+                                            <input id="SName" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Manager Name</label>
+                                            <input id="MName" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Manager Number</label>
+                                            <input id="MPhone" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12 col-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Store Address</label>
+                                            <textarea class="form-control" id="address"></textarea>
+                                        </div>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="addnew-from">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        @*<table class="table-responsive table table-striped" id="AreaList">
-                <tr>
-                    <th>
-                        <button class="btn btn-success" onclick='selectAll()'><i class="far fa-check-square"></i></button>
-                        <button class="btn btn-danger" onclick='unSelectAll()'><i class="fas fa-times"></i></button>
-
-                    </th>
-                    <th>Area</th>
-                    <th>Base Charge</th>
-                    <th>Increase Charge/kg</th>
-                </tr>
-                @foreach (var area in ViewBag.deiveryArea)
-                {
-                    <tr>
-
-                        <td> <input id="AreaId" type="checkbox" value="@area.Id" class="AreaId1" name="AreaCheck" checked="@area.Status" /></td>
-                        <td>
-                            <label>@area.Area</label>
-                            <input type="hidden" id="areaName" value="@area.Area" />
-                        </td>
-                        <td>
-                            <input id="base" class="base form-control" value="@area.BaseChargeAmount" />
-                            <input type="hidden" id="marchentId" value="@Model.MarchentId" />
-                        </td>
-
-                        <td>
-                            <input id="inc" class="inc form-control" value="@area.IncreaseChargePerKg" />
-                        </td>
-
-
-                    </tr>
-                }
-                <tr>
-                    <td> <button type="button" onclick='addButton()' class="btn btn-info mt-3">Add Charge</button></td>
-                </tr>
-            </table>*@
     </div>
 </div>
-

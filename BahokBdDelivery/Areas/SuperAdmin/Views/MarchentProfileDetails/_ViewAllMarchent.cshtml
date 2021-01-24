@@ -24,8 +24,9 @@
 
 
                     <td style="width:200px">
+                        <a onclick="showInPopup('@Url.Action("AddMarhentStore", "MarchentStores", new { id = item.Id }, Context.Request.Scheme)','Marchent Store Details' )"class="btn btn-sm btn-info text-white"> <i class="fas fa-store"></i></a>
                         <a onclick="showInPopup('@Url.Action("AddCharge", "MarchentCharge", new { id = item.Id }, Context.Request.Scheme)','Marchent Charge Details' )" class="btn btn-sm btn-info text-white"><i class="fas fa-dollar-sign"></i></a>
-                        <a onclick="showInPopup('@Url.Action("Edit", "MarchentProfileDetails", new { id = item.Id }, Context.Request.Scheme)','Marchent Profile Details' )" class="btn btn-sm btn-info text-white"><i class="fas fa-random"></i></a>                       
+                        <a onclick="showInPopup('@Url.Action("Edit", "MarchentProfileDetails", new { id = item.Id }, Context.Request.Scheme)','Marchent Profile Details' )" class="btn btn-sm btn-info text-white"><i class="fas fa-random"></i></a>
                         <a onclick="Approve('@Url.Action("Approve", "MarchentProfileDetails", new { id = item.Id }, Context.Request.Scheme)','Marchent Profile Details')" class="btn btn-sm btn-info text-white"><i class="fas fa-check"></i></a>
                         <a onclick="showInPopup('@Url.Action("EditCharge", "MarchentCharge", new { id = item.Id }, Context.Request.Scheme)','UpDate Marchent Charge Details')" class="btn btn-sm btn-info text-white"><i class="fas fa-file-invoice-dollar"></i></a>
                     </td>

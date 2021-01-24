@@ -29,7 +29,7 @@ namespace BahokBdDelivery.ViewModels
         public string AccountName { get; set; }
         public string AccountNumber { get; set; }
         public string RoutingName { get; set; }
-        public Guid? BranchId { get; set; }
+        public string BranchName { get; set; }
         public int? ProfileStatus { get; set; }
         public string LastIpAddress { get; set; }
         public DateTime DateTime { get; set; }

@@ -40,6 +40,11 @@
     color: #fff;
     text-decoration: none;
 }
+.closebtn1 {
+    font-size: 30px;
+    color: #000;
+    text-decoration: none!important;
+}
 .card h2 {
     font-size: 18px;
     text-transform: capitalize;

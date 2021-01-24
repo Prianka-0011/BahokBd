@@ -138,9 +138,10 @@
                                                 </div>
                                                 <div class="col-md-6 col-12 col-lg-6 ">
                                                     <div class="form-group">
-                                                        <label asp-for="BranchId" class="control-label"></label>
-                                                        <select asp-for="BranchId" class="form-control" id="Branch"></select>
-                                                        <span asp-validation-for="BranchId" class="text-danger"></span>
+                                                        <label asp-for="BranchName" class="control-label"></label>
+                                                        @*<select asp-for="BranchId" class="form-control" id="Branch"></select>*@
+                                                        <input type="text" class="form-control" asp-for="BranchName" />
+                                                        <span asp-validation-for="BranchName" class="text-danger"></span>
                                                     </div>
                                                 </div>
                                             </div>

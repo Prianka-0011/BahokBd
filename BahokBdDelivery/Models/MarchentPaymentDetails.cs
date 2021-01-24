@@ -11,7 +11,7 @@ namespace BahokBdDelivery.Models
         public Guid MarchentId { get; set; }
         public Guid? PaymentTypeId { get; set; }
         public Guid? PaymentNameId { get; set; }
-        public Guid? BranchId { get; set; }
+        public string BranchName { get; set; }
         public string RoutingName { get; set; }
         public string CreatedBy { get; set; }
         public DateTimeOffset? CreatedDateTime { get; set; }

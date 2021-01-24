@@ -90,20 +90,10 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                 {
                    await _userManager.AddToRoleAsync(uName, mRole.Name);
                 }
+                marchent.Status = true;
             }
-            //if (result.Succeeded)
-            //{
 
-
-            //    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            //    var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new { token, email = user.Email }, Request.Scheme);
-            //    var message = new Message(new string[] { user.Email }, "Confirmation email link", confirmationLink, null);
-            //    await _emailSender.SendEmailAsync(message);
-            //    await _userManager.AddToRoleAsync(user, "Visitor");
-            //    return RedirectToAction(nameof(SuccessRegistration));
-            //}
-            TempData["msg"] = "Approve Successfully";
-            return RedirectToAction(nameof(Index));
+            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAllMarchent", _context.MarchentProfileDetail.ToList()) });
         }
         
         //// GET: SuperAdmin/MarchentProfileDetail/Create
@@ -169,7 +159,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                 paymentDetail.MarchentId = entity.Id;
                 paymentDetail.PaymentNameId = vm.PaymentBankingId;
                 paymentDetail.PaymentTypeId = vm.PaymentTypeId;
-                paymentDetail.BranchId = vm.BranchId;
+                paymentDetail.BranchName = vm.BranchName;
                 paymentDetail.RoutingName = vm.RoutingName;
                 _context.MarchentPaymentDetails.Add(paymentDetail);
                 await _context.SaveChangesAsync();
@@ -211,8 +201,8 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
             vm.OdlPaymentTypeName = odlPaymentType.BankingMethodName;
             var odlBank = _context.PaymentBankingOrganization.FirstOrDefault(c => c.Id == marchant.PaymentNameId);
             vm.OdlBankName = odlBank.OrganizationName;
-            var odlBranch = _context.BankBranch.FirstOrDefault(c => c.Id == marchant.BranchId);
-            vm.OdlBranchName = odlBranch.BranchName;
+           // var odlBranch = _context.BankBranch.FirstOrDefault(c => c.Id == marchant.BranchId);
+            vm.OdlBranchName = marchant.BranchName;
             vm.OdlRouting = marchant.RoutingName;
             return View(vm);
         }
@@ -266,7 +256,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
 
                 _context.MarchentProfileDetail.Update(entity);
                 await _context.SaveChangesAsync();
-                if (vm.PaymentTypeId != Guid.Empty && vm.PaymentBankingId != null && vm.BranchId != null)
+                if (vm.PaymentTypeId != Guid.Empty && vm.PaymentBankingId != null && vm.BranchName != null)
                 {
                     var paymentDetail = _context.MarchentPaymentDetails.FirstOrDefault(c => c.MarchentId == entity.Id);
                     if (paymentDetail != null)
@@ -275,7 +265,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                         paymentDetail.MarchentId = entity.Id;
                         paymentDetail.PaymentNameId = vm.PaymentBankingId;
                         paymentDetail.PaymentTypeId = vm.PaymentTypeId;
-                        paymentDetail.BranchId = vm.BranchId;
+                        paymentDetail.BranchName = vm.BranchName;
                         paymentDetail.RoutingName = vm.RoutingName;
                         _context.MarchentPaymentDetails.Update(paymentDetail);
                     }
@@ -285,7 +275,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                         paymentDetail1.MarchentId = entity.Id;
                         paymentDetail1.PaymentNameId = vm.PaymentBankingId;
                         paymentDetail1.PaymentTypeId = vm.PaymentTypeId;
-                        paymentDetail1.BranchId = vm.BranchId;
+                        paymentDetail1.BranchName = vm.BranchName;
                         paymentDetail1.RoutingName = vm.RoutingName;
                         _context.MarchentPaymentDetails.Add(paymentDetail1);
                     }
@@ -350,12 +340,12 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
             var org = _context.PaymentBankingOrganization.Where(o => o.PaymentBankingTypeId == id);
             return Json(org.ToList());
         }
-        [HttpGet("/MarchentProfileDetail/GetBranch")]
-        public IActionResult GetBranch(Guid id)
-        {
-            var dis = _context.BankBranch.Where(x => x.BankId == id);
-            return Json(dis.ToList());
-        }
+        //[HttpGet("/MarchentProfileDetail/GetBranch")]
+        //public IActionResult GetBranch(Guid id)
+        //{
+        //    var dis = _context.BankBranch.Where(x => x.BankId == id);
+        //    return Json(dis.ToList());
+        //}
         private bool MarchentProfileDetailExists(Guid id)
         {
             return _context.MarchentProfileDetail.Any(e => e.Id == id);
