@@ -1,4 +1,52 @@
-﻿
+﻿//import { data } from "jquery";
+//for store Marchent multiple form area are use in so many place
+showInPopupForStore = (url, title) => {
+    $.ajax({
+        type: 'GET',
+        url: url,
+        success: function (res) {
+            document.getElementById("side-drawer").style.width = "auto";
+            $('#side-drawer .card-body').html(res);
+            $('#side-drawer .card-title').html(title);
+            $.ajax({
+                type: 'GET',
+                url: '/MarchentStores/GetArea',
+                dataType: 'JSON',
+                success: function (data) {
+                    //$("#Location").empty();
+
+                    var ddArea = document.createElement("SELECT");
+                    ddArea.setAttribute("class", "form-control");
+                    $.each(data, function (i, obj) {
+                        console.log("piku", obj);
+                        var option = document.createElement("OPTION");
+                        //Set Customer Name in Text part.
+                        option.innerHTML = obj.area;
+
+                        //Set CustomerId in Value part.
+                        option.value = obj.id;
+
+                        //Add the Option element to DropDownList.
+                        ddArea.options.add(option);
+
+                    });
+                    var dvContainer = document.getElementById("Location");
+                    var div = document.createElement("DIV");
+                  
+                    console.log(ddArea)
+                    div.appendChild(ddArea);
+                    dvContainer.appendChild(div);
+                    locaList = ddArea
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            })
+        }
+    })
+}
+
+var locaList;
 function openNav() {
     document.getElementById("mySidebar").style.width = "250px";
     document.getElementById("main").style.marginLeft = "250px";
@@ -16,7 +64,6 @@ function openNavType() {
 
 }
 showInPopup = (url, title) => {
-
     $.ajax({
         type: 'GET',
         url: url,
@@ -59,7 +106,7 @@ showInPopup = (url, title) => {
                 }
             });
 
-            console.log(res, "check");
+            //console.log(res, "check");
         }
 
     })
@@ -101,14 +148,14 @@ function closeNavType() {
 
 }
 //nultiple form
-function addItem() {
-    var ul = document.getElementById("container-from");
-    var candidate = document.getElementById("candidate");
-    var div = document.createElement("div");
-    li.setAttribute('id', candidate.value);
-    li.appendChild(document.createTextNode(candidate.value));
-    ul.appendChild(li);
-}
+//function addItem() {
+//    var ul = document.getElementById("container-from");
+//    var candidate = document.getElementById("candidate");
+//    var div = document.createElement("div");
+//    li.setAttribute('id', candidate.value);
+//    li.appendChild(document.createTextNode(candidate.value));
+//    ul.appendChild(li);
+//}
 
 //delete
 Delete = (url, title) => {
@@ -129,7 +176,7 @@ Delete = (url, title) => {
         }
     });
 
-    console.log(res, "check");
+    // console.log(res, "check");
 }
 
 
@@ -294,12 +341,12 @@ Approve = (url, title) => {
         }
     });
 
-    console.log(res, "check");
+    // console.log(res, "check");
 }
 // Add multiple form add
 var i = 1;
 function addStoreFrom() {
-
+    
     var parentDiv = document.getElementById('addnew-from');
     var childDiv = document.createElement("div");
     i++;
@@ -310,7 +357,7 @@ function addStoreFrom() {
         '<h1 class="text-center"style="font-size:20px;font-weight:bold;text-transform:capitalize;margin-top:10px;">Store </h1>' +
         '</div>' +
         '<div class="col-md-1">' +
-        '<a type="button" class="closebtn1" onclick="removeStore(' + i + ');">×</a>'+
+        '<a type="button" class="closebtn1" onclick="removeStore(' + i + ');">×</a>' +
         '</div>' +
         '</div>' +
         '<div class="row">' +
@@ -319,7 +366,9 @@ function addStoreFrom() {
         '<div class="col-md-6 col-lg-6 col-12">' +
         '<div class="form-group">' +
         '<label class="control-label">Store Loation</label>' +
-        '<select class="form-control" id="Location"></select>' +
+        //'<select class="form-control" id="Location">' 
+         locaList
+        
         '</div>' +
         '</div>' +
         ' <div class="col-md-6 col-lg-6 col-12">' +
@@ -355,8 +404,26 @@ function addStoreFrom() {
         '</div>' +
         '<div class="clear"></div>'
     parentDiv.appendChild(childDiv);
+    $.ajax({
+        type: 'GET',
+        url: '/MarchentStores/GetArea',
+        dataType: 'JSON',
+        success: function (data) {
+            console.log(data, "data");
+            $("#Location").empty();
+            $.each(data, function (i, obj) {
+                var l = '<option value="' + obj.id + '">' + obj.area + '</option>';
+                console.log(data, "data");
+                $("#Location").append(l);
+            });
+        },
+        error: function (err) {
+            console.log(err)
+        }
+      })
     var StoredDiv = $('.removeclass' + i).html();
     manage_append(i, StoredDiv, 'add');
+   
 }
 function removeStore(rid) {
     manage_append(rid, 0, 'delete');
@@ -375,5 +442,6 @@ function manage_append(i, html, action) {
 $(function () {
     for (var j = 0, len = localStorage.length; j < len; ++j) {
         $("#addnew-from").append(localStorage.getItem(localStorage.key(j)));
+       
     }
 });

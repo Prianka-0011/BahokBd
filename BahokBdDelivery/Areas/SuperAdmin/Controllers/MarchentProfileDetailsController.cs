@@ -91,6 +91,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                    await _userManager.AddToRoleAsync(uName, mRole.Name);
                 }
                 marchent.Status = true;
+                await _context.SaveChangesAsync();
             }
 
             return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAllMarchent", _context.MarchentProfileDetail.ToList()) });

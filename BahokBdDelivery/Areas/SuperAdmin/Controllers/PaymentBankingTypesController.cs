@@ -61,7 +61,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                 if (id == Guid.Parse("00000000-0000-0000-0000-000000000000"))
                 {
                     PaymentBankingType entity = new PaymentBankingType();
-                    entity.Id = Guid.NewGuid();
+                    //entity.Id = Guid.NewGuid();
                     entity.BankingMethodName = paymentBankingType.BankingMethodName;
                     _context.Add(entity);
                     await _context.SaveChangesAsync();

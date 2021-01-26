@@ -24,8 +24,14 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         [HttpGet]
         public IActionResult AddMarhentStore()
         {
-            ViewData["areaList"] = new SelectList(_context.DeliveryAreaPrices, "Id", "Area");
+            //ViewData["areaList"] = new SelectList(_context.DeliveryAreaPrices, "Id", "Area");
             return View();
+        }
+        [HttpGet("/MarchentStores/GetArea")]
+        public IActionResult GetArea(Guid id)
+        {
+            var area = _context.DeliveryAreaPrices.ToList();
+            return Json(area);
         }
     }
 }
