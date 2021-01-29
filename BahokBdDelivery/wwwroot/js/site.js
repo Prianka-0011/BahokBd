@@ -1,52 +1,21 @@
-﻿//import { data } from "jquery";
-//for store Marchent multiple form area are use in so many place
-showInPopupForStore = (url, title) => {
-    $.ajax({
-        type: 'GET',
-        url: url,
-        success: function (res) {
-            document.getElementById("side-drawer").style.width = "auto";
-            $('#side-drawer .card-body').html(res);
-            $('#side-drawer .card-title').html(title);
-            $.ajax({
-                type: 'GET',
-                url: '/MarchentStores/GetArea',
-                dataType: 'JSON',
-                success: function (data) {
-                    //$("#Location").empty();
+﻿
 
-                    var ddArea = document.createElement("SELECT");
-                    ddArea.setAttribute("class", "form-control");
-                    $.each(data, function (i, obj) {
-                        console.log("piku", obj);
-                        var option = document.createElement("OPTION");
-                        //Set Customer Name in Text part.
-                        option.innerHTML = obj.area;
+var storeArea;
+$.ajax({
+    type: 'GET',
+    url: '/MarchentStores/GetArea',
+    dataType: 'JSON',
+    success: function (data) {
+        
+        storeArea = data;
 
-                        //Set CustomerId in Value part.
-                        option.value = obj.id;
+    },
+    error: function (err) {
+        console.log(err)
+    }
+})
 
-                        //Add the Option element to DropDownList.
-                        ddArea.options.add(option);
 
-                    });
-                    var dvContainer = document.getElementById("Location");
-                    var div = document.createElement("DIV");
-                  
-                    console.log(ddArea)
-                    div.appendChild(ddArea);
-                    dvContainer.appendChild(div);
-                    locaList = ddArea
-                },
-                error: function (err) {
-                    console.log(err)
-                }
-            })
-        }
-    })
-}
-
-var locaList;
 function openNav() {
     document.getElementById("mySidebar").style.width = "250px";
     document.getElementById("main").style.marginLeft = "250px";
@@ -54,8 +23,8 @@ function openNav() {
 }
 
 function closeNav() {
-    document.getElementById("mySidebar").style.width = "0";
-    document.getElementById("main").style.marginLeft = "0";
+    document.getElementById("mySidebar").style.width = "0px";
+    document.getElementById("main").style.marginLeft = "0px";
     document.getElementById("display").style.display = "none";
 }
 function openNavType() {
@@ -147,17 +116,7 @@ function closeNavType() {
     $('#side-drawer .card-title').html('');
 
 }
-//nultiple form
-//function addItem() {
-//    var ul = document.getElementById("container-from");
-//    var candidate = document.getElementById("candidate");
-//    var div = document.createElement("div");
-//    li.setAttribute('id', candidate.value);
-//    li.appendChild(document.createTextNode(candidate.value));
-//    ul.appendChild(li);
-//}
 
-//delete
 Delete = (url, title) => {
     $.ajax({
         type: 'GET',
@@ -345,13 +304,25 @@ Approve = (url, title) => {
 }
 // Add multiple form add
 var i = 1;
+var ddArea = document.createElement("SELECT");
+var areaChildDiv = document.createElement("div");
 function addStoreFrom() {
-    
+    ddArea.setAttribute("class", "form-control ");
+    $.each(storeArea, function (i, obj) {
+        var option = document.createElement("OPTION");
+        option.innerHTML = obj.area;
+        option.value = obj.id;
+        ddArea.options.add(option);
+    });
+    areaChildDiv.appendChild(ddArea);  
     var parentDiv = document.getElementById('addnew-from');
     var childDiv = document.createElement("div");
+    console.log("areaChildDiv", areaChildDiv.innerHTML);
     i++;
     childDiv.setAttribute("class", "form-group removeclass" + i);
     childDiv.innerHTML = '' +
+        '<div class="row">'+
+        '<div class="col-md-12">'+
         ' <div class="row">' +
         '<div class="col-md-3 offset-md-4">' +
         '<h1 class="text-center"style="font-size:20px;font-weight:bold;text-transform:capitalize;margin-top:10px;">Store </h1>' +
@@ -365,10 +336,8 @@ function addStoreFrom() {
         '<div class="row">' +
         '<div class="col-md-6 col-lg-6 col-12">' +
         '<div class="form-group">' +
-        '<label class="control-label">Store Loation</label>' +
-        //'<select class="form-control" id="Location">' 
-         locaList
-        
+        '<label class="control-label">Store Loation</label>' + 
+        areaChildDiv.innerHTML+
         '</div>' +
         '</div>' +
         ' <div class="col-md-6 col-lg-6 col-12">' +
@@ -402,6 +371,8 @@ function addStoreFrom() {
         '</div>' +
         '</div>' +
         '</div>' +
+        '</div>' +
+        '</div>' +
         '<div class="clear"></div>'
     parentDiv.appendChild(childDiv);
     $.ajax({
@@ -420,10 +391,10 @@ function addStoreFrom() {
         error: function (err) {
             console.log(err)
         }
-      })
+    })
     var StoredDiv = $('.removeclass' + i).html();
     manage_append(i, StoredDiv, 'add');
-   
+    console.log('jhjkhjkhjjk', StoredDiv)
 }
 function removeStore(rid) {
     manage_append(rid, 0, 'delete');
@@ -442,6 +413,40 @@ function manage_append(i, html, action) {
 $(function () {
     for (var j = 0, len = localStorage.length; j < len; ++j) {
         $("#addnew-from").append(localStorage.getItem(localStorage.key(j)));
-       
+
     }
 });
+//for store Marchent multiple form area are use in so many place
+showInPopupForStore = (url, title) => {
+    $.ajax({
+        type: 'GET',
+        url: url,
+        success: function (res) {
+            document.getElementById("side-drawer").style.width = "auto";
+            $('#side-drawer .card-body').html(res);
+            $('#side-drawer .card-title').html(title);
+            $.each(storeArea, function (i, obj) {
+                var s = '<option value="' + obj.id + '">' + obj.area + '</option>';
+                $("#Location").append(s);
+            });
+            console.log(storeArea, 'jkjkjkjkjkjkl')
+        }
+    })
+}
+//submit all storeform
+function submitStoreForm() {
+    var arrItem = new Array();
+
+    $("#StoreForm #tr").each(function (row, tr) {      
+       
+            arrItem.push({
+                
+                "MarchentId": $(this).closest('tr').find('#marchentId').val(),
+                "Area": $(this).closest('tr').find('#areaName').val(),
+                "BaseChargeAmount": $(this).closest('tr').find('#base').val(),
+                "IncreaseChargePerKg": $(this).closest('tr').find('#inc').val(),
+            });
+        }
+
+    })
+}
