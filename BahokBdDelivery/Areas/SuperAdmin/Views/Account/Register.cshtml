@@ -1,0 +1,157 @@
+﻿@model BahokBdDelivery.ViewModels.MarchentProfileDetailVm
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Areas/SuperAdmin/_AuthLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12 col-lg-12">
+        <div class="card mb-4">
+            <div class="card-header ">
+                <h2>Create Merchent</h2>
+            </div>
+            <div class="card-body">
+                <form asp-action="Register" onsubmit="return jQueryRegisterAjaxPost(this);" enctype="multipart/form-data" autocomplete="off">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="Name" class="control-label"></label>
+                                        <input asp-for="Name" class="form-control" />
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12 col-lg-6">
+                                    <div class="form-group">
+                                        <label asp-for="Email" class="control-label"></label>
+                                        <input type="email" asp-for="Email" class="form-control" />
+                                        <input type="hidden" asp-for="Password" id="password" />
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-12 col-lg-6 ">
+                                    <div class="form-group">
+                                        <label>Marchent Image</label>
+                                        <input class=" form-control " type="file" onchange="loadImg(event)" asp-for="Image" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12 col-lg-6 ">
+                                    <div class="form-group">
+                                        <label>Logo</label>
+                                        <input class=" form-control " onchange="loadLogo(event)" type="file" asp-for="Logo" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+                                    <img id="img" src="#" style="height:100PX;width:100PX; border:solid 1px;" />
+                                </div>
+                                <div class="col-md-6 cpl-12">
+                                    <img id="logo" src="#" style="height: 100PX; width: 100PX; border:solid 1px;" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-12 col-lg-6 ">
+                                    <div class="form-group">
+                                        <label asp-for="Phone" class="control-label"></label>
+                                        <input asp-for="Phone" id="phonenumber" type="number" class="form-control" />
+
+                                        <span asp-validation-for="Phone" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12 col-lg-6 ">
+                                    <div class="form-group">
+                                        <label asp-for="BusinessName" class="control-label"></label>
+                                        <input asp-for="BusinessName" class="form-control" />
+                                        <span asp-validation-for="BusinessName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-12 col-lg-6 ">
+                                    <div class="form-group">
+                                        <label asp-for="BusinessLink" class="control-label"></label>
+                                        <input asp-for="BusinessLink" class="form-control" />
+                                        <span asp-validation-for="BusinessLink" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12 col-lg-6 ">
+                                    <div class="form-group">
+                                        <label asp-for="BusinessAddress" class="control-label"></label>
+                                        <input asp-for="BusinessAddress" class="form-control" />
+                                        <span asp-validation-for="BusinessAddress" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-12 col-lg-6 ">
+                                    <div class="form-group">
+                                        <label asp-for="AccountName" class="control-label"></label>
+                                        <input asp-for="AccountName" class="form-control" />
+                                        <span asp-validation-for="AccountName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12 col-lg-6 ">
+                                    <div class="form-group">
+                                        <label asp-for="AccountNumber" class="control-label"></label>
+                                        <input asp-for="AccountNumber" class="form-control" />
+                                        <span asp-validation-for="AccountNumber" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 col-12 col-lg-6">
+                                    <div class="form-group">
+                                        <label class="control-label">PaymentType</label>
+                                        <select asp-for="PaymentTypeId" class="form-control" onclick="registerBankList()" id="BankType"></select>
+                                        <span asp-validation-for="PaymentTypeId" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12 col-lg-6 ">
+                                    <div class="form-group">
+                                        <label asp-for="PaymentBankingId" class="control-label"></label>
+                                        <select asp-for="PaymentBankingId" class="form-control"  id="Organize"></select>
+                                        <span asp-validation-for="PaymentBankingId" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="hideDiv">
+                                <div class="col-md-12 col-12 col-lg 12">
+                                    <div class="row">
+                                        <div class="col-md-6 col-12 col-lg-6 ">
+                                            <div class="form-group">
+                                                <label asp-for="RoutingName" class="control-label"></label>
+                                                <input asp-for="RoutingName" class="form-control" id="Route" />
+                                                <span asp-validation-for="RoutingName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12 col-lg-6 ">
+                                            <div class="form-group">
+                                                <label class="control-label">Branch</label>
+                                                <input asp-for="BranchName" class="form-control" />
+                                                @*<input asp-for="BranchId" class="form-control" id="Branch"></input>*@
+                                                <span asp-validation-for="BranchName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Submit" class="btn btn-primary" />
+                                <a class="btn btn-info" href="#">Send SMS</a>
+                                <a class="btn btn-info" href="#">Send Mail</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -15,17 +15,3 @@
         @await Html.PartialAsync("_ViewAllMarchent", Model)
     </div>
 </div>
-
-@section Scripts
-{
-    <script>
-        $(function(){
-            var approve = '@ViewBag.approve';
-            if (approve != null) {
-                toastr.success(approve);
-            }
-
-        });
-    </script>
-}
-

@@ -32,7 +32,7 @@ namespace BahokBdDelivery.Areas.Identity.Pages.Account
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)
             {
-                return RedirectToPage("./Login");
+                return LocalRedirect(returnUrl);
             }
             else
             {

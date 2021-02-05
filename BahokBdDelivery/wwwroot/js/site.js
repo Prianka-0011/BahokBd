@@ -1,4 +1,5 @@
 ﻿
+var bankType;
 
 var storeArea;
 $.ajax({
@@ -6,16 +7,70 @@ $.ajax({
     url: '/MarchentStores/GetArea',
     dataType: 'JSON',
     success: function (data) {
-        
         storeArea = data;
-
     },
     error: function (err) {
         console.log(err)
     }
 })
+/// Bank type list
+$.ajax({
+    url: '/MarchentProfileDetail/GetBankingType',
+    type: 'GET',
+    dataType: 'JSON',
+    success: function (data) {
+        bankType = data;
+        console.log(data);
+        $("#BankType").empty();
+        $.each(bankType, function (i, obj) {
+            var s = '<option value="' + obj.id + '">' + obj.bankingMethodName + '</option>';
+            console.log(s);
+            $("#BankType").append(s);
+            $("#BankType").change(function () {
+                if ($(this).val() == "ac6f9eee-928c-4414-8632-08d8c8560c37") {
+                    $('#hideDiv').show();
+                    $('#Route').attr('required', '');
+                    $('#Route').attr('data-error', 'This field is required.');
+                    $('#Branch').attr('required', '');
+                    $('#Branch').attr('data-error', 'This field is required.');
+                } else {
+                    $('#hideDiv').hide();
+                    $('#Route').removeAttr('required');
+                    $('#Route').removeAttr('data-error');
+                    $('#Branch').removeAttr('required');
+                    $('#Branch').removeAttr('data-error');
+                }
+            });
+            $("#BankType").trigger("change");
+        });
+    },
+    error: function (res) {
+        console.log(res);
+    }
+});
+function registerBankList() {
+    var d = $("#BankType option:selected").val();
 
 
+    $.ajax({
+        url: '/MarchentProfileDetail/GetOrganizationName/?id=' + d,
+        type: 'GET',
+        dataType: 'JSON',
+        success: function (data) {
+            console.log(data);
+            $("#Organize").empty();
+            $("#Branch").empty();
+            $.each(data, function (i, obj) {
+                var s = '<option value="' + obj.id + '">' + obj.organizationName + '</option>';
+                //console.log(s);
+                $("#Organize").append(s);
+            });
+        },
+        error: function (res) {
+            console.log(res);
+        }
+    });
+}
 function openNav() {
     document.getElementById("mySidebar").style.width = "250px";
     document.getElementById("main").style.marginLeft = "250px";
@@ -30,6 +85,15 @@ function closeNav() {
 function openNavType() {
     document.getElementById("side-drawer").style.width = "400px";
 
+}
+showInTab = (url, title) => {
+    $.ajax({
+        type: 'GET',
+        url: url,
+        success: function (res) {
+            $('#showReg').html(res);
+        }
+    });
 
 }
 showInPopup = (url, title) => {
@@ -38,49 +102,67 @@ showInPopup = (url, title) => {
         url: url,
         success: function (res) {
             document.getElementById("side-drawer").style.width = "auto";
+
+            document.getElementById("side-drawer").style.backgroundAttachment = "fixed";
             $('#side-drawer .card-body').html(res);
             $('#side-drawer .card-title').html(title);
-            $.ajax({
-                url: '/MarchentProfileDetail/GetBankingType',
-                type: 'GET',
-                dataType: 'JSON',
-                success: function (data) {
-                    console.log(data);
-                    $("#Type").empty();
-                    $.each(data, function (i, obj) {
-                        var s = '<option value="' + obj.id + '">' + obj.bankingMethodName + '</option>';
-                        console.log(s);
-                        $("#Type").append(s);
-                        $("#Type").change(function () {
-                            if ($(this).val() == "c85a689b-e845-492a-8a00-c360ac19b63e") {
-                                $('#hideDiv').show();
-                                $('#Route').attr('required', '');
-                                $('#Route').attr('data-error', 'This field is required.');
-                                $('#Branch').attr('required', '');
-                                $('#Branch').attr('data-error', 'This field is required.');
-                            } else {
-                                $('#hideDiv').hide();
-                                $('#Route').removeAttr('required');
-                                $('#Route').removeAttr('data-error');
-                                $('#Branch').removeAttr('required');
-                                $('#Branch').removeAttr('data-error');
-                            }
-                        });
-                        $("#Type").trigger("change");
-                    });
-
-                },
-                error: function (res) {
-                    console.log(res);
-                }
+            $.each(storeArea, function (i, obj) {
+                var s = '<option value="' + obj.id + '">' + obj.area + '</option>';
+                $("#Location").append(s);
             });
-
-            //console.log(res, "check");
+            $("#Type").empty();
+            $.each(bankType, function (i, obj) {
+                var s = '<option value="' + obj.id + '">' + obj.bankingMethodName + '</option>';
+                console.log(s);
+                $("#Type").append(s);
+                $("#Type").change(function () {
+                    if ($(this).val() == "ac6f9eee-928c-4414-8632-08d8c8560c37") {
+                        $('#hideDiv').show();
+                        $('#Route').attr('required', '');
+                        $('#Route').attr('data-error', 'This field is required.');
+                        $('#Branch').attr('required', '');
+                        $('#Branch').attr('data-error', 'This field is required.');
+                    } else {
+                        $('#hideDiv').hide();
+                        $('#Route').removeAttr('required');
+                        $('#Route').removeAttr('data-error');
+                        $('#Branch').removeAttr('required');
+                        $('#Branch').removeAttr('data-error');
+                    }
+                });
+                $("#Type").trigger("change");
+            });
         }
 
     })
 }
+jQueryRegisterAjaxPost = form => {
+    try {
+        $.ajax({
+            type: 'POST',
+            url: form.action,
+            data: new FormData(form),
+            contentType: false,
+            processData: false,
+            success: function (res) {
+              
+                    toastr.success("Register", "Successfull");
+                
+               
+            },
+            error: function (err) {
+                
+                toastr.success("Register", "Faild");
+            
 
+            }
+        })
+        //to prevent default form submit event
+        return false;
+    } catch (ex) {
+        console.log(ex)
+    }
+}
 jQueryAjaxPost = form => {
     try {
         $.ajax({
@@ -226,7 +308,7 @@ function editButton() {
 function bankList() {
     var d = $("#Type option:selected").val();
 
-    console.log(d);
+
     $.ajax({
         url: '/MarchentProfileDetail/GetOrganizationName/?id=' + d,
         type: 'GET',
@@ -246,31 +328,7 @@ function bankList() {
         }
     });
 }
-function branchList() {
-    $("#Organize").click(function () {
-        var d = $("#Organize option:selected").val();
-        console.log(d);
-        $.ajax({
-            url: '/MarchentProfileDetail/GetBranch/?id=' + d,
-            type: 'GET',
-            dataType: 'JSON',
-            success: function (data) {
-                console.log(data, "prianka");
-                $("#Branch").empty();
-                //$("#rout").empty();
-                $.each(data, function (i, obj) {
-                    console.log(obj, "mondal");
-                    var s = '<option value="' + obj.id + '">' + obj.branchName + '</option>';
-                    console.log(s, "hdfjhs");
-                    $("#Branch").append(s);
-                });
-            },
-            error: function (res) {
-                console.log(res);
-            }
-        });
-    });
-}
+
 var loadImg = function loadImg(event) {
 
     var output = document.getElementById('img');
@@ -304,25 +362,36 @@ Approve = (url, title) => {
 }
 // Add multiple form add
 var i = 1;
+var storeCount = 0;
 var ddArea = document.createElement("SELECT");
 var areaChildDiv = document.createElement("div");
 function addStoreFrom() {
-    ddArea.setAttribute("class", "form-control ");
-    $.each(storeArea, function (i, obj) {
-        var option = document.createElement("OPTION");
-        option.innerHTML = obj.area;
-        option.value = obj.id;
-        ddArea.options.add(option);
-    });
-    areaChildDiv.appendChild(ddArea);  
+
+    //marchentId get
+    var MarchentId = $('#MarchentId').val();
+    ddArea.setAttribute("class", "form-control");
+    ddArea.setAttribute("id", "Location");
+    console.log("hgh", storeCount);
+    if (storeCount == 0) {
+        $.each(storeArea, function (i, obj) {
+
+            var option = document.createElement("OPTION");
+            option.innerHTML = obj.area;
+            option.value = obj.id;
+            ddArea.options.add(option);
+        });
+    }
+
+    storeCount++;
+    areaChildDiv.appendChild(ddArea);
     var parentDiv = document.getElementById('addnew-from');
     var childDiv = document.createElement("div");
     console.log("areaChildDiv", areaChildDiv.innerHTML);
     i++;
     childDiv.setAttribute("class", "form-group removeclass" + i);
     childDiv.innerHTML = '' +
-        '<div class="row">'+
-        '<div class="col-md-12">'+
+        '<div class="row" id="tr">' +
+        '<div class="col-md-12">' +
         ' <div class="row">' +
         '<div class="col-md-3 offset-md-4">' +
         '<h1 class="text-center"style="font-size:20px;font-weight:bold;text-transform:capitalize;margin-top:10px;">Store </h1>' +
@@ -333,11 +402,12 @@ function addStoreFrom() {
         '</div>' +
         '<div class="row">' +
         '<div class="col-md-12">' +
+        '<input type="hidden" value="' + MarchentId + '" id="MarchentId" />' +
         '<div class="row">' +
         '<div class="col-md-6 col-lg-6 col-12">' +
         '<div class="form-group">' +
-        '<label class="control-label">Store Loation</label>' + 
-        areaChildDiv.innerHTML+
+        '<label class="control-label">Store Loation</label>' +
+        areaChildDiv.innerHTML +
         '</div>' +
         '</div>' +
         ' <div class="col-md-6 col-lg-6 col-12">' +
@@ -357,7 +427,7 @@ function addStoreFrom() {
         '<div class="col-md-6 col-lg-6 col-12">' +
         '<div class="form-group">' +
         '<label class="control-label">Manager Number</label>' +
-        ' <input id="MPhone" class="form-control" asp-for="Phone" />' +
+        ' <input id="MPhone" class="form-control" asp-for="Phone" type="number"/>' +
         '</div>' +
         ' </div>' +
         '</div>' +
@@ -375,26 +445,10 @@ function addStoreFrom() {
         '</div>' +
         '<div class="clear"></div>'
     parentDiv.appendChild(childDiv);
-    $.ajax({
-        type: 'GET',
-        url: '/MarchentStores/GetArea',
-        dataType: 'JSON',
-        success: function (data) {
-            console.log(data, "data");
-            $("#Location").empty();
-            $.each(data, function (i, obj) {
-                var l = '<option value="' + obj.id + '">' + obj.area + '</option>';
-                console.log(data, "data");
-                $("#Location").append(l);
-            });
-        },
-        error: function (err) {
-            console.log(err)
-        }
-    })
     var StoredDiv = $('.removeclass' + i).html();
     manage_append(i, StoredDiv, 'add');
     console.log('jhjkhjkhjjk', StoredDiv)
+
 }
 function removeStore(rid) {
     manage_append(rid, 0, 'delete');
@@ -429,24 +483,35 @@ showInPopupForStore = (url, title) => {
                 var s = '<option value="' + obj.id + '">' + obj.area + '</option>';
                 $("#Location").append(s);
             });
-            console.log(storeArea, 'jkjkjkjkjkjkl')
+            console.log(storeArea, 'jkjkjkjkjkjkl');
         }
     })
 }
 //submit all storeform
 function submitStoreForm() {
-    var arrItem = new Array();
+    var arrStoreItem = new Array();
+    $("#StoreForm #tr").each(function (row, tr) {
+        arrStoreItem.push({
+            "MarchentId": $(this).closest('#tr').find('#MarchentId').val(),
+            "LocationId": $(this).closest('#tr').find('#Location').val(),
+            "StoreName": $(this).closest('#tr').find('#SName').val(),
+            "ManagerName": $(this).closest('#tr').find('#MName').val(),
+            "Phone": $(this).closest('#tr').find('#MPhone').val(),
+            "Address": $(this).closest('#tr').find('#address').val(),
+        });
+    });
+    if (arrStoreItem != null) {
+        $.ajax({
+            type: 'POST',
+            url: '/MarchentStores/SubmitStore',
+            data: { "arrStoreItem": arrStoreItem },
+            success: function (response) {
 
-    $("#StoreForm #tr").each(function (row, tr) {      
-       
-            arrItem.push({
-                
-                "MarchentId": $(this).closest('tr').find('#marchentId').val(),
-                "Area": $(this).closest('tr').find('#areaName').val(),
-                "BaseChargeAmount": $(this).closest('tr').find('#base').val(),
-                "IncreaseChargePerKg": $(this).closest('tr').find('#inc').val(),
-            });
-        }
+                toastr.success("Successfully Store Add");
+                document.getElementById("side-drawer").style.width = "0";
+            }
 
-    })
+        })
+    }
+    console.log("arrStoreItem", arrStoreItem)
 }

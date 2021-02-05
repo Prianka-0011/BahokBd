@@ -25,12 +25,12 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<MarchentProfileDetailsController> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public MarchentProfileDetailsController(ILogger<MarchentProfileDetailsController> logger, IEmailSender emailSender, RoleManager<IdentityRole> roleManager, ApplicationDbContext context, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IWebHostEnvironment webHostEnvironment)
+        public MarchentProfileDetailsController(ILogger<MarchentProfileDetailsController> logger, IEmailSender emailSender, RoleManager<IdentityRole> roleManager, ApplicationDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
@@ -52,47 +52,55 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         public async Task< IActionResult> Approve(Guid?id)
         {
             var marchent = _context.MarchentProfileDetail.FirstOrDefault(c => c.Id == id);
-            var user = new IdentityUser { UserName = marchent.Phone, Email = marchent.Email};
-            var result = await _userManager.CreateAsync(user, marchent.Password);
-            
-            var uName = await _userManager.FindByNameAsync(marchent.Phone);
-            if (result.Succeeded)
+            var user = new ApplicationUser { UserName = marchent.Phone, Email = marchent.Email};
+            try
             {
-               // _logger.LogInformation("User created a new account with password.");
-
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
-                    "/Account/ConfirmEmail",
-                    pageHandler: null,
-                    values: new { area = "Identity", userId = user.Id, code = code},
-                    protocol: Request.Scheme);
-
-                await _emailSender.SendEmailAsync(marchent.Email, "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                var result = await _userManager.CreateAsync(user, marchent.Password);
+                var uName = await _userManager.FindByNameAsync(marchent.Phone);
+                if (result.Succeeded)
                 {
-                    code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
-                    var result1 = await _userManager.ConfirmEmailAsync(user, code);
+                    // _logger.LogInformation("User created a new account with password.");
+
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Page(
+                        "/Account/ConfirmEmail",
+                        pageHandler: null,
+                        values: new { area = "Identity", userId = user.Id, code = code },
+                        protocol: Request.Scheme);
+
+                    await _emailSender.SendEmailAsync(marchent.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    {
+                        code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+                        var result1 = await _userManager.ConfirmEmailAsync(user, code);
+                    }
+                    if (uName != null)
+                    {
+                        var roleName = "Marchent";
+                        var mRole = await _roleManager.FindByNameAsync(roleName);
+                        if (mRole != null)
+                        {
+                            await _userManager.AddToRoleAsync(uName, mRole.Name);
+                        }
+                        marchent.Status = true;
+                        await _context.SaveChangesAsync();
+                    }
+                    //else
+                    //{
+                    //    await _signInManager.SignInAsync(user, isPersistent: false);
+                    //    return LocalRedirect(returnUrl);
+                    //}
                 }
-                //else
-                //{
-                //    await _signInManager.SignInAsync(user, isPersistent: false);
-                //    return LocalRedirect(returnUrl);
-                //}
+
             }
-            if (uName!=null)
+            catch(Exception ex)
             {
-                var roleName = "Marchent";
-                var mRole = await _roleManager.FindByNameAsync(roleName);
-                if (mRole!=null)
-                {
-                   await _userManager.AddToRoleAsync(uName, mRole.Name);
-                }
-                marchent.Status = true;
-                await _context.SaveChangesAsync();
+
             }
+     
 
             return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAllMarchent", _context.MarchentProfileDetail.ToList()) });
         }
@@ -341,12 +349,6 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
             var org = _context.PaymentBankingOrganization.Where(o => o.PaymentBankingTypeId == id);
             return Json(org.ToList());
         }
-        //[HttpGet("/MarchentProfileDetail/GetBranch")]
-        //public IActionResult GetBranch(Guid id)
-        //{
-        //    var dis = _context.BankBranch.Where(x => x.BankId == id);
-        //    return Json(dis.ToList());
-        //}
         private bool MarchentProfileDetailExists(Guid id)
         {
             return _context.MarchentProfileDetail.Any(e => e.Id == id);

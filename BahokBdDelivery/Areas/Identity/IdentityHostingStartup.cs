@@ -15,6 +15,11 @@ namespace BahokBdDelivery.Areas.Identity
         public void Configure(IWebHostBuilder builder)
         {
             builder.ConfigureServices((context, services) => {
+                //services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(
+                //    context.Configuration.GetConnectionString("DatabaseConnection")
+                //    ));
+                //services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+                //.AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultUI().AddDefaultTokenProviders();
             });
         }
     }

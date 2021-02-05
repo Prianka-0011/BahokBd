@@ -1,4 +1,4 @@
-﻿@model BahokBdDelivery.Models.MarchentStore
+﻿@model BahokBdDelivery.Views.ViewModels.MarchentStoreVm
 
 @{
     ViewData["Title"] = "AddMarhentStore";
@@ -9,69 +9,68 @@
     <div class="card-header ">
         <h2>Add Store</h2>
         <button onclick="addStoreFrom()" class="btn btn-add" type="button">Add Item</button>
-        <button onclick="SubmitStore()" class="btn btn-add" type="button">Create Store</button>
+        <button onclick="submitStoreForm()" class="btn btn-add" type="button">Create Store</button>
     </div>
     <div class="card-body">
         <div id="StoreForm">
-                <div class="row" id="tr">
-                    <input type="hidden" value="@Model.MarchentId" id="MarchentId"  />
-                    <div class="col-md-12 col-12">
-                        <div class="row">
-                            <div class="col-md-3 offset-md-4">
-                                <h1 class="" style="font-size:20px;font-weight:bold;text-transform:capitalize;margin-top:10px;">Store</h1>
-                            </div>                         
+            <div class="row" id="tr">
+                <div class="col-md-12 col-12">
+                    <input type="hidden" value="@Model.MarchentId" id="MarchentId" />
+                    <div class="row">
+                        <div class="col-md-3 offset-md-4">
+                            <h1 class="" style="font-size:20px;font-weight:bold;text-transform:capitalize;margin-top:10px;">Store</h1>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-6 col-lg-6 col-12">
-                                        <div class="form-group">
-                                            <label class="control-label">Store Location</label>
-                                            <select class="form-control"id="Location">
-                                                
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-6 col-12">
-                                        <div class="form-group">
-                                            <label class="control-label">Store Name</label>
-                                            <input id="SName" class="form-control" />
-                                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6 col-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Store Location</label>
+                                        <select class="form-control" id="Location">
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6 col-lg-6 col-12">
-                                        <div class="form-group">
-                                            <label class="control-label">Manager Name</label>
-                                            <input id="MName" class="form-control" />
-                                        </div>
+                                <div class="col-md-6 col-lg-6 col-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Store Name</label>
+                                        <input id="SName" class="form-control" />
                                     </div>
-                                    <div class="col-md-6 col-lg-6 col-12">
-                                        <div class="form-group">
-                                            <label class="control-label">Manager Number</label>
-                                            <input id="MPhone" class="form-control" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12 col-lg-12 col-12">
-                                        <div class="form-group">
-                                            <label class="control-label">Store Address</label>
-                                            <textarea class="form-control" id="address"></textarea>
-                                        </div>
-                                    </div>
-                                  
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div id="addnew-from">
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6 col-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Manager Name</label>
+                                        <input id="MName" class="form-control" />
+                                    </div>
                                 </div>
+                                <div class="col-md-6 col-lg-6 col-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Manager Number</label>
+                                        <input id="MPhone" type="number" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Store Address</label>
+                                        <textarea class="form-control" id="address"></textarea>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="addnew-from">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</div>

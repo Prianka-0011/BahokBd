@@ -1,42 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using BahokBdDelivery.Data;
 using BahokBdDelivery.Models;
+using BahokBdDelivery.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using static BahokBdDelivery.Helper;
 
 namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
 {
     [Area("SuperAdmin")]
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        //private readonly IEmailSender _emailSender;
-        private readonly ILogger _logger;
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger<AccountController> _logger;
+        private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public AccountController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
-            //IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager,
-            ApplicationDbContext context,
-
-            ILogger<AccountController> logger)
+           ILogger<AccountController> logger, IEmailSender emailSender, RoleManager<IdentityRole> roleManager,
+           ApplicationDbContext context, UserManager<ApplicationUser> userManager,
+           SignInManager<ApplicationUser> signInManager, IWebHostEnvironment webHostEnvironment)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            //_emailSender = emailSender;
-            _roleManager = roleManager;
-            _logger = logger;
+         
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
+            _signInManager = signInManager;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _emailSender = emailSender;
+            _logger = logger;
         }
         [HttpGet]
         [AllowAnonymous]
@@ -64,6 +67,78 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                 }
             }
             return View();
+        }
+        [HttpGet]
+        public IActionResult Register()
+        {
+            // ViewData["TypeId"] = new SelectList(_context.PaymentBankingType, "Id", "BankingMethodName");
+            return View(new MarchentProfileDetailVm());
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(MarchentProfileDetailVm vm)
+        {
+            if (ModelState.IsValid)
+            {
+
+                MarchentProfileDetail entity = new MarchentProfileDetail();
+                var samePhone = _context.MarchentProfileDetail.Where(c => c.Phone == vm.Phone);
+                var count = samePhone.Count();
+                if (count > 0)
+                {
+                    ViewBag.error = "The phone number already exist";
+                    return View(vm);
+                }
+                entity.Name = vm.Name;
+                entity.Email = vm.Email;
+                entity.Phone = vm.Phone;
+                entity.BusinessName = vm.BusinessName;
+                entity.BusinessLink = vm.BusinessLink;
+                entity.BusinessAddress = vm.BusinessAddress;
+                entity.AccountName = vm.AccountName;
+                entity.AccountNumber = vm.AccountNumber;
+
+                entity.LastIpAddress = vm.LastIpAddress;
+                entity.CreateDateTime = DateTime.Now;
+                entity.Password = "112345";
+                string uniqueFileNameForImage = null;
+                string uniqueFileNameForLogo = null;
+                if (vm.Image != null)
+                {
+
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                    uniqueFileNameForImage = Guid.NewGuid().ToString() + "_" + vm.Image.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileNameForImage);
+                    await vm.Image.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                    entity.Image = "images/" + uniqueFileNameForImage;
+                }
+                if (vm.Logo != null)
+                {
+
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "logos");
+                    uniqueFileNameForLogo = Guid.NewGuid().ToString() + "_" + vm.Logo.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileNameForLogo);
+                    await vm.Logo.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                    entity.Logo = "logos/" + uniqueFileNameForLogo;
+                }
+                entity.Id = Guid.NewGuid();
+                _context.MarchentProfileDetail.Add(entity);
+                await _context.SaveChangesAsync();
+                var paymentDetail = new MarchentPaymentDetails();
+                paymentDetail.MarchentId = entity.Id;
+                paymentDetail.PaymentNameId = vm.PaymentBankingId;
+                paymentDetail.PaymentTypeId = vm.PaymentTypeId;
+                paymentDetail.BranchName = vm.BranchName;
+                paymentDetail.RoutingName = vm.RoutingName;
+                _context.MarchentPaymentDetails.Add(paymentDetail);
+                await _context.SaveChangesAsync();
+                return Ok();
+
+
+            }
+            return Ok();
         }
         [HttpGet]
         [AllowAnonymous]
