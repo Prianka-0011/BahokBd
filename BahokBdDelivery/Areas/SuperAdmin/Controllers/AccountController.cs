@@ -48,7 +48,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
             return View();
         }
         [HttpPost]
-        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task< IActionResult> Login( MarchentLogin login)
         {
             if (ModelState.IsValid)
@@ -62,6 +62,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                     var roleType = _context.Roles.FirstOrDefault(c => c.Id == role.RoleId);
                     if (roleType.Name == "Marchent")
                     {
+                     //   return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Index", _context.PaymentBankingType.ToList()) });
                         return RedirectToAction("Index", "Admin", new { area = "SuperAdmin" });
                     }
                 }

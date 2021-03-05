@@ -1,4 +1,12 @@
-﻿
+﻿//stack over flow problem solve
+function car(value1) {
+    console.log("value", value1)
+    alert(value1)
+}
+
+
+
+
 var bankType;
 
 var storeArea;
@@ -163,6 +171,34 @@ jQueryRegisterAjaxPost = form => {
         console.log(ex)
     }
 }
+jQueryLoginAjaxPost = form => {
+    try {
+        $.ajax({
+            type: 'POST',
+            url: form.action,
+            data: new FormData(form),
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                $('#view-all').html(res.html)
+                console.log("Loginres",res)
+                toastr.success("Login", "Successfull");
+
+
+            },
+            error: function (err) {
+
+                toastr.success("Register", "Faild");
+
+
+            }
+        })
+        //to prevent default form submit event
+        return false;
+    } catch (ex) {
+        console.log(ex)
+    }
+}
 jQueryAjaxPost = form => {
     try {
         $.ajax({
@@ -173,7 +209,7 @@ jQueryAjaxPost = form => {
             processData: false,
             success: function (res) {
                 if (res.isValid) {
-                    $('#view-all').html(res.html)
+                    $('#view-all').html(res.html);
                     $('#side-drawer .card-body').html('');
                     $('#side-drawer .card-title').html('');
                     document.getElementById("side-drawer").style.width = "0";

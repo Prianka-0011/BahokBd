@@ -27,7 +27,7 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
         public IActionResult AddMarhentStore(Guid id)
         {
             MarchentStoreVm vm = new MarchentStoreVm();
-            vm.MarchentId = id;            //ViewData["areaList"] = new SelectList(_context.DeliveryAreaPrices, "Id", "Area");
+            vm.MarchentId = id;           
             return View(vm);
         }
         [HttpGet("/MarchentStores/GetArea")]
@@ -45,8 +45,6 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
             {
                 foreach (var item in arrStoreItem)
                 {
-
-
                     store = new MarchentStore();
                     store.MarchentId = item.MarchentId;
                     store.StoreName = item.StoreName;
@@ -57,9 +55,6 @@ namespace BahokBdDelivery.Areas.SuperAdmin.Controllers
                     store.CreatedDateTime = DateTime.Now;
                     store.Status = true;
                     _context.MarchentStore.Add(store);
-
-
-                    // mProfie = _context.MarchentProfileDetail.Find(item.MarchentId);
                 }
 
                 _context.SaveChanges();
